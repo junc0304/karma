@@ -7,7 +7,7 @@ const cors = require('cors');
 const config = require('./configuration');
 
 mongoose.Promise = global.Promise;
-mongoose.connect(config.databaseUrl, { 
+mongoose.connect(config.DATABASE_URL, { 
     useNewUrlParser: true, 
     useFindAndModify: false, 
     useCreateIndex: true 

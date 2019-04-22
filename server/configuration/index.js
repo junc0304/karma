@@ -1,5 +1,4 @@
 module.exports = {
-
     JWT_SECRET: 'KARMA_SECRET',
     BOARD_TYPE: ['notice', 'meeting', 'event', 'question'],
     USER_ROLES: {
@@ -7,10 +6,8 @@ module.exports = {
         ADMIN: ['owner', 'admin'],
         USER: ['user'],   
     },
-    ACCOUNT_TYPE: ['local', 'google', 'facebook']
-
+    ACCOUNT_TYPE: ['local', 'google', 'facebook'],
+    PORT : process.env.OPENSHIFT_NODEJS_PORT || process.env.PORT || 3000,
+    HOST : process.env.OPENSHIFT_NODEJS_IP || 'localhost',
+    DATABASE_URL : process.env.OPENSHIFT_MONGODB_DB_URL + process.env.OPENSHIFT_APP_NAME || 'mongodb://localhost/karma'
 }
-
-export const port = process.env.OPENSHIFT_NODEJS_PORT || process.env.PORT || 3000;
-export const host = process.env.OPENSHIFT_NODEJS_IP || 'localhost';
-export const databaseUrl = process.env.OPENSHIFT_MONGODB_DB_URL + process.env.OPENSHIFT_APP_NAME || 'mongodb://localhost/karma';

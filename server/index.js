@@ -1,8 +1,6 @@
-const config = require('./configuration');
+const {HOST, PORT} = require('./configuration');
 
 const app = require('./app');
-const host = config.host;
-const port = config.port;
-app.listen(port, host , () => {
-    console.log(`KARMA Server started..`, `Port: ${port}`, `Host: ${host}` );
+app.listen(PORT, HOST , () => {
+    console.log(`KARMA Server started..`, `Port: ${PORT}`, `Host: ${HOST}` );
 });
