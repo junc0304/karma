@@ -8,7 +8,7 @@
     "client-dev": "npm start --prefix client",
     "start-dev": "concurrently \"npm run server-dev\" \"npm run client-dev\"",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "concurrently \"npm run server-dev\" \"npm run client-dev\""
+    "start": "npm run server-dev"
   },
   "author": "",
   "license": "ISC",
