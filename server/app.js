@@ -4,8 +4,10 @@ const body_parser = require('body-parser');
 const mongoose = require('mongoose');
 const cors = require('cors');
 
+const config = require('./configuration');
+
 mongoose.Promise = global.Promise;
-mongoose.connect('mongodb://localhost/karma', { 
+mongoose.connect(config.databaseUrl, { 
     useNewUrlParser: true, 
     useFindAndModify: false, 
     useCreateIndex: true 
