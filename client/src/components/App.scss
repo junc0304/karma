@@ -1,0 +1,136 @@
+//fonts
+@import url('https://fonts.googleapis.com/css?family=Poor+Story:400');
+@import url('https://fonts.googleapis.com/css?family=Sunflower:300');
+@import url('https://fonts.googleapis.com/css?family=Jua:400');
+@import url('https://fonts.googleapis.com/css?family=Nanum+Gothic:400');
+@import url('https://fonts.googleapis.com/css?family=Nanum+Gothic+Coding:400');
+@import url('https://fonts.googleapis.com/css?family=Gamja+Flower:400');
+$main-kr-font: 'Jua';
+
+//color scheme
+$main-bg: rgba(255,255,255, 0.95);
+$sub-bg: rgba(255,255,255, 0.92);
+$main-fg: rgba(45,45,45,1);
+$main-button: rgba(105, 180, 194, 0.356);
+$main-bg-image: url('http://paperlief.com/images/full-hd-forest-nature-wallpapers-wallpaper-3.jpg');
+
+//css
+body, html {
+    height: 100%;
+    background-image: $main-bg-image;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    overflow-y: auto;
+    
+}
+
+.bg {
+    font-family: $main-kr-font;
+    background-size: cover;
+    min-height: 500px;
+    height: 100vh;
+    background-position: center;
+
+ 
+
+    nav.navbar {
+        position: sticky;
+        padding-top: 0rem;
+        padding-bottom: 0rem;
+        min-height:46px !important;
+        font-size: 20px;
+        div > ul > li > .nav-link.dropdown-toggle {
+            font-size: 20px;
+        }
+        .navbar-brand {
+            padding: 0.1rem;
+            font-size: 35px;
+            img {
+             margin-top: -10px;
+             width: 40px;
+             height: 30px;
+             padding-right: 5px;
+            }
+        }
+        .navbar-nav > li > a {
+            padding-top:4px !important; 
+            padding-bottom:4px !important;
+        }
+    }
+
+    nav.navbar#footer {
+        position: sticky;
+        bottom: 0;
+        top: 100%; 
+        width:100%;
+        font-size: 15px;
+    }
+    div.container {
+        padding: 2rem 1rem 0rem 1rem;
+        .jumbotron {
+            overflow-x: auto;
+            padding: 1.5rem 1rem 2rem 1rem;
+            background-color: $sub-bg; 
+
+            .view-body {
+                font-size: 25px;
+                margin-left: 5px;
+                
+                .lead {
+                    font-size: 35px;
+                }
+                .kr {
+                    text-align: left;
+                    font-family: $main-kr-font;
+                    margin-left: 10px;
+                }
+                table {
+                    thead {
+                        font-size: 18px;
+                        tr {
+                            th {
+                                padding-top: 0.5rem;
+                                padding-bottom: 0.5rem;
+                            }
+                        }
+                    }
+                    tbody {
+                        font-size: 15px;
+                        tr {
+                            td {
+                                padding-top: 0.5rem;
+                                padding-bottom: 0.5rem;
+                            }
+                        }   
+                    }
+                }
+
+                @media all and (max-width: 479px) { 
+                    tr {
+                        .col1 {
+                            display:none;
+                            width:0;
+                            height:0;
+                            opacity:0;
+                            visibility: collapse;       
+                        }
+                        td.col2 {
+                            font-size: 15px;
+                        }
+                        td.col3 {
+                            font-size: 12px;
+                        }
+                        .col4 {
+                            display:none;
+                            width:0;
+                            height:0;
+                            opacity:0;
+                            visibility: collapse;    
+                        }
+                    }
+                }  
+            }
+        }
+    }
+}
