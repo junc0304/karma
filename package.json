@@ -7,7 +7,8 @@
     "server-dev": "cross-env NODE_ENV=test nodemon server/index.js",
     "client-dev": "npm start --prefix client",
     "start-dev": "concurrently \"npm run server-dev\" \"npm run client-dev\"",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "concurrently \"npm run server-dev\" \"npm run client-dev\""
   },
   "author": "",
   "license": "ISC",
