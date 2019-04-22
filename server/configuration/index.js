@@ -7,7 +7,7 @@ module.exports = {
         USER: ['user'],   
     },
     ACCOUNT_TYPE: ['local', 'google', 'facebook'],
-    PORT : process.env.OPENSHIFT_NODEJS_PORT || process.env.PORT || 5000,
+    PORT : process.env.OPENSHIFT_NODEJS_PORT || process.env.PORT || 8080,
     HOST : process.env.OPENSHIFT_NODEJS_IP || 'localhost',
     DATABASE_URL : process.env.OPENSHIFT_MONGODB_DB_URL + process.env.OPENSHIFT_APP_NAME || 'mongodb://localhost/karma'
 }
