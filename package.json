@@ -4,11 +4,14 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "server-dev": "cross-env NODE_ENV=test nodemon server/index.js",
+    "server-dev": "cross-env NODE_ENV=test node server/index.js",
     "client-dev": "npm start --prefix client",
+    "server-prod": "node server/index.js",
+    "client-prod": "npm install --prefix && npm start --prefix client",
     "start-dev": "concurrently \"npm run server-dev\" \"npm run client-dev\"",
+    "start-prod": "concurrently \"npm run server-prod\" \"npm run client-prod\"",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "npm run server-dev"
+    "start": "npm run server-prod"
   },
   "author": "",
   "license": "ISC",
