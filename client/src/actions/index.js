@@ -4,7 +4,7 @@ import { AUTH_SIGN_UP, AUTH_SIGN_IN , AUTH_ERROR, AUTH_SIGN_OUT,  BOARD_GET_EVEN
 export const signUp = (data) => {
     return async dispatch => {
         try {
-            const res = await axios.post('http://localhost:5000/users/signup', data)
+            const res = await axios.post('/users/signup', data)
             console.log('res', res);
 
             dispatch({
@@ -27,7 +27,7 @@ export const signUp = (data) => {
 export const signIn = (data) => {
     return async dispatch => {
         try {
-            const res = await axios.post('http://localhost:5000/users/signin', data)
+            const res = await axios.post('/users/signin', data)
             console.log('res', res);
 
             dispatch({
@@ -66,7 +66,7 @@ export const signOut = () => {
 export const getEvent = () => {
     return async dispatch => {
         try {
-            const res = await axios.get('http://localhost:5000/event');
+            const res = await axios.get('/event');
             dispatch({
                 type: BOARD_GET_EVENT,
                 paload: res.data
@@ -81,7 +81,7 @@ export const getEvent = () => {
 export const getNotice = () => {
     return async dispatch => {
         try {
-            const res = await axios.get('http://localhost:5000/notice');
+            const res = await axios.get('/notice');
             dispatch({
                 type: BOARD_GET_EVENT,
                 paload: [res.data]
@@ -96,7 +96,7 @@ export const getNotice = () => {
 export const getMeeting = () => {
     return async dispatch => {
         try {
-            const res = await axios.get('http://localhost:5000/boards/meeting');
+            const res = await axios.get('/meeting');
             console.log('data',res.data);
             dispatch({
                 type: BOARD_GET_MEETING,
@@ -112,7 +112,7 @@ export const getMeeting = () => {
 export const postNewItem = () => {
     return async dispatch => {
         try {
-            const res = await axios.post('http://localhost:5000/boards/meeting');
+            const res = await axios.post('/boards/meeting');
             dispatch({
                 type: BOARD_GET_MEETING,
                 payload: res.data

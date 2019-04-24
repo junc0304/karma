@@ -7,7 +7,10 @@ const cors = require('cors');
 const config = require('./configuration');
 
 mongoose.Promise = global.Promise;
-mongoose.connect(config.DATABASE_URL, { 
+
+let dbUrl = 'mongodb://db:27017/karma';
+
+mongoose.connect('mongodb://db:27017/karma', { 
     useNewUrlParser: true, 
     useFindAndModify: false, 
     useCreateIndex: true 
@@ -16,7 +19,7 @@ mongoose.connect(config.DATABASE_URL, {
 const app = express();
 app.use(cors());
 
-if(!process.env.NODE_ENV === 'test') {
+if(!process.env.NODE_ENV === 'dev') {
     app.use(morgan('dev'));
 }
 

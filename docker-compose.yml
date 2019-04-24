@@ -1,0 +1,49 @@
+version: '3'
+services: 
+  server: 
+    container_name: karma_api
+    build:
+      context: .
+      dockerfile: Dockerfile
+    expose:
+      - 4000
+    environment:
+      - PORT=4000
+      - JWT_SECRET='karmaJWT'
+      - JWT_EXPIRY=1
+      - NODE_ENV='dev'
+      - MONGO_URI='mongodb://db:27017/karma'
+    ports:
+      - 4000:4000
+    volumes:
+      - ./server:/app/server/src
+    command: nodemon -L server/index.js
+    links: 
+      - db
+    restart: always
+  client:
+    container_name: karma-web
+    build:
+      context: ./client
+      dockerfile: Dockerfile 
+    expose:
+      - 3000
+    ports: 
+      - 3000:3000
+    volumes:
+      - ./client/src:/app/client/src
+      - ./client/public:/app/client/public
+    command: npm run start
+    links: 
+      - server
+    restart: always
+  db:
+    container_name: mongodb
+    image: mongo
+    ports:
+      - 27017:27017
+    expose:
+      - 27017
+    restart: always
+ 
+ 

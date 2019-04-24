@@ -27,7 +27,7 @@ class Header extends Component {
                         KARMA
                     </nav>
                 </Link>
-                <button
+            <button
                     className="navbar-toggler"
                     type="button"
                     data-toggle="collapse"
@@ -81,10 +81,10 @@ class Header extends Component {
                                 aria-haspopup="true"
                                 aria-expanded="false">Boards</Link>
                             <div className="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                                <Link className="dropdown-item" to="/Notice"  >Notices</Link>
-                                <Link className="dropdown-item" to="/Download" >Meetings</Link>
-                                <Link className="dropdown-item" to="/Event" >Events</Link>
-                                <Link className="dropdown-item" to="/QA" >FreeChat</Link>
+                                <Link className="dropdown-item" to="/board/Notice"  >Notices</Link>
+                                <Link className="dropdown-item" to="/board/Meeting" >Meetings</Link>
+                                <Link className="dropdown-item" to="/board/Event" >Events</Link>
+                                <Link className="dropdown-item" to="/" >FreeChat</Link>
                             </div>
                         </li>
                         <li className="nav-item dropdown" data-toggle="collapse" data-target=".navbar-collapse.show">

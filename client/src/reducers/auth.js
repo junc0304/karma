@@ -15,7 +15,8 @@ export default (state = DEFAULT_STATE, action) => {
         case AUTH_SIGN_IN:
             return { ...state, token: action.payload.token, role:action.payload.role, isAuthenticated: true, errorMessage: '' }
         case AUTH_ERROR:
-            return { ...state, errorMessage: action.payload }
+            console.log(action.payload)
+            return { ...state, errorMessage: action.payload.error }
         case AUTH_SIGN_OUT:
             return { ...state, token: action.payload, role: 'guest', isAuthenticated: false, errorMessage: '' }
         default:

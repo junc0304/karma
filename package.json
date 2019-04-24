@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "server-dev": "cross-env NODE_ENV=test node server/index.js",
+    "server-dev": "cross-env NODE_ENV=test nodemon server/index.js",
     "client-dev": "npm start --prefix client",
     "server-prod": "node server/index.js",
     "client-prod": "npm install --prefix && npm start --prefix client",

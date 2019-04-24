@@ -6,14 +6,15 @@ const ALL_ROLES = config.USER_ROLES.ADMIN.concat(config.USER_ROLES.USER);
 const ADMIN = config.USER_ROLES.ADMIN;
 const USER = config.USER_ROLES.USER;
 const ObjectId = require('mongoose').Types.ObjectId;
+const {JWT_SECRET, JWT_EXPIRY } = require('../configuration');
 
 signToken = user => {
   return JWT.sign({
     iss: 'JunC',
     sub: user.id,
     iat: new Date().getTime(),
-    exp: new Date().setDate(new Date().getDate() + 1)
-  }, config.JWT_SECRET);
+    exp: new Date().setDate(new Date().getDate() + JWT_EXPIRY)
+  }, JWT_SECRET);
 }
 
 module.exports = {
