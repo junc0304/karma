@@ -1,10 +1,56 @@
-const mongoose = require('mongoose');
-const ObjectId = mongoose.Types.ObjectId;
+const HttpExceptionHandler = require('../classes/HttpResponseException/httpResponseException');
 
-const Board = require('../models/board');
-const Comment = require('../models/comment');
-const { BOARD_TYPE, USER_ROLES } = require('../configuration')
+class CommentController {
+  constructor(postDataHandler) {
+    this.postDataHandler = postDataHandler;
+  }
 
+  getComment({postId, commentId}) {
+    var result;
+    try {
+      result = this.postDataHandler.getComment(postId, commentId);
+    } catch (err) {
+      throw new HttpExceptionHandler(400, err);
+    }
+    return result;
+  }
+
+  createComment({postId, comment}) {
+    var result, postId;
+    try {
+      postId = commentItem.postId;
+      delete commentItem.postId;
+      result = this.postDataHandler.createComment(postId, comment);
+    } catch(err) {
+      throw new HttpExceptionHandler(400, err);
+    }
+    return result;
+  }
+
+  updateComment(userId, {commentId, postId, updates}) {
+    var result;
+    try {
+      result = this.postDataHandler.updateComment(userId, postId, commentId, updates);
+    } catch(err) {
+      throw new HttpExceptionHandler(400, err);
+    }
+    return result;
+  }
+
+  deleteComment(userId, {commentId, postId} ) {
+    var result;
+    try {
+      result = postDataHandler.deleteComment(userId, postId, commentId);
+    } catch(err) {
+      throw new HttpExceptionHandler(400, err);
+    }
+    return result;
+  }
+}
+
+module.exports = CommentController;
+
+ /**
 ValidateBoard = async req => {
     const { btype, bid } = req.params;
     const boardTypeValid = BOARD_TYPE.includes(btype);
@@ -259,3 +305,4 @@ module.exports = {
                     commnets: allComments });
     }
 }
+ */
