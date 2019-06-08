@@ -2,14 +2,24 @@ const Post = require('../../models/post');
 const Comment = require('../../models/comment');
 
 class PostDataHandler {
-  constructor(){
+  constructor() {
   }
 
   //post
+  getPosts(condition) {
+    var result;
+    try {
+      result = await Post.find({...condition});
+    } catch (err) {
+      throw new Error(err);
+    }
+    return result;
+  }
+
   getPost(postId) {
     var result;
     try {
-      result = await Post.findOne({_id: postId});
+      result = await Post.findOne({ _id: postId });
     } catch (err) {
       throw new Error(err);
     }
@@ -19,9 +29,10 @@ class PostDataHandler {
   createPost(postItem) {
     var result, newPost;
     try {
-      newPost = new Post({...postItem});
-      result = await newPost.save();
-    } catch(err) {
+      newPost = new Post({ ...postItem });
+      await newPost.save();
+      result = newPost;
+    } catch (err) {
       throw new HttpExceptionHandler(400, err);
     }
     return result;
@@ -29,11 +40,11 @@ class PostDataHandler {
 
   updatePost(userId, postId, change) {
     var result;
-    try{
+    try {
       result = await Post.findOneAndUpdate(
-        { authorId: userId, postId }, 
+        { authorId: userId, postId },
         { $set: { ...change } });
-    } catch(err) {
+    } catch (err) {
       throw new HttpExceptionHandler(400, err);
     }
     return result;
@@ -43,7 +54,7 @@ class PostDataHandler {
     var result;
     try {
       result = await Post.findOneAndDelete({ authorId: userId, _id: postId });
-    } catch(err) {
+    } catch (err) {
       throw new HttpExceptionHandler(400, err);
     }
     return result;
@@ -65,9 +76,9 @@ class PostDataHandler {
     var result, postFound;
     try {
       postFound = await Post.findById(postId)
-      postFound.comment.push( new Comment({...commentItem}));
+      postFound.comment.push(new Comment({ ...commentItem }));
       result = await postFound.save();
-    } catch(err) {
+    } catch (err) {
       throw new HttpExceptionHandler(400, err);
     }
     return result;
@@ -75,11 +86,11 @@ class PostDataHandler {
 
   updateComment(userId, postId, commentId, change) {
     var result;
-    try{
-      result =  await Post.findOneAndUpdate(
+    try {
+      result = await Post.findOneAndUpdate(
         { _id: postId, "comments.id": commentId, "comment.authorId": userId },
         { $set: { "comments.$": { ...change } } });
-    } catch(err) {
+    } catch (err) {
       throw new HttpExceptionHandler(400, err);
     }
     return result;
@@ -88,8 +99,8 @@ class PostDataHandler {
   deleteComment(userId, postId, commentId) {
     var result, postFound;
     try {
-      postFound = await Post.findOne({_id: postId});
-      postFound.comments.pull({_id: commentId, authorId: userId});
+      postFound = await Post.findOne({ _id: postId });
+      postFound.comments.pull({ _id: commentId, authorId: userId });
       result = await postFound.save();
     } catch (err) {
       throw new HttpExceptionHandler(400, err);

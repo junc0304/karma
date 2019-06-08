@@ -4,11 +4,21 @@ const passportJWT = passport.authenticate('jwt', { session: false });
 const passport_config = require('../passport');
 const HttpResponseException = require('../classes/HttpResponseException/httpResponseException');
 
-router.route('/')
+router.route('/:type')
   .get(passportJWT, (req, res, next) => {
     var postController = req.container.resolve('postController');
     try {
-      res.send(postController.getPost(req.body.post));
+      res.send(postController.getAllByType(req.params.type));
+    } catch (err) {
+      throw new HttpResponseException(400, err);
+    }
+  });
+
+router.route('/get')
+  .get(passportJWT, (req, res, next) => {
+    var postController = req.container.resolve('postController');
+    try {
+      res.send(postController.getAllPosts(req.body.post));
     } catch (err) {
       throw new HttpResponseException(400, err);
     }

@@ -1,5 +1,6 @@
 const express = require('express');
 const bodyParser = require('body-parser');
+const cookieParser = require('cookie-parser');
 const cors = require('cors');
 const app = express();
 
@@ -14,6 +15,7 @@ mongoose.Promise = global.Promise;
 mongoose.connect(DATABASE_URL, { useNewUrlParser: true });
 
 app.use(cors());
+app.use(cookieParser());
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
 app.use((req, res, next) => {

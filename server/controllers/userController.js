@@ -5,10 +5,26 @@ class UserController {
     this.userDataHandler = userDataHandler;
   }
 
-  getUser({ userId }) {
-    var result;
+  getUsers() {
+    var result, data;
     try {
-      result = this.userDataHandler.getUser(userId)
+      data = this.userDataHandler.getUsers();
+      result = {
+        user: [...data]
+      }
+    } catch (err) {
+      throw new HttpExceptionHandler(400, err);
+    }
+    return result;
+  }
+
+  getUser({ userId }) {
+    var result, data;
+    try {
+      data = this.userDataHandler.getUser(userId);
+      result = {
+        user: [...data]
+      }
     } catch (err) {
       throw new HttpExceptionHandler(400, err);
     }
@@ -26,9 +42,13 @@ class UserController {
   }
 
   updateUser(userId, { updates }) {
-    var result;
+    var result, data;
     try {
-      result = this.userDataHandler.updateUser(userId, updates)
+      this.userDataHandler.updateUser(userId, updates);
+      data = this.userDataHandler.getUser(userId);
+      result = {
+        user: data
+      }
     } catch (err) {
       throw new HttpExceptionHandler(400, err);
     }
@@ -36,12 +56,16 @@ class UserController {
   }
 
   deleteUser({ _id }, { userId }) {
-    var result;
+    var result, data;
     try {
       if (!userId === _id) {
         throw new HttpExceptionHandler(400, 'invalid request');
       } else {
-        result = this.userDataHandler.deleteUser(userId);
+        data = this.userDataHandler.getUser(userId);
+        this.userDataHandler.deleteUser(userId);
+        result = {
+          user: data
+        }
       }
     } catch (err) {
       throw new HttpExceptionHandler(400, err);

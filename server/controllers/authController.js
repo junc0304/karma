@@ -16,27 +16,32 @@ class AuthController {
     this.userDataHandler = userDataHandler;
   }
 
-  signUp(signUpItem) {
-    var result;
+  signup(signupItem) {
+    var result, newUser;
     try {
-      if (this.userDataHandler.getUser(signupItem.email)) {
-        throw new Error();
+      if (this.userDataHandler.getUserByEmail(signupItem.email)) {
+        throw new Error('the email already exists');
       }
-      result = this.userDataHandler.createUser(signUpItem);
+      newUser = this.userDataHandler.createUser(signupItem);
+      result = signToken(newUser);
     } catch (err) {
       throw new HttpExceptionHandler(400, err);
     }
     return result;
   }
 
-  signIn(authItem) {
+  signin(user) {
     var result;
     try {
-      result = signToken(authItem);
+      result = signToken(user);
     } catch (err) {
       throw new HttpExceptionHandler(400, err);
     }
     return result;
+  }
+
+  signout() {
+    
   }
 }
 

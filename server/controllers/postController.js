@@ -5,41 +5,73 @@ class PostController {
     this.postDataHandler = postDataHandler;
   }
 
-  getPost({postId}) {
-    var result;
+  getAllByType({ type }) {
+    var result, data;
     try {
-      result = this.postDataHandler.getPost(postId);
+      data = this.postDataHandler.getPosts({ type: type });
+      result = {
+        type: type,
+        data: data,
+      }
     } catch (err) {
       throw new HttpExceptionHandler(400, err);
     }
     return result;
   }
 
-  createPost({post}) {
-    var result;
+  getPost({ postId }) {
+    var result, data;
     try {
-      result = this.postDataHandler.createPost(post);
-    } catch(err) {
+      data = this.postDataHandler.getPost(postId);
+      result = {
+        type: data.type,
+        data: data,
+      }
+    } catch (err) {
+      throw new HttpExceptionHandler(400, err);
+    }
+    return result;
+  }
+
+  createPost({ post }) {
+    var result, data;
+    try {
+      data = this.postDataHandler.createPost(post);
+      result= {
+        type: data.type,
+        data: data
+      }
+    } catch (err) {
       throw new HttpExceptionHandler(400, err);
     }
     return result;
   }
 
   updatePost(userId, { postId, updates }) {
-    var result;
-    try{
-      result = this.postDataHandler.updatePost(userId, postId, updates);
-    } catch(err) {
+    var result, data;
+    try {
+      this.postDataHandler.updatePost(userId, postId, updates);
+      data = this.postDataHandler.getPost(postId);
+      result = {
+        type: data.type,
+        data: data
+      }
+    } catch (err) {
       throw new HttpExceptionHandler(400, err);
     }
     return result;
   }
 
   deletePost(userId, { postId }) {
-    var result;
+    var result, data;
     try {
-      result = PostDataAdapter.deleteProfile(userId, postId );
-    } catch(err) {
+      data = this.postDataHandler.getPost(postId);
+      this.postDataHandler.deletePost(userId, postId);
+      result = {
+        type: data.type,
+        data: data
+      }
+    } catch (err) {
       throw new HttpExceptionHandler(400, err);
     }
     return result;

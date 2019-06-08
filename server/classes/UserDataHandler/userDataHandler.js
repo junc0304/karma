@@ -1,9 +1,10 @@
-const User = require('../models/User');
+const User = require('../../models/User');
 
 class UserDataHandler {
-  constructor() {
+  constructor(){
   }
-  getUser(userId) {
+
+  getUserById({userId}) {
     var result;
     try {
       result = await User.findById(userId);
@@ -13,22 +14,34 @@ class UserDataHandler {
     return result;
   }
 
-  createUser(userItem) {
+  getUserByEmail(email) {
     var result;
     try {
-      result = await new User({ ...userItem }).save();
+      result = await User.findOne({email});
     } catch (err) {
       throw new Error(err);
     }
     return result;
   }
 
-  updateUser(userId, updates) {
-    var result;
+  createUser(UserItem) {
+    var newUser; //result, 
     try {
-      result = await User.findByIdAndUpdate(userId, { $set: { ...updates } });
-    } catch (err) {
-      throw new Error(err);
+      newUser = new User({...UserItem});
+      await newUser.save();
+      result = newUser;
+    } catch(err) {
+      throw new HttpExceptionHandler(400, err);
+    }
+    return result;
+  }
+
+  updateUser(userId, change) {
+    var result;
+    try{
+      result = await User.findByIdAndUpdate(userId, {$set: {...change}});
+    } catch(err) {
+      throw new HttpExceptionHandler(400, err);
     }
     return result;
   }
@@ -37,8 +50,8 @@ class UserDataHandler {
     var result;
     try {
       result = await User.findByIdAndDelete(userId);
-    } catch (err) {
-      throw new Error(err);
+    } catch(err) {
+      throw new HttpExceptionHandler(400, err);
     }
     return result;
   }

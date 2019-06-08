@@ -10,7 +10,7 @@ const commentSchema = new Schema({
     updated:  { type: Date },
 
     index:    { type: Number, required: true },
-    board_id: { type: ObjectId, required: true},
+    post_id: { type: ObjectId, required: true},
 });
 
 module.exports = commentSchema;

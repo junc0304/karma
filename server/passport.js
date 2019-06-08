@@ -1,20 +1,29 @@
 const passport = require('passport');
 const JwtStrategy = require('passport-jwt').Strategy;
-const { ExtractJwt } = require('passport-jwt');
 const LocalStrategy = require('passport-local').Strategy;
 
-const Config = require('./configuration/index');
+const {JWT_SECRET, COOKIE_TOKEN } = require('./configuration/index');
 const User = require('./models/user');
 
-passport.use('jwt',new JwtStrategy({
-  jwtFromRequest: ExtractJwt.fromHeader('authorization'),
-  secretOrKey: Config.JWT_SECRET
-}, async (payload, done) => {
+const cookieExtractor = req => {
+  let token = null;
+  if (req && req.cookies) {
+    token = req.cookies[COOKIE_TOKEN];
+  }
+  return token;
+}
+
+passport.use('jwt', new JwtStrategy({
+  jwtFromRequest: cookieExtractor,
+  secretOrKey: JWT_SECRET,
+  passReqToCallback: true
+}, async (req, payload, done) => {
   try {
     const user = await User.findById(payload.sub);
     if (!user) {
       return done(null, false);
     }
+    req.user = user;
     done(null, user);
   }
   catch (error) {
@@ -22,7 +31,7 @@ passport.use('jwt',new JwtStrategy({
   }
 }));
 
-passport.use('local',new LocalStrategy({
+passport.use('local', new LocalStrategy({
   usernameField: 'email'
 }, async (email, password, done) => {
   try {

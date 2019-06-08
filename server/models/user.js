@@ -1,21 +1,22 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 const bcrypt = require('bcryptjs');
-const {USER_ROLES} = require('../configuration');
+const { ...USER_ROLES } = require('../configuration');
+const { ADMIN, USER, OWNER } = USER_ROLES;
 
 const userSchema = new Schema({
   name:       { type: String },
   email:      { type: String, lowercase: true },
   password:   { type: String, select: false },
   depot_name: { type: String },
-  address:    {
+  address: {
     address1:   { type: String },
     address2:   { type: String },
     city:       { type: String },
     province:   { type: String },
     postal_code:{ type: String }
   },
-  role:       { type: String, enum: USER_ROLES },
+  role:       { type: String, enum: [ADMIN, USER, OWNER], default: USER },
   notify:     { type: Boolean, default: false },
   created:    { type: Date, default: Date.now() },
   updated:    { type: Date },
