@@ -32,66 +32,70 @@ const TableBody = memo(({ data, currentPage }) => {
   return tableRows;
 });
 
-const PaginationComponent = memo(({ data, currentPage, setCurrentPage }) => {
-  const pageCount = data.length;
+//import from config later
+const PAGES_PER_SET = 5;
+const ITEMS_PER_PAGE = 10;
 
-  let items = [];
-  for (let i = 1; i < Math.ceil(data.length / 10); i++) {
-    items.push(
-      <Pagination.Item key={i} active={i === currentPage} onClick={setCurrentPage(i)}>
-        {i}
-      </Pagination.Item>
-    )
-  }
+const Paginator = memo(({ data }) => {
+
+  const pageCount = Math.ceil(data.length/ITEMS_PER_PAGE); //totalPage count
+  const pageSetCount = Math.ceil(pageCount/PAGES_PER_SET); //totalPageSet count
+
+  const [currentPage, setCurrentPage] = useState(1);        // currentPage
+  const [currentPageSet, setCurrentPageSet] = useState(1);   //currentPageSet
+  const [showLeftEllipsis, setShowLeftEllipsis] = useState(1);
+  const [showRightllipsis, setShowRightEllipsis] = useState(1);
+
+  const pageData = [];
+
+  useEffect(() => {
+    const fetchPages = () => {
+      let firtItem = Math.floor(currentPage/ITEMS_PER_PAGE+1)+1;
+      let lastItem = firtItem + PAGES_PER_SET -1 ;
+      for(let i = firtItem; i <=lastItem; i++) {
+        pageData.push(
+          <Pagination.Item key={i} active={i===currentPage} onClick={setCurrentPage(i)} />
+        )
+      }
+    }
+    fetchPages();
+  }, [currentPage])
+  
   return (
     <Pagination variant="light" size="sm" className="justify-content-center">
-      <Pagination.First onClick={setCurrentPage(1)} />
-      <Pagination.Prev onClick={setCurrentPage(currentPage - 1)} />
-      {items}
-      <Pagination.Next onClick={setCurrentPage(currentPage + 1)} />
-      <Pagination.Last onClick={setCurrentPage(pageCount)} />
+      <Pagination.First onClick={() => setCurrentPage(1)} />
+      <Pagination.Prev onClick={() => setCurrentPage(currentPage - 1)} />
+      <Pagination.Ellipsis onClick={() => setCurrentPageSet(currentPageSet -1)} />
+      {pageData}
+      <Pagination.Ellipsis onClick={() => setCurrentPageSet(currentPageSet +1)} />
+      <Pagination.Next onClick={() => setCurrentPage(currentPage + 1)} />
+      <Pagination.Last onClick={() => setCurrentPage(pageCount)} />
     </Pagination>
   )
 });
 
 const EventBoard = (props) => {
-  const [data, setData] = useState();
-  const [page, setPage] = useState(1);
   const itemsPerPage = 10;
-  const [currentData, setCurrentData] = useState();
-  const numOfPages = data.length;
-
+  const [currentPage, setCurrentPage] = useState(1);
+  const [currentData, setCurrentData] = useState([]);
+  const [data, setData] = useState(props.board.data);
   //data<-->page
+
   useEffect(() => {
-    setCurrentData(data.slice(
-      page * parseInt(itemsPerPage, 0),
-      (page + 1) * parseInt(itemsPerPage, 0)
+    const fetchPage =() =>  setCurrentData(data.slice(
+      currentPage * parseInt(itemsPerPage, 0),
+      (currentPage + 1) * parseInt(itemsPerPage, 0)
     ));
-  },[page, data]);
+  },[currentPage, data]);
 
   //get data
   useEffect(() => {
-    const fetchData = async () => {
+    const fetchData =  async () => {
       setData(props.getPosts(props.type));
     }
   });
 
-  useEffect(() => {
-   setTableRows(
-      Object.keys(data).map((item, index) =>
-        <tr>
-          <td key={index}>{item.index}</td>
-          <td key={index}>{item.title}</td>
-          <td key={index}>{item.authorName}</td>
-          <td key={index}>{item.createdOn}</td>
-        </tr>
-      ));
-  }, [currentData])
-
-
-  let numberOfPageSets = Math.ceil(data.length / itemsPerPageSet);
-  let setItems = data.slice(currentPageSet * parseInt(itemsPerPageSet, 0), (currentPageSet + 1) * parseInt(itemsPerPageSet, 0));
-
+  
   return (
     <Jumbotron>
       <Container>
@@ -109,22 +113,20 @@ const EventBoard = (props) => {
             data={data} />
         </Table>
 
+        <Paginator data= {data} />
+        {/* 
         <Pagination variant="light" size="md" className="justify-content-center">
           <Pagination.First />
           <Pagination.Prev />
           <Pagination.Ellipsis />
-          {setItems.map((page) =>
-            <Pagination.Item className="page-item"
-              style={{ minWidth: '26px' }}
-              onClick={() => { setPage(page) }}>
-              <a className="page-link" style={{ color: "black" }} href="#">{page + 1}</a>
-            </Pagination.Item>)}
+         
+           
           <Pagination.Ellipsis />
           <Pagination.Next />
           <Pagination.Last />
         </Pagination>
 
-        {/* <PaginationComponent data={props.board.data} /> */}
+       <PaginationComponent data={props.board.data} /> */}
       </Container>
     </Jumbotron>
   );

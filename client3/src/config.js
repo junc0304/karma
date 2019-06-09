@@ -4,3 +4,8 @@ export const BOARD_TYPE = {
     EVENT: 'EVENT',
     FREECHAT: 'FREECHAT',
 };
+
+export const BOARD_PROPERTY = {
+    ITEM_PER_PAGE: 10,
+    PAGINATION_PER_PAGE: 5,
+}
