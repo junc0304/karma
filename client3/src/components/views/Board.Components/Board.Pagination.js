@@ -1,15 +1,30 @@
 import React, { memo, useEffect, useState } from 'react';
 import { Pagination } from 'react-bootstrap';
 
-const PaginationComponent = memo(
-  ({  dataSize, pageSize, paginationSize, currentPage = 1, setCurrentPage }) => {
+const BoardPagination = memo(
+  ({ dataSize, pageSize, paginationSize, currentPage, setCurrentPage }) => {
     
     const [pager, setPager] = useState([]);
     const [currentPagers, setCurrentPagers] = useState(1);
-    const lastPage = Math.ceil(dataSize / pageSize);
-    const lastPager = Math.ceil(lastPage / paginationSize);
+    const lastPage = Math.max( Math.ceil(dataSize / pageSize), 1);
+    var lastPager = Math.max( Math.ceil(dataSize / (pageSize * paginationSize)), 1);
 
-    console.log( paginationSize, dataSize , currentPage );
+    useEffect(() => {
+      const pushPagers = () => {
+        let pagerItems = [];
+        let firstItem = Math.ceil((currentPagers - 1) * paginationSize + 1);
+        let lastItem = Math.min( lastPage, firstItem + paginationSize - 1); 
+        for (let i = firstItem; i <= lastItem ; i++) {
+          pagerItems.push(
+            <Pagination.Item 
+              key={i} 
+              onClick={() => { setCurrentPage(i) }}>{i}</Pagination.Item>);
+        }
+        setPager(pagerItems);
+      }
+      pushPagers();
+    }, [lastPage, currentPagers, setCurrentPage, paginationSize]);
+
     const toNextPagers = () => {
       setCurrentPage((currentPagers) * paginationSize + 1);
       setCurrentPagers(currentPagers + 1);
@@ -40,24 +55,9 @@ const PaginationComponent = memo(
       setCurrentPagers( Math.ceil(lastPage / paginationSize));
     }
 
-    useEffect(() => {
-      const pushPagers = () => {
-        let pagerItems = [];
-        let firstItem = Math.ceil((currentPagers - 1) * paginationSize + 1);
-        let lastItem = Math.min( lastPage, firstItem + paginationSize - 1); 
-        for (let i = firstItem; i <= lastItem ; i++) {
-          pagerItems.push(
-            <Pagination.Item 
-              key={i} 
-              onClick={() => { setCurrentPage(i) }}>{i}</Pagination.Item>);
-        }
-        setPager(pagerItems);
-      }
-      pushPagers();
-    }, [currentPagers, dataSize, setCurrentPage]);
     return (
-      <Pagination variant="light" size="md" className="justify-content-center">
-        <Pagination.First 
+      <Pagination size="md" className="justify-content-center">
+        <Pagination.First
           disabled={currentPage === 1} 
           onClick={() => { setCurrentPage(1); setCurrentPagers(1) }} />
         <Pagination.Prev 
@@ -80,4 +80,4 @@ const PaginationComponent = memo(
     );
   });
 
-export default PaginationComponent;
+export default BoardPagination;

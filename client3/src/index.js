@@ -10,14 +10,18 @@ import axios from 'axios';
 
 //page
 import App from './components/App';
-import Home from './components/views/about/Home';
-import History from './components/views/about/History';
-import Summary from './components/views/about/Summary';
-import HowToJoin from './components/views/member/HowToJoin';
-import MemberList from './components/views/member/MemberList';
-import Meeting from './components/views/boards/Meeting';
-import Event from './components/views/boards/Event';
-import Dicusssion from './components/views/boards/Discussion';
+import Home from './components/views/Home';
+import History from './components/views/History';
+import Summary from './components/views/Summary';
+import Membership from './components/views/Membership';
+import MemberList from './components/views/MemberList';
+import Meeting from './components/views/Meeting';
+import Event from './components/views/Event';
+import Discussion from './components/views/Discussion';
+import Notice from './components/views/Notice';
+import SignIn from './components/views/Signin';
+import SignUp from './components/views/Signup';
+
 import reducers from './reducers';
 
 axios.defaults.withCredentials = true;
@@ -30,11 +34,14 @@ ReactDOM.render(
         <Route exact path="/home" component={Home} />
         <Route exact path="/history" component={History} />
         <Route exact path="/summary" component={Summary} />
-        <Route exact path="/howtojoin" component={HowToJoin} />
+        <Route exact path="/howtojoin" component={Membership} />
         <Route exact path="/memberlist" component={MemberList} />
         <Route exact path="/meeting" component={Meeting} />
         <Route exact path="/event" component={Event} />
-        <Route exact path="/discussion" component={Dicusssion} />
+        <Route exact path="/notice" component={Notice} />
+        <Route exact path="/Discussion" component={Discussion} />
+        <Route exact path="/signin" component={SignIn} />
+        <Route exact path="/signup" component={SignUp} />
       </App>
     </BrowserRouter>
   </Provider>

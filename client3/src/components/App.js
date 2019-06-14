@@ -1,17 +1,17 @@
 import React, { useEffect } from 'react';
-import Header from './layout/header';
-import Footer from './layout/footer';
+import { Container } from 'react-bootstrap';
+import Header from './layout/Header';
+import Footer from './layout/Footer';
 import { connect } from 'react-redux';
 import * as actions from '../actions';
 
 const App = (props) => {
-  useEffect(() => {
-    //
-  })
   return (
-    <div className="App" style={{ minHeight: window.innerHeight }}>
+    <div className="App" style={{ minHeight: window.innerHeight}}>
       <Header />
-      <div style={{marginTop:"56px"}}>{props.children}</div>
+      <Container style={{padding:"25px 25px"}}>
+        {props.children}
+      </Container>
       <Footer />
     </div>
   );

@@ -1,0 +1,25 @@
+
+
+@media all and (max-width: 479px) { 
+  .d-flex .col1 {
+      display:none;
+      width:0;
+      height:0;
+      opacity:0;
+      visibility: collapse;       
+  }
+  .d-flex  td.col2 {
+      font-size: 15px;
+  }
+  .d-flex  td.col3 {
+      font-size: 12px;
+  }
+  .d-flex .col4 {
+      display:none;
+      width:0;
+      height:0;
+      opacity:0;
+      visibility: collapse;    
+  }
+}
+  

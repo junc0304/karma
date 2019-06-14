@@ -1,34 +1,27 @@
 import axios from 'axios';
 import {
-  AUTH_SIGN_UP,
-  AUTH_SIGN_OUT,
-  AUTH_SIGN_IN,
-  AUTH_ERROR,
+  AUTH_SIGN_UP, AUTH_SIGN_OUT, AUTH_SIGN_IN, AUTH_ERROR,
 
-  BOARD_GET_MEETING, 
-  BOARD_GET_EVENT, 
-  BOARD_GET_NOTICE, 
-  BOARD_GET_FREECHAT,
-  BOARD_POST_DATA, 
-  BOARD_UPDATE_DATA, 
-  BOARD_DELETE_DATA,
-  BOARD_ERROR,
+  BOARD_GET_MEETING, BOARD_GET_EVENT, BOARD_GET_NOTICE, BOARD_GET_DISCUSSION, 
+  BOARD_POST_DATA, BOARD_UPDATE_DATA, BOARD_DELETE_DATA, BOARD_ERROR,
 
-} from './types';
-
+  MEMBER_ERROR, MEMBER_GET_LIST, MEMBER_UPDATE, MEMBER_DELETE } from './types';
 import { BOARD_TYPE } from '../config';
-const { MEETING, NOTICE, EVENT, FREECHAT } = BOARD_TYPE;
+
+const { MEETING, NOTICE, EVENT, DISCUSSION } = BOARD_TYPE;
 
 const BOARD_GET_TYPE = (type) => {
-  switch(type) {
-    case MEETING :
+  switch (type) {
+    case MEETING:
       return BOARD_GET_MEETING;
     case EVENT:
       return BOARD_GET_EVENT;
     case NOTICE:
       return BOARD_GET_NOTICE;
-    case FREECHAT:
-      return BOARD_GET_FREECHAT;
+    case DISCUSSION:
+      return BOARD_GET_DISCUSSION;
+    default:
+      return BOARD_ERROR;
   }
 };
 
@@ -74,9 +67,10 @@ export const signOut = () => {
 }
 
 export const getPosts = (type) => {
+  console.log("getPosts", "type:",BOARD_GET_TYPE(type), type);
   return async dispatch => {
     try {
-      const res = await axios.get(`http://localhost:4000/board/${type}`);
+      const res = await axios.get(`http://localhost:4000/boards/${type}`);
       dispatch({
         type: BOARD_GET_TYPE(type),
         payload: res.data
@@ -133,6 +127,63 @@ export const deletePost = (data) => {
       dispatch({
         type: BOARD_ERROR,
         payload: err
+      });
+    }
+  }
+}
+
+
+export const getMembers = () => {
+  
+  return async dispatch => {
+    try {
+      let res = await axios.get(`http://localhost:4000/users/`);
+      console.log(res)
+      dispatch({
+        
+        type: MEMBER_GET_LIST,
+        payload: res.data
+      });
+    } catch (err) {
+      dispatch({
+        type: MEMBER_ERROR,
+        payload: err.user
+      });
+    }
+  }
+}
+
+export const updateMembers = (data) => {
+
+  return async dispatch => {
+    try {
+      let res = await axios.post(`http://localhost:4000/users/update`, data);
+      dispatch({
+        type: MEMBER_UPDATE,
+        payload: res.data
+      });
+    } catch (err) {
+      dispatch({
+        type: MEMBER_ERROR,
+        payload: err.user
+      });
+    }
+  }
+}
+
+export const deleteMembers = (data) => {
+
+  return async dispatch => {
+    try {
+      let res = await axios.post(`http://localhost:4000/users/delete`, data);
+      dispatch({
+        type: MEMBER_DELETE,
+        payload: res.data
+      });
+    } catch (err) {
+      dispatch({
+        type: MEMBER_ERROR,
+        payload: err.user
       });
     }
   }
