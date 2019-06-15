@@ -8,60 +8,48 @@ router.route('/:type')
   .get(async (req, res, next) => {
     try {
       console.log(req.params, req.body )
-      const postController = req.container.resolve('postController');
-      const result = await postController.getPostsByType(req.params.type);
+      const pageController = req.container.resolve('pageController');
+      const result = await pageController.getpagesByType(req.params.type);
       res.status(200).json(result);
     } catch (err) {
       res.status(err.status).json(err);
     }
   });
 
-router.route('/get')
-  .get(passportJWT, async (req, res, next) => {
-    try {
-      console.log(req.body);
-      const postController = req.container.resolve('postController');
-      const result = await postController.getPost(req.body);
-      res.status(200).json(result);
-    } catch (err) {
-      res.status(err.status).json(err);
-    }
-  });
-
-router.route('/create')
+router.route('/:type/create')
   .post(passportJWT, async (req, res, next) => {
     try {
-      const postController = req.container.resolve('postController');
+      const pageController = req.container.resolve('pageController');
       console.log(req.user, req.body)
 
-      const result = await postController.createPost(req.user, req.body);
+      const result = await pageController.createpage(req.user, req.body);
       console.log(result);
       res.status(200).json(result);
     } catch (err) {
       res.status(err.status).json(err);
     }
-  });
+});
 
-router.route('/update')
+router.route('/:type/update')
   .put(passportJWT, async (req, res, next) => {
     try {
-      const postController = req.container.resolve('postController');
-      const result = await postController.updatePost(req.user, req.body);
+      const pageController = req.container.resolve('pageController');
+      const result = await pageController.updatepage(req.user, req.body);
       res.status(200).json(result);
     } catch (err) {
       res.status(err.status).json(err);
     }
   });
 
-router.route('/delete')
+router.route('/:type/delete')
   .delete(passportJWT, async (req, res, next) => {
     try {
-      const postController = req.container.resolve('postController');
-      const result = await postController.deletePost(req.user, req.body);
+      const pageController = req.container.resolve('pageController');
+      const result = await pageController.deletepage(req.user, req.body);
       res.status(200).json(result);
     } catch (err) {
       res.status(err.status).json(err);
     }
-  });
+});
 
 module.exports = router;

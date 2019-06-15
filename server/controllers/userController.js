@@ -5,69 +5,88 @@ class UserController {
     this.userDataHandler = userDataHandler;
   }
 
-  getUsers() {
-    var result, data;
+  async getUsers() {
+    let result, users;
     try {
-      data = this.userDataHandler.getUsers();
-      result = {
-        user: [...data]
-      }
+      //get users
+      users = await this.userDataHandler.getUsers();
+      console.log(users)
+      result = { users: users };
     } catch (err) {
       throw new HttpExceptionHandler(400, err);
     }
     return result;
   }
 
-  getUser({ userId }) {
-    var result, data;
+  async getUserByEmailWithPassword(email) {
+    let result, user;
     try {
-      data = this.userDataHandler.getUser(userId);
-      result = {
-        user: [...data]
-      }
+      //get user with email
+      user = await this.userDataHandler.getUserByEmailWithPassword(email);
+      result = { user };
     } catch (err) {
       throw new HttpExceptionHandler(400, err);
     }
     return result;
   }
 
-  createUser({ user }) {
-    var result;
+  async getUserById(userId) {
+    let result, user;
     try {
-      result = this.userDataHandler.createUser(user)
+      //get user with id
+      user = await this.userDataHandler.getUserById(userId);
+      result = { user };
     } catch (err) {
       throw new HttpExceptionHandler(400, err);
     }
     return result;
   }
 
-  updateUser(userId, { updates }) {
-    var result, data;
+  async createUser(userItem) {
+    let result, user;
     try {
-      this.userDataHandler.updateUser(userId, updates);
-      data = this.userDataHandler.getUser(userId);
-      result = {
-        user: data
-      }
+      //create new user
+      await this.userDataHandler.createUser(userItem);
+      user = await this.userDataHandler.getUserByEmail(userItem.email);
+      result = { user };
     } catch (err) {
       throw new HttpExceptionHandler(400, err);
     }
     return result;
   }
 
-  deleteUser({ _id }, { userId }) {
-    var result, data;
+  async updateUser(user, { updates }) {
+    let result, userData;
     try {
-      if (!userId === _id) {
-        throw new HttpExceptionHandler(400, 'invalid request');
-      } else {
-        data = this.userDataHandler.getUser(userId);
-        this.userDataHandler.deleteUser(userId);
-        result = {
-          user: data
-        }
+      //verify user
+      const { userId, role } = user;
+      if (!userId === _id && !role === 'admin') {
+        throw "invalid request";
       }
-    } catch (err) {
+      //update user and return updated user
+      await this.userDataHandler.updateUser(userId, updates);
+      userData = await this.userDataHandler.getUser(userId);
+      result = { user: userData };
+    }
+    catch (err) {
+      throw new HttpExceptionHandler(400, err);
+    }
+    return result;
+  }
+
+  async deleteUser(user, { userId }) {
+    let result;
+    try {
+      //verify user
+      const { userId, role } = user;
+      if (!userId === _id && !role === 'admin') {
+        throw "invalid request";
+      }
+      //delete user and return deleted user
+      await this.userDataHandler.deleteUser(userId);
+      result = { user };
+    }
+    catch (err) {
       throw new HttpExceptionHandler(400, err);
     }
     return result;

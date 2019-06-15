@@ -1,26 +1,24 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 const bcrypt = require('bcryptjs');
-const { ...USER_ROLES } = require('../configuration');
+const { USER_ROLES } = require('../configuration');
 const { ADMIN, USER, OWNER } = USER_ROLES;
 
 const userSchema = new Schema({
   name:       { type: String },
   email:      { type: String, lowercase: true },
   password:   { type: String, select: false },
-  depot_name: { type: String },
-  address: {
-    address1:   { type: String },
-    address2:   { type: String },
-    city:       { type: String },
-    province:   { type: String },
-    postal_code:{ type: String }
-  },
+  depotName:  { type: String },
+  address1:   { type: String },
+  unit:       { type: String },
+  city:       { type: String },
+  province:   { type: String },
+  postalCode: { type: String },
   role:       { type: String, enum: [ADMIN, USER, OWNER], default: USER },
   notify:     { type: Boolean, default: false },
-  created:    { type: Date, default: Date.now() },
+  created:    { type: Date, default: Date.now()},
   updated:    { type: Date },
-  description:{ type: String },
+  comment:{ type: String },
 });
 
 userSchema.pre('save', async function (next) {
@@ -55,6 +53,16 @@ userSchema.pre('updateOne', async function (next) {
 userSchema.methods.isValidPassword = async function (newPassword) {
   try {
     return await bcrypt.compare(newPassword, this.password);
+  }
+  catch (error) {
+    return new Error(error);
+  }
+}
+
+userSchema.methods.hidePassword = async function (next) {
+  try {
+    this.password = null;
+    next();
   }
   catch (error) {
     return new Error(error);

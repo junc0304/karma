@@ -1,7 +1,7 @@
 class HttpResponseException {
-  constructor(state, details) {
-    this.state = state;
-    this.details = details;
+  constructor(status, message) {
+    this.status = status;
+    this.message = message;
   }
 }
 

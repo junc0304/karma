@@ -1,12 +1,12 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 const ObjectId = mongoose.ObjectId;
-const config = require('../configuration');
+const Config = require('../configuration');
 const commentSchema = require('./comment');
 
 const postSchema = new Schema({
     postId:       { type: ObjectId},
-    type:         { type: String, enum: config.BOARD_TYPE, required: true },
+    type:         { type: String, enum: Config.BOARD_TYPE, required: true },
     index:        { type: Number, required: true },
     title:        { type: String, required: true },
     contents:     { type: String },

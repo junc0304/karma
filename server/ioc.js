@@ -1,10 +1,10 @@
 const {createContainer, asClass, asFunction, InjectionMode} = require('awilix');
 
-const authController = require('./controllers/AuthController.js');
-const postController = require('./controllers/PostController.js');
-const postDataHandler = require('./classes/PostDataHandler/postDataHandler.js/index.js');
+const authController = require('./controllers/authController.js');
+const postController = require('./controllers/postController.js');
+const postDataHandler = require('./classes/PostDataHandler/postDataHandler.js');
 
-const userController = require('./controllers/UserController.js');
+const userController = require('./controllers/userController.js');
 const userDataHandler = require('./classes/UserDataHandler/UserDataHandler.js');
 
 const commentController = require('./controllers/commentController.js');

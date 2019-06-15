@@ -2,7 +2,7 @@ const passport = require('passport');
 const JwtStrategy = require('passport-jwt').Strategy;
 const LocalStrategy = require('passport-local').Strategy;
 
-const {JWT_SECRET, COOKIE_TOKEN } = require('./configuration/index');
+const { JWT_SECRET, COOKIE_TOKEN } = require('./configuration/index');
 const User = require('./models/user');
 
 const cookieExtractor = req => {
@@ -35,7 +35,7 @@ passport.use('local', new LocalStrategy({
   usernameField: 'email'
 }, async (email, password, done) => {
   try {
-    const user = await User.findOne({ email }).select("+password");
+    let user = await User.findOne({ email }).select("+password");
     if (!user) {
       return done(null, false);
     }
@@ -43,6 +43,7 @@ passport.use('local', new LocalStrategy({
     if (!isMatch) {
       return done(null, false);
     }
+    user.hidePassword();
     done(null, user);
   }
   catch (error) {

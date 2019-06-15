@@ -1,5 +1,4 @@
 const router = require('express-promise-router')();
-
 const passport = require('passport');
 const passportJWT = passport.authenticate('jwt', { session: false });
 const passportLocal = passport.authenticate('local', { session: false });
@@ -11,32 +10,36 @@ const HttpResponseException = require('../classes/HttpResponseException/httpResp
 const { validateBody, schemas } = require('../helpers/validateInput');
 
 router.route('/signup')
-  .post(validateBody(schemas.signin), (req, res, next) => {
-    var authController = req.container.resolve('authController');
+  .post(validateBody(schemas.signup), async (req, res, next) => {
+    const authController = req.container.resolve('authController');
     try {
-      res.cookie(COOKIE_TOKEN, authController.signUp(req.body.auth), { httpOnly: true }).send();
-    } catch (err) {
-      return new HttpResponseException(400, err);
+      let result = await authController.signup(req.body);
+      res.cookie(COOKIE_TOKEN, result.token, { httpOnly: true }).status(200).json(result);
+    }
+    catch (err) {
+      res.status(err.status).json(err);
     }
   });
 
 router.route('/signin')
-  .post(validateBody(schemas.signup), passportLocal, (req, res, next) => {
-    var authController = req.container.resolve('authController');
+  .post(validateBody(schemas.signin), passportLocal, async (req, res, next) => {
+    const authController = req.container.resolve('authController');
     try {
-      res.cookie(COOKIE_TOKEN, authController.signIn(req.user), { httpOnly: true }).send();
-    } catch (err) {
-      return new HttpResponseException(400, err);
+      let result = await authController.signin(req.user);
+      res.cookie(COOKIE_TOKEN, result.token, { httpOnly: true }).status(200).json(result);
+    }
+    catch (err) {
+      res.status(err.status).json(err);
     }
   });
 
 router.route('/signout')
-  .post(passportJWT, (req, res, next) => {
+  .post(passportJWT, async (req, res, next) => {
     try {
-      res.clearCookie(COOKIE_TOKEN).send();
+      res.clearCookie(COOKIE_TOKEN).status(200).send();
     } catch (err) {
-      return new HttpResponseException(400, err);
-    }
+      res.status(err.status).json(err);
+    }    
   });
 
 module.exports = router;

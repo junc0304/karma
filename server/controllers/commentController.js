@@ -5,10 +5,10 @@ class CommentController {
     this.postDataHandler = postDataHandler;
   }
 
-  getComment({postId, commentId}) {
+  async getComment({postId, commentId}) {
     var result;
     try {
-      result = this.postDataHandler.getComment(postId, commentId);
+      result = await this.postDataHandler.getComment(postId, commentId);
     } catch (err) {
       throw new HttpExceptionHandler(400, err);
     }

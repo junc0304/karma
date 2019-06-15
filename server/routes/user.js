@@ -5,43 +5,40 @@ const passport_config = require('../passport');
 const HttpResponseException = require('../classes/HttpResponseException/httpResponseException');
 
 router.route('/')
-  .get(passportJWT, (req, res, next) => {
+  .get( async (req, res, next) => {
     var userController = req.container.resolve('userController');
     try {
-      res.send(userController.getUser(req.body.user));
+      res.status(200).json( await userController.getUsers(req.body));
     } catch (err) {
-      throw new HttpResponseException(400, err);
+      res.status(err.status).json(err);
     }
   });
 
 router.route('/create')
-  .post(passportJWT, (req, res, next) => {
-    var userController = req.container.resolve('userController');
+  .post(passportJWT, async (req, res, next) => {
+    var userController = await req.container.resolve('userController');
     try {
-      res.send(userController.createUser(req.body.user));
+      res.status(200).json(await userController.createUser(req.body));
     } catch (err) {
-      throw new HttpResponseException(400, err);
-    }
+      res.status(err.status).json(err);    }
   });
 
 router.route('/update')
-  .put(passportJWT, (req, res, next) => {
-    var userController = req.container.resolve('userController');
+  .put(passportJWT, async (req, res, next) => {
+    var userController = await req.container.resolve('userController');
     try {
-      res.send(userController.updateUser(req.body.user));
+      res.status(200).json(await userController.updateUser(req.user, req.body));
     } catch (err) {
-      throw new HttpResponseException(400, err);
-    }
+      res.status(err.status).json(err);    }
   });
 
 router.route('/delete')
-  .put(passportJWT, (req, res, next) => {
+  .put(passportJWT, async (req, res, next) => {
     var userController = req.container.resolve('userController');
     try {
-      res.send(userController.deleteUser(req.user, req.body.user));
+      res.status(200).json(await userController.updateUser(req.user, req.body));
     } catch (err) {
-      throw new HttpResponseException(400, err);
-    }
+      res.status(err.status).json(err);    }
   });
 
 module.exports = router;

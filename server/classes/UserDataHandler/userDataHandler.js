@@ -1,57 +1,97 @@
-const User = require('../../models/User');
+const User = require('../../models/user');
 
 class UserDataHandler {
-  constructor(){
+  constructor() {
   }
 
-  getUserById({userId}) {
+  async getUsers() {
+    var result;
+    try {
+      result = await User.find({});
+      console.log(result)
+    } 
+    catch (err) {
+      throw new Error(err);
+    }
+    return result;
+  }
+
+  async getUserById(userId) {
     var result;
     try {
       result = await User.findById(userId);
-    } catch (err) {
+    } 
+    catch (err) {
       throw new Error(err);
     }
     return result;
   }
 
-  getUserByEmail(email) {
-    var result;
+  async foundEmail(email) {
+    var result, foundUser;
     try {
-      result = await User.findOne({email});
-    } catch (err) {
+      foundUser  = await User.findOne({email});
+      if (foundUser) return true;
+      return false;
+    }
+    catch (err) {
+      throw new Error(err);
+    }
+  }
+  
+  async getUserByEmailWithPassword(email) {
+    var result
+    try {
+      result =  await User.findOne({ email }).select("+password");
+    } 
+    catch (err) {
       throw new Error(err);
     }
     return result;
   }
 
-  createUser(UserItem) {
-    var newUser; //result, 
+  async getUserFromEmail(email) {
+    var result, userFound;
     try {
-      newUser = new User({...UserItem});
+      result = await User.findOne({ email });
+    } 
+    catch (err) {
+      throw new Error(err);
+    }
+    return result;
+  }
+
+  async createUser(formItem) {
+    var newUser, result;
+    try {
+      newUser = await new User({ ...formItem });
       await newUser.save();
       result = newUser;
-    } catch(err) {
-      throw new HttpExceptionHandler(400, err);
-    }
+    } 
+    catch (err) {
+      throw new Error(err);
+    } 
     return result;
   }
 
-  updateUser(userId, change) {
+  async updateUser(userId, changes) {
     var result;
-    try{
-      result = await User.findByIdAndUpdate(userId, {$set: {...change}});
-    } catch(err) {
-      throw new HttpExceptionHandler(400, err);
+    try {
+      result = await User.findByIdAndUpdate( userId, { $set: { ...changes } });
+    } 
+    catch (err) {
+      throw new Error(err);
     }
     return result;
   }
 
-  deleteUser(userId) {
+  async deleteUser(userId) {
     var result;
     try {
       result = await User.findByIdAndDelete(userId);
-    } catch(err) {
-      throw new HttpExceptionHandler(400, err);
+    } 
+    catch (err) {
+      throw new Error(err);
     }
     return result;
   }

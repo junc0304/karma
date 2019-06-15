@@ -4,106 +4,125 @@ const Comment = require('../../models/comment');
 class PostDataHandler {
   constructor() {
   }
-
   //post
-  getPosts(condition) {
+  async searchPosts(condition) {
     var result;
     try {
-      result = await Post.find({...condition});
-    } catch (err) {
+      result = await Post.find({ ...condition });
+    }
+    catch (err) {
+      throw new Error(err);
+    }
+    return result;
+  }
+  async getPostById(postId) {
+    var result;
+    try {
+      result = await Post.findById(postId);
+    }
+    catch (err) {
       throw new Error(err);
     }
     return result;
   }
 
-  getPost(postId) {
+  async getPostsByType(type) {
     var result;
     try {
-      result = await Post.findOne({ _id: postId });
-    } catch (err) {
+      result = await Post.find({ type: type });
+    }
+    catch (err) {
       throw new Error(err);
     }
     return result;
   }
 
-  createPost(postItem) {
+  async createPost(postItem) {
     var result, newPost;
     try {
-      newPost = new Post({ ...postItem });
+      console.log("createPost",postItem);
+      newPost = await new Post({ ...postItem });
+      console.log(newPost)
       await newPost.save();
-      result = newPost;
-    } catch (err) {
-      throw new HttpExceptionHandler(400, err);
+      result = newPost.id;
+    }
+    catch (err) {
+      console.log(err)
+      throw new Error(err);
     }
     return result;
   }
 
-  updatePost(userId, postId, change) {
+  async updatePost(postId, change) {
     var result;
     try {
-      result = await Post.findOneAndUpdate(
-        { authorId: userId, postId },
-        { $set: { ...change } });
-    } catch (err) {
-      throw new HttpExceptionHandler(400, err);
+      result = await Post.findByIdAndUpdate(postId, { $set: { ...change } });
+    }
+    catch (err) {
+      throw new Error(err);
     }
     return result;
   }
 
-  deletePost(userId, postId) {
+  async deletePost(postId) {
     var result;
     try {
-      result = await Post.findOneAndDelete({ authorId: userId, _id: postId });
-    } catch (err) {
-      throw new HttpExceptionHandler(400, err);
+      result = await Post.findByIdAndDelete(postId);
+    }
+    catch (err) {
+      throw new Error(err);
     }
     return result;
   }
 
   //comment
-  getComment(postId, commentId) {
+  async getComment(postId, commentId) {
     var result, postFound;
     try {
       postFound = await Post.findById(postId)
       result = await postFound.comment.id(commentId);
-    } catch (err) {
-      throw new HttpExceptionHandler(400, err);
+    }
+    catch (err) {
+      throw new Error(err);
     }
     return result;
   }
 
-  createComment(postId, commentItem) {
+  async createComment(postId, commentItem) {
     var result, postFound;
     try {
       postFound = await Post.findById(postId)
-      postFound.comment.push(new Comment({ ...commentItem }));
+      await postFound.comment.push(new Comment({ ...commentItem }));
       result = await postFound.save();
-    } catch (err) {
-      throw new HttpExceptionHandler(400, err);
+    }
+    catch (err) {
+      throw new Error(err);
     }
     return result;
   }
 
-  updateComment(userId, postId, commentId, change) {
+  async updateComment(postId, commentId, change) {
     var result;
     try {
-      result = await Post.findOneAndUpdate(
-        { _id: postId, "comments.id": commentId, "comment.authorId": userId },
+      result = await Post.findAndUpdate(
+        { _id: postId, "comments.id": commentId },
         { $set: { "comments.$": { ...change } } });
-    } catch (err) {
-      throw new HttpExceptionHandler(400, err);
+    }
+    catch (err) {
+      throw new Error(err);
     }
     return result;
   }
 
-  deleteComment(userId, postId, commentId) {
+  async deleteComment(userId, postId, commentId) {
     var result, postFound;
     try {
-      postFound = await Post.findOne({ _id: postId });
-      postFound.comments.pull({ _id: commentId, authorId: userId });
+      postFound = await Post.findById(postId);
+      await postFound.comments.pull({ _id: commentId, authorId: userId });
       result = await postFound.save();
-    } catch (err) {
-      throw new HttpExceptionHandler(400, err);
+    }
+    catch (err) {
+      throw new Error(err);
     }
     return result;
   }
