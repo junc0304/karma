@@ -1,13 +1,12 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Field, reduxForm } from 'redux-form';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
 import { Jumbotron, Form, Alert, Button } from 'react-bootstrap';
-import * as actions from '../../actions';
+import * as actions from '../actions';
 import CustomInput from './CustomInput';
 
 const SignUp = ({ signUp, errorMessage, history, handleSubmit }) => {
-
   const onSubmit = async (formData) => {
     console.log(formData);
     try{

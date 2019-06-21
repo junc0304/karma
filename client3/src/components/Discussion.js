@@ -1,7 +1,23 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
+import Board from './board/Board';
+import { BOARD_TYPE } from '../config';
+
+const Discussion = ({ board, getPosts }) => {
+
+  return(
+    <Board 
+      title="Discussion"
+      type={BOARD_TYPE.DISCUSSION} />
+  );
+}
+
+export default Discussion;
+
+
+/* import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux'
-import Board from './Board.Components/Board';
-import * as actions from '../../actions';
+import Board from './board/Board';
+import * as actions from '../actions';
 
 const Discussion = ({board, getPosts}) => {
   const [data, setData] = useState([]);
@@ -36,3 +52,4 @@ const mapStateToProps = (state) => {
   };}
 
 export default connect(mapStateToProps, actions)(Discussion);
+ */

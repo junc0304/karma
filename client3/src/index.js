@@ -10,17 +10,17 @@ import axios from 'axios';
 
 //page
 import App from './components/App';
-import Home from './components/views/Home';
-import History from './components/views/History';
-import Summary from './components/views/Summary';
-import Membership from './components/views/Membership';
-import MemberList from './components/views/MemberList';
-import Meeting from './components/views/Meeting';
-import Event from './components/views/Event';
-import Discussion from './components/views/Discussion';
-import Notice from './components/views/Notice';
-import SignIn from './components/views/Signin';
-import SignUp from './components/views/Signup';
+import Home from './components/Home';
+import History from './components/History';
+import Summary from './components/Summary';
+import Membership from './components/Membership';
+import MemberList from './components/MemberList';
+import Meeting from './components/Meeting';
+import Event from './components/Event';
+import Discussion from './components/Discussion';
+import Notice from './components/Notice';
+import SignIn from './components/Signin';
+import SignUp from './components/Signup';
 
 import reducers from './reducers';
 

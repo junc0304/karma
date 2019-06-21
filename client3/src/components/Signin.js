@@ -1,9 +1,9 @@
-import React, {useState} from 'react';
+import React from 'react';
 import { Field, reduxForm } from 'redux-form';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
 import { Jumbotron, Form, Button } from 'react-bootstrap';
-import * as actions from '../../actions';
+import * as actions from '../actions';
 import CustomInput from './CustomInput';
 
 const SignIn = ({ signIn, errorMessage, history, handleSubmit }) => {

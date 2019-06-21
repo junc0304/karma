@@ -2,9 +2,9 @@ import React, { useEffect, memo, useState } from 'react';
 import { Jumbotron, Table, Container } from 'react-bootstrap';
 import { connect } from 'react-redux'
 
-import * as actions from '../../actions';
-import Pagination from './Board.Components/Board.Pagination';
-import {MEMBER_PROPERTY} from '../../config';
+import * as actions from '../actions';
+import Pagination from './board/Board.Pagination';
+import {MEMBER_PROPERTY} from '../config';
 
 const {PAGE_SIZE, PAGINATION_SIZE} = MEMBER_PROPERTY;
 

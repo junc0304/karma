@@ -1,7 +1,7 @@
 import { AUTH_SIGN_UP, AUTH_SIGN_IN, AUTH_SIGN_OUT, AUTH_ERROR } from '../actions/types';
 
 const initialState = {
-  role: 'guest',
+  user: {},
   isAuthenticated: false,
   errorMessage: ''
 }
@@ -9,11 +9,11 @@ const initialState = {
 const authReducer = (state = initialState, action) => {
   switch (action.type) {
     case AUTH_SIGN_UP:
-      return { ...state, role: action.payload.role, isAuthenticated: true, errorMessage: '' };
+      return { ...state, user: action.payload.user, isAuthenticated: true, errorMessage: '' };
     case AUTH_SIGN_IN:
-      return { ...state, role: action.payload.role, isAuthenticated: true, errorMessage: '' };
+      return { ...state, user: action.payload.user, isAuthenticated: true, errorMessage: '' };
     case AUTH_SIGN_OUT:
-      return { ...state, role: 'guest', isAuthenticated: false, errorMessage: '' };
+      return { ...state, user: {} , isAuthenticated: false, errorMessage: '' };
     case AUTH_ERROR:
       return { ...state, errorMessage: action.payload };
     default:

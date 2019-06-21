@@ -1,12 +1,14 @@
 import { combineReducers } from 'redux';
 import {reducer as formReducer} from 'redux-form';
-import boardReducer from './board';
+import postReducer from './post';
 import authReducer from './auth';
 import memberReducer from './member';
+import pageReducer from './page';
 
 export default combineReducers({
     form: formReducer,
     auth: authReducer,
-    board: boardReducer,
-    member: memberReducer
+    post: postReducer,
+    member: memberReducer,
+    page: pageReducer
 });

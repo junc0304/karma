@@ -8,7 +8,7 @@ const EditButton = memo(({setShow}) => {
         className="ml-auto" 
         variant="light" 
         onClick={()=> setShow(true)}
-        style={{position:"absolute",right:"0px", top:"0px"}}>Edit</Button>
+        style={{position:"absolute",right:"0px", bottom:"0px"}}>Edit</Button>
     </div>
     );
 });
