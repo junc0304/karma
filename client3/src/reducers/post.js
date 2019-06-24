@@ -26,7 +26,7 @@ const postReducer = (state = initialState, action) => {
     case DELETE_POST:
       return { ...state, errorMessage: '' };
     case RESET_POST:
-      return { ...state, type:'', data:'', errorMessage:''};
+      return { ...state, type:'', data:{}, errorMessage:''};
     //error action
     case POST_ERROR:
       return { ...state, errorMessage: action.payload.error };

@@ -4,7 +4,7 @@ const Comment = require('../../models/comment');
 class PostDataHandler {
   constructor() {
   }
-  //post
+
   async searchPosts(condition) {
     var result;
     try {
@@ -18,7 +18,7 @@ class PostDataHandler {
   async getPostById(postId) {
     var result;
     try {
-      result = await Post.findById(postId);
+      result = await Post.findOne({postId});
     }
     catch (err) {
       throw new Error(err);
@@ -29,7 +29,7 @@ class PostDataHandler {
   async getPostsByType(type) {
     var result;
     try {
-      result = await Post.find({ type: type });
+      result = await Post.find({ type });
     }
     catch (err) {
       throw new Error(err);
@@ -38,93 +38,32 @@ class PostDataHandler {
   }
 
   async createPost(postItem) {
-    var result, newPost;
+    var newPost;
     try {
-      console.log("createPost",postItem);
       newPost = await new Post({ ...postItem });
-      console.log(newPost)
       await newPost.save();
-      result = newPost.id;
     }
     catch (err) {
-      console.log(err)
       throw new Error(err);
     }
-    return result;
   }
 
-  async updatePost(postId, change) {
-    var result;
+  async updatePostById(postId, updates) {
     try {
-      result = await Post.findByIdAndUpdate(postId, { $set: { ...change } });
+      await Post.updateOne({ postId }, { $set: { ...updates } });
     }
     catch (err) {
       throw new Error(err);
     }
-    return result;
   }
 
   async deletePost(postId) {
-    var result;
     try {
-      result = await Post.findByIdAndDelete(postId);
+      await Post.findOne({ postId });
     }
     catch (err) {
       throw new Error(err);
     }
-    return result;
-  }
-
-  //comment
-  async getComment(postId, commentId) {
-    var result, postFound;
-    try {
-      postFound = await Post.findById(postId)
-      result = await postFound.comment.id(commentId);
-    }
-    catch (err) {
-      throw new Error(err);
-    }
-    return result;
-  }
-
-  async createComment(postId, commentItem) {
-    var result, postFound;
-    try {
-      postFound = await Post.findById(postId)
-      await postFound.comment.push(new Comment({ ...commentItem }));
-      result = await postFound.save();
-    }
-    catch (err) {
-      throw new Error(err);
-    }
-    return result;
-  }
-
-  async updateComment(postId, commentId, change) {
-    var result;
-    try {
-      result = await Post.findAndUpdate(
-        { _id: postId, "comments.id": commentId },
-        { $set: { "comments.$": { ...change } } });
-    }
-    catch (err) {
-      throw new Error(err);
-    }
-    return result;
-  }
-
-  async deleteComment(userId, postId, commentId) {
-    var result, postFound;
-    try {
-      postFound = await Post.findById(postId);
-      await postFound.comments.pull({ _id: commentId, authorId: userId });
-      result = await postFound.save();
-    }
-    catch (err) {
-      throw new Error(err);
-    }
-    return result;
   }
 }
 

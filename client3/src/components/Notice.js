@@ -1,11 +1,10 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { connect } from 'react-redux'
 import Board from './board/Board';
 import * as actions from '../actions';
 import { BOARD_TYPE } from '../config';
 
-const Notice = ({ board, getPosts }) => {
-  const [data, setData] = useState([]);
+const Notice = () => {
 
   return(
     <Board 

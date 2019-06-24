@@ -1,12 +1,13 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 const bcrypt = require('bcryptjs');
+const ObjectId = mongoose.Types.ObjectId;
 const { USER_ROLES } = require('../configuration');
-const { ADMIN, USER, OWNER } = USER_ROLES;
 
 const userSchema = new Schema({
-  name:       { type: String },
-  email:      { type: String, lowercase: true },
+  userId:     { type: ObjectId},
+  name:       { type: String, lowercase: true, required: true },
+  email:      { type: String, lowercase: true, required: true },
   password:   { type: String, select: false },
   depotName:  { type: String },
   address1:   { type: String },
@@ -14,7 +15,7 @@ const userSchema = new Schema({
   city:       { type: String },
   province:   { type: String },
   postalCode: { type: String },
-  role:       { type: String, enum: [ADMIN, USER, OWNER], default: USER },
+  role:       { type: String, enum: [USER_ROLES.ADMIN, USER_ROLES.USER, USER_ROLES.OWNER], default: USER_ROLES.USER },
   notify:     { type: Boolean, default: false },
   created:    { type: Date, default: Date.now()},
   updated:    { type: Date },
@@ -23,6 +24,7 @@ const userSchema = new Schema({
 
 userSchema.pre('save', async function (next) {
   try {
+    this.userId = this._id;
     var salt = await bcrypt.genSalt(13);
     var passwordHash = await bcrypt.hash(this.password, salt);
     this.password = passwordHash;

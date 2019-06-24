@@ -19,7 +19,7 @@ passport.use('jwt', new JwtStrategy({
   passReqToCallback: true
 }, async (req, payload, done) => {
   try {
-    const user = await User.findById(payload.sub);
+    const user = await User.findOne({userId: payload.sub});
     if (!user) {
       return done(null, false);
     }

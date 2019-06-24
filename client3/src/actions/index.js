@@ -3,11 +3,13 @@ import {
   //auth
   AUTH_SIGN_UP, AUTH_SIGN_OUT, AUTH_SIGN_IN, AUTH_ERROR,
   //board
-  GET_POST, CREATE_POST, UPDATE_POST, DELETE_POST, POST_ERROR,
+  GET_POST, CREATE_POST, UPDATE_POST, DELETE_POST, RESET_POST, POST_ERROR,
   //member
   MEMBER_ERROR, GET_MEMBER, UPDATE_MEMBER, MEMBER_DELETE,
   //page
-  GET_PAGE, CREATE_PAGE, UPDATE_PAGE, DELETE_PAGE, RESET_PAGE, PAGE_ERROR, RESET_POST
+  GET_PAGE, CREATE_PAGE, UPDATE_PAGE, DELETE_PAGE, RESET_PAGE, PAGE_ERROR,
+  //comment
+  GET_COMMENT, CREATE_COMMENT, UPDATE_COMMENT,DELETE_COMMENT,RESET_COMMENT,COMMENT_ERROR
 } from './types';
 import { PAGE_TYPE, BOARD_TYPE } from '../config';
 
@@ -66,7 +68,7 @@ const getPostType = (type) => {
     case BOARD_TYPE.DISCUSSION:
       return GET_POST.DISCUSSION;
     default: 
-      throw "action not found";
+      return POST_ERROR;
   }
 }
 
@@ -75,7 +77,7 @@ export const getPosts = (type) => {
   console.log("board GET:", type);
   return async dispatch => {
     try {
-      dispatch({
+      await dispatch({
         type: RESET_POST,
       });
       const res = await axios.post(`http://localhost:4000/post/`, {type});
@@ -93,13 +95,11 @@ export const getPosts = (type) => {
   }
 }
 
+
 export const createPost = (data) => {
   console.log("board POST:", data);
   return async dispatch => {
     try {
-      await dispatch({
-        type: RESET_POST,
-      });
       await axios.post(`http://localhost:4000/post/create`, data);
       dispatch({
         type: CREATE_POST,
@@ -212,7 +212,7 @@ const getPageType= (type)=> {
     case PAGE_TYPE.MEMBERSHIP:
       return GET_PAGE.MEMBERSHIP;
     default: 
-      throw "action not found";
+      return POST_ERROR;
   }
 }
 //page
@@ -310,3 +310,99 @@ export const deletePage = (type) => {
     }
   };
 }
+
+//comments
+export const getComments = (data) => { 
+  console.log("comment GET:", data);
+  return async dispatch => {
+    try {
+      let res = await axios.post(`http://localhost:4000/comment/`, data);
+      dispatch({
+        type: GET_COMMENT,
+        payload: res.comment
+      });
+    } 
+    catch (err) {
+      dispatch({
+        type: COMMENT_ERROR,
+        payload: err.message
+      });
+    }
+  };
+}
+
+export const createComment = (data) => { 
+  console.log("comment CREATE:", data);
+  return async dispatch => {
+    try {
+      let res = await axios.post(`http://localhost:4000/comment/create`, data);
+      dispatch({
+        type: CREATE_COMMENT,
+        payload: res.comment
+      });
+    } 
+    catch (err) {
+      dispatch({
+        type: COMMENT_ERROR,
+        payload: err.message
+      });
+    }
+  };
+}
+
+export const updateComment = (data) => { 
+  console.log("comment UPDATE:", data);
+  return async dispatch => {
+    try {
+      let res = await axios.post(`http://localhost:4000/comment/update`, data);
+      dispatch({
+        type: UPDATE_COMMENT,
+        payload: res.comment
+      });
+    } 
+    catch (err) {
+      dispatch({
+        type: COMMENT_ERROR,
+        payload: err.message
+      });
+    }
+  };
+}
+
+export const deleteComment = (data) => { 
+  console.log("comment DELETE:", data);
+  return async dispatch => {
+    try {
+      let res = await axios.post(`http://localhost:4000/comment/delete`, data);
+      dispatch({
+        type: DELETE_COMMENT,
+        payload: res.comment
+      });
+    } 
+    catch (err) {
+      dispatch({
+        type: COMMENT_ERROR,
+        payload: err.message
+      });
+    }
+  };
+}
+
+export const resetComment = () => { 
+  console.log("comment RESET");
+  return async dispatch => {
+    try {
+      dispatch({
+        type: RESET_COMMENT
+      });
+    } 
+    catch (err) {
+      dispatch({
+        type: COMMENT_ERROR,
+        payload: err.message
+      });
+    }
+  };
+}
+
+

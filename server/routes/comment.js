@@ -3,44 +3,45 @@ const passport = require('passport');
 const passportJWT = passport.authenticate('jwt', { session: false });
 const passport_config = require('../passport');
 const HttpResponseException = require('../classes/HttpResponseException/httpResponseException');
+const { validateBody, schemas } = require('../helpers/validateInput');
 
 router.route('/')
-  .get(passportJWT, (req, res, next) => {
+  .post( validateBody(schemas.getComment), passportJWT, async (req, res, next) => {
     const commentController = req.container.resolve('commentController');
     try {
-      res.status(200).json(commentController.getComment(req.body));
+      res.status(200).json(await commentController.getComments(req.body));
     } catch (err) {
-      res.status(err.status).json(err);
+      res.status(err.status).json(err.message);
     }
   });
 
 router.route('/create')
-  .post(passportJWT, (req, res, next) => {
+  .post( validateBody(schemas.createComment), passportJWT, async (req, res, next) => {
     const commentController = req.container.resolve('commentController');
     try {
-      res.status(200).json(commentController.createComment(req.user, req.body));
+      res.status(200).json(await commentController.createComment(req.user, req.body));
     } catch (err) {
-      res.status(err.status).json(err);
+      res.status(err.status).json(err.message);
     }
   });
 
 router.route('/update')
-  .put(passportJWT, (req, res, next) => {
+  .post( validateBody(schemas.updateComment), passportJWT, async (req, res, next) => {
     const commentController = req.container.resolve('commentController');
     try {
-      res.status(200).json(commentController.updateComment(req.user, req.body));
+      res.status(200).json(await commentController.updateComment(req.user, req.body));
     } catch (err) {
-      res.status(err.status).json(err);
+      res.status(err.status).json(err.message);
     }
   });
 
 router.route('/delete')
-  .delete(passportJWT, (req, res, next) => {
+  .post( validateBody(schemas.deleteComment), passportJWT, async (req, res, next) => {
     var commentController = req.container.resolve('commentController');
     try {
-      res.status(200).json(commentController.deleteComment(req.user, req.body));
+      res.status(200).json(await commentController.deleteComment(req.user, req.body));
     } catch (err) {
-      res.status(err.status).json(err);
+      res.status(err.status).json(err.message);
     }
   });
 

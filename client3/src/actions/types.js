@@ -13,7 +13,8 @@ export const GET_POST = {
   MEETING:      "GET_MEETING",
   EVENT:        "GET_EVENT",
   NOTICE:       "GET_NOTICE",
-  DISCUSSION:   "GET_DISCUSSION"
+  DISCUSSION:   "GET_DISCUSSION",
+  ERROR: "ERROR"
 };
 
 export const CREATE_POST         = "CREATE_POST";
@@ -38,3 +39,9 @@ export const DELETE_PAGE          = "DELETE_PAGE";
 export const RESET_PAGE           = "RESET_PAGE";
 export const PAGE_ERROR           = "PAGE_ERROR";
 
+export const GET_COMMENT = "GET_COMMENT";
+export const CREATE_COMMENT = "CREATE_COMMENT";
+export const UPDATE_COMMENT = "UPDATE_COMMENT";
+export const DELETE_COMMENT = "DELETE_COMMENT";
+export const RESET_COMMENT = "RESET_COMMENT";
+export const COMMENT_ERROR = "COMMENT_ERROR";

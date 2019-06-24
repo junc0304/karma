@@ -3,42 +3,56 @@ const passport = require('passport');
 const passportJWT = passport.authenticate('jwt', { session: false });
 const passport_config = require('../passport');
 const HttpResponseException = require('../classes/HttpResponseException/httpResponseException');
+const { validateBody, schemas } = require('../helpers/validateInput');
 
 router.route('/')
-  .get( async (req, res, next) => {
+  .post( async (req, res, next) => {
     var userController = req.container.resolve('userController');
     try {
-      res.status(200).json( await userController.getUsers(req.body));
+      res.status(200).json( await userController.getUsers());
+    } catch (err) {
+      res.status(err.status).json(err);
+    }
+  });
+
+router.route('/get')
+  .post( validateBody(schemas.getUser.getOne), passportJWT, async (req, res, next) => {
+    var userController = req.container.resolve('userController');
+    try {
+      res.status(200).json( await userController.getUserById(req.body));
     } catch (err) {
       res.status(err.status).json(err);
     }
   });
 
 router.route('/create')
-  .post(passportJWT, async (req, res, next) => {
-    var userController = await req.container.resolve('userController');
+  .post(validateBody(schemas.createUser), passportJWT, async (req, res, next) => {
+    var userController = req.container.resolve('userController');
     try {
-      res.status(200).json(await userController.createUser(req.body));
+      res.status(200).json( await userController.createUser(req.body));
     } catch (err) {
-      res.status(err.status).json(err);    }
+      res.status(err.status).json(err);    
+    }
   });
 
 router.route('/update')
-  .put(passportJWT, async (req, res, next) => {
-    var userController = await req.container.resolve('userController');
+  .post(validateBody(schemas.updateUser), passportJWT, async (req, res, next) => {
+    var userController = req.container.resolve('userController');
     try {
-      res.status(200).json(await userController.updateUser(req.user, req.body));
+      res.status(200).json(await userController.updateUser(req.body));
     } catch (err) {
-      res.status(err.status).json(err);    }
+      res.status(err.status).json(err);    
+    }
   });
 
 router.route('/delete')
-  .put(passportJWT, async (req, res, next) => {
+  .post(validateBody(schemas.deleteUser), passportJWT, async (req, res, next) => {
     var userController = req.container.resolve('userController');
     try {
-      res.status(200).json(await userController.updateUser(req.user, req.body));
+      res.status(200).json(await userController.deleteUser(req.body));
     } catch (err) {
-      res.status(err.status).json(err);    }
+      res.status(err.status).json(err);    
+    }
   });
 
 module.exports = router;

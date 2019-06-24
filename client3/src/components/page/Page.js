@@ -1,7 +1,6 @@
 import React, { memo, useState, useEffect } from 'react';
-import { Jumbotron, Container } from 'react-bootstrap';
-import EditButton from './Page.EditButton';
-import PageForm from './Page.Form';
+import { Jumbotron, Container, Button } from 'react-bootstrap';
+import PageForm from './Form';
 import { connect } from 'react-redux';
 import { USER_TYPE } from '../../config';
 import * as actions from '../../actions'
@@ -15,7 +14,7 @@ const Page = memo(({getPage, updatePage, createPage, type, role = "ADMIN", page:
   useEffect(() => {
     const fetchData = async () => await getPage(type);
     fetchData();
-  }, [type]);
+  }, [type, getPage]);
 
   const onSubmit = async (formData) => {
     formData.type = type;
@@ -26,12 +25,12 @@ const Page = memo(({getPage, updatePage, createPage, type, role = "ADMIN", page:
   }
 
   return (
-    <Container>
-      <Jumbotron style={{ wordWrap:"break-word" }}>
+      <Jumbotron fluid style={{ wordWrap:"break-word", padding:"15px 15px" }}>
         <h1 className="display-4">
-          {data.title} 
-          {isAdmin &&
-            <EditButton setShow={setShowForm} />}</h1>
+          { data.title } 
+          { isAdmin && 
+          <EditButton setShow={setShowForm}/> }
+        </h1>
         <hr className="my-4"/>
         <Container>
           <p className="kr">
@@ -45,8 +44,19 @@ const Page = memo(({getPage, updatePage, createPage, type, role = "ADMIN", page:
             setShow={setShowForm}
             onSubmit={onSubmit} />}
       </Jumbotron>
-    </Container>
   );
+});
+
+const EditButton = memo(({setShow}) => {
+  return(
+    <div style={{position:"relative"}}>
+      <Button 
+        className="ml-auto" 
+        variant="light" 
+        onClick={()=> setShow(true)}
+        style={{position:"absolute",right:"0px", bottom:"0px"}}>Edit</Button>
+    </div>
+    );
 });
 
 const mapStateToProps = (state) => {

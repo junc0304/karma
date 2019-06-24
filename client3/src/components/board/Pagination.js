@@ -1,7 +1,7 @@
 import React, { memo, useEffect, useState } from 'react';
 import { Pagination } from 'react-bootstrap';
 
-const BoardPagination = memo(({ dataSize, pageSize, paginationSize, currentPage, setCurrentPage }) => {
+const PaginationComponent = memo(({ dataSize, pageSize, paginationSize, currentPage, setCurrentPage }) => {
 
   const [pager, setPager] = useState([]);
   const [currentPagers, setCurrentPagers] = useState(1);
@@ -84,4 +84,4 @@ const BoardPagination = memo(({ dataSize, pageSize, paginationSize, currentPage,
   );
 });
 
-export default BoardPagination;
+export default PaginationComponent;

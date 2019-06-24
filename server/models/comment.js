@@ -3,14 +3,28 @@ const Schema = mongoose.Schema;
 const ObjectId = mongoose.Types.ObjectId;
 
 const commentSchema = new Schema({
+    commentId:{ type: ObjectId },
     authorId: { type: String, required: true },
-    contents: { type: String, required: true },
-    status:   { type: String, required: true },
-    created:  { type: Date, default: Date.now() },
+    content:  { type: String, required: true },
+    status:   { type: String },
+    created:  { type: Date, default: Date.now()},
     updated:  { type: Date },
 
     index:    { type: Number, required: true },
-    post_id: { type: ObjectId, required: true},
+    postId:   { type: ObjectId, required: true},
 });
 
-module.exports = commentSchema;
+commentSchema.pre('save', async function (next) {
+  try {
+    this.commentId = this._id;
+    this.created = Date.now();
+    next();
+  }
+  catch (error) {
+    next(error);
+  }
+});
+
+
+const page = mongoose.model('comment', commentSchema);
+module.exports = page;

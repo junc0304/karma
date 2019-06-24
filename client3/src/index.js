@@ -14,7 +14,7 @@ import Home from './components/Home';
 import History from './components/History';
 import Summary from './components/Summary';
 import Membership from './components/Membership';
-import MemberList from './components/MemberList';
+import Member from './components/Member';
 import Meeting from './components/Meeting';
 import Event from './components/Event';
 import Discussion from './components/Discussion';
@@ -35,7 +35,7 @@ ReactDOM.render(
         <Route exact path="/history" component={History} />
         <Route exact path="/summary" component={Summary} />
         <Route exact path="/howtojoin" component={Membership} />
-        <Route exact path="/memberlist" component={MemberList} />
+        <Route exact path="/member" component={Member} />
         <Route exact path="/meeting" component={Meeting} />
         <Route exact path="/event" component={Event} />
         <Route exact path="/notice" component={Notice} />

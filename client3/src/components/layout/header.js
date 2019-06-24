@@ -41,7 +41,7 @@ const MemebershipMenu = () => {
   return (
     <NavDropdown title="Members" id="member-dropdown">
       <NavDropdown.Item as={Link} to="/howtojoin">Membership</NavDropdown.Item>
-      <NavDropdown.Item as={Link} to="/memberlist">Members</NavDropdown.Item>
+      <NavDropdown.Item as={Link} to="/member">Members</NavDropdown.Item>
     </NavDropdown>
   );
 }

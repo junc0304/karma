@@ -3,53 +3,50 @@ const passport = require('passport');
 const passportJWT = passport.authenticate('jwt', { session: false });
 const passport_config = require('../passport');
 const HttpResponseException = require('../classes/HttpResponseException/httpResponseException');
-
-router.route('/:type')
-  .get(async (req, res, next) => {
+const { validateBody, schemas } = require('../helpers/validateInput');
+//validateBody(schemas.getPage), passportJWT, 
+router.route('/get')
+  .post(async (req, res, next) => {
+    const pageController = req.container.resolve('pageController');
     try {
-      console.log(req.params, req.body )
-      const pageController = req.container.resolve('pageController');
-      const result = await pageController.getpagesByType(req.params.type);
-      res.status(200).json(result);
+      console.log("router",req.body)
+      res.status(200).json(await pageController.getPageByType(req.body));
     } catch (err) {
       res.status(err.status).json(err);
     }
   });
-
-router.route('/:type/create')
-  .post(passportJWT, async (req, res, next) => {
+//validateBody(schemas.createPage), passportJWT,
+router.route('/create')
+  .post(
+    async (req, res, next) => {
+    const pageController = req.container.resolve('pageController');
     try {
-      const pageController = req.container.resolve('pageController');
-      console.log(req.user, req.body)
-
-      const result = await pageController.createpage(req.user, req.body);
-      console.log(result);
-      res.status(200).json(result);
+      res.status(200).json(await pageController.createPage(req.user, req.body));
     } catch (err) {
-      res.status(err.status).json(err);
+      res.status(err.status).json(err.message);
     }
-});
-
-router.route('/:type/update')
-  .put(passportJWT, async (req, res, next) => {
+  });
+//validateBody(schemas.updatePage), passportJWT,
+router.route('/update')
+  .post( async (req, res, next) => {
+    const pageController = req.container.resolve('pageController');
     try {
-      const pageController = req.container.resolve('pageController');
-      const result = await pageController.updatepage(req.user, req.body);
-      res.status(200).json(result);
+      console.log(req.body);
+      res.status(200).json(await pageController.updatePage(req.body));
     } catch (err) {
+      console.log(err)
       res.status(err.status).json(err);
     }
   });
 
-router.route('/:type/delete')
-  .delete(passportJWT, async (req, res, next) => {
+router.route('/delete')
+  .post(validateBody(schemas.deletePage), passportJWT, async (req, res, next) => {
+    const pageController = req.container.resolve('pageController');
     try {
-      const pageController = req.container.resolve('pageController');
-      const result = await pageController.deletepage(req.user, req.body);
-      res.status(200).json(result);
+      res.status(200).json(await pageController.deletePage(req.body));
     } catch (err) {
       res.status(err.status).json(err);
     }
-});
+  });
 
 module.exports = router;

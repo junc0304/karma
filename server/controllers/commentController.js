@@ -1,50 +1,44 @@
 const HttpExceptionHandler = require('../classes/HttpResponseException/httpResponseException');
 
 class CommentController {
-  constructor(postDataHandler) {
-    this.postDataHandler = postDataHandler;
+  constructor(commentDataHandler) {
+    this.commentDataHandler = commentDataHandler;
   }
 
-  async getComment({postId, commentId}) {
+  async getComments(body) {
     var result;
     try {
-      result = await this.postDataHandler.getComment(postId, commentId);
+      result = { 
+        comment: await this.commentDataHandler.getComments(body.postId)
+      };
     } catch (err) {
       throw new HttpExceptionHandler(400, err);
     }
     return result;
   }
 
-  createComment({postId, comment}) {
-    var result, postId;
+  async createComment(body) {
     try {
-      postId = commentItem.postId;
-      delete commentItem.postId;
-      result = this.postDataHandler.createComment(postId, comment);
-    } catch(err) {
+      await this.commentDataHandler.createComment(body.comment);
+    } catch (err) {
       throw new HttpExceptionHandler(400, err);
     }
-    return result;
   }
 
-  updateComment(userId, {commentId, postId, updates}) {
-    var result;
+  async updateComment(body) {
     try {
-      result = this.postDataHandler.updateComment(userId, postId, commentId, updates);
-    } catch(err) {
+      await this.commentDataHandler.updateComment(body.commentId, body.updates);
+    } catch (err) {
       throw new HttpExceptionHandler(400, err);
     }
-    return result;
   }
 
-  deleteComment(userId, {commentId, postId} ) {
-    var result;
+  async deleteComment(body) {
     try {
-      result = postDataHandler.deleteComment(userId, postId, commentId);
-    } catch(err) {
+      await this.commentDataHandler.deleteComment(body.commentId);
+    } catch (err) {
       throw new HttpExceptionHandler(400, err);
     }
-    return result;
   }
 }
 

@@ -16,35 +16,28 @@ class AuthController {
     this.userDataHandler = userDataHandler;
   }
 
-  async signup(formItem) {
-    let result, emailExists;
+  async signUp(body) {
+    let result, user;
     try {
-      //verify email
-      let { email } = formItem;
-      emailExists = await this.userDataHandler.foundEmail(email);
-      if (emailExists) {
-        throw 'Email already exists';
-      }
-      //create, retrieve, assign user / token 
-      await this.userDataHandler.createUser(formItem)
-      let user = await this.userDataHandler.getUserFromEmail(email);
+      await this.userDataHandler.createUser(body);
+      user = await this.userDataHandler.getUserByEmail(body.email);
       result = {
-        user: user,
+        user,
         token: signToken(user)
       };
     }
     catch (err) {
-      console.log(err);
       throw new HttpExceptionHandler(400, err);
     }
     return result;
   }
 
-  async signin(user) {
+  async signIn(user) {
     let result;
     try {
-      //return user and token
-      result = { user, token: signToken(user) };
+      result = { 
+        user: await this.userDataHandler.getUserByEmail(body.email),
+        token: signToken(user)};
     }
     catch (err) {
       throw new HttpExceptionHandler(400, err);
@@ -52,7 +45,7 @@ class AuthController {
     return result;
   }
 
-  signout() {
+  async signout() {
 
   }
 }

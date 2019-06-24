@@ -3,7 +3,7 @@ import { Jumbotron, Table, Container } from 'react-bootstrap';
 import { connect } from 'react-redux'
 
 import * as actions from '../actions';
-import Pagination from './board/Board.Pagination';
+import Pagination from './board/Pagination';
 import {MEMBER_PROPERTY} from '../config';
 
 const {PAGE_SIZE, PAGINATION_SIZE} = MEMBER_PROPERTY;
@@ -36,17 +36,10 @@ const TableBody = memo(({ pageSize, data, currentPage }) => {
 const MemberList = memo(({member, getMembers}) => {
   const [data, setData] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const [error, setError] = useState(null);
   //action => store
   useEffect(() => {
     const fetchData = async () => {
-      try {
-        member.data=[];
-        await getMembers();
-      }
-      catch(err) {
-        setError('network error.. please try again later..');
-      }
+      await getMembers();
     }
     fetchData();
   }, [getMembers]);
@@ -58,7 +51,6 @@ const MemberList = memo(({member, getMembers}) => {
   return (
     <Jumbotron>
       <Container>
-        <h6>{error}</h6>
         <h1 className="display-4">Members</h1>
         <hr className="my-3" />
         <Table variant="light">

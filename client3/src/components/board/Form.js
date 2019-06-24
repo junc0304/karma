@@ -1,13 +1,23 @@
-import React, { memo, useState } from 'react';
+import React, { memo } from 'react';
 import { Form, Button, Modal, ButtonGroup, Jumbotron } from 'react-bootstrap';
-import { reduxForm, Field } from 'redux-form';
 import { connect } from 'react-redux';
-import { compose } from 'redux';
 
 import * as actions from '../../actions';
-import CustomInput from '../CustomInput';
 
-const BoardForm = memo(({ handleSubmit, show, setShow, onSubmit }) => {
+const FormComponent = memo(({getPosts, createPost, show, setShow, type }) => {
+
+  const onClickCreate = async (event) => {
+    event.preventDefault();
+    let { title, content, password} = event.target;
+    let formData = {
+      type: type,
+      title: title.value,
+      content: content.value,
+      password: password.value
+    }
+    await createPost(formData);
+    await getPosts(type);
+  }
 
   return (
     <Modal
@@ -16,32 +26,33 @@ const BoardForm = memo(({ handleSubmit, show, setShow, onSubmit }) => {
       show={show}
       onHide={() => setShow(false)} >
 
-{/*       <Modal.Body> */}
         <Jumbotron style={{ padding: "20px", marginBottom: "0px" }} >
           <h1 className="display-4">
             Create New</h1>
           <hr className="my-6" />
-          <Form onSubmit={handleSubmit(onSubmit)} >
-            <Field
-              title="Title"
+          <Form onSubmit={onClickCreate} >
+            <Form.Label>
+              Title</Form.Label>
+            <Form.Control
               className="lead input-lg"
-              name="title"
-              component={CustomInput} />
-            <Field
-              title="Content"
+              as="input"
+              type="text"
+              name="title" />
+            <Form.Label>
+              Content</Form.Label>
+            <Form.Control
               as="textarea"
               type="textarea"
               name="content"
               rows={10}
-              component={CustomInput}
               style={{ resize: "none", whiteSpace: "preWrap" }} />
-            <Form.Group className="d-flex" >
-              <Field
-                title="Password"
-                className="ml-auto"
-                type="password"
-                name="password"
-                component={CustomInput} />
+            <Form.Group>
+            <Form.Label>
+              Password</Form.Label>              
+            <Form.Control
+              className="ml-auto"
+              type="password"
+              name="password" />
             </Form.Group>
             <hr className="my-3" />
             <FormButtons 
@@ -78,11 +89,7 @@ function mapStateToProps(state) {
     errorMessage: state.auth.errorMessage
   }
 }
-
-export default compose(
-  connect(mapStateToProps, actions),
-  reduxForm({ form: 'board' })
-)(BoardForm);
+export default connect(mapStateToProps, actions)(FormComponent);
 
 
 //export default EditForm;

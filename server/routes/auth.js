@@ -13,8 +13,8 @@ router.route('/signup')
   .post(validateBody(schemas.signup), async (req, res, next) => {
     const authController = req.container.resolve('authController');
     try {
-      let result = await authController.signup(req.body);
-      res.cookie(COOKIE_TOKEN, result.token, { httpOnly: true }).status(200).json(result);
+      let result = await authController.signUp(req.body);
+      res.status(200).cookie(COOKIE_TOKEN, result.token, { httpOnly: true }).json(result);
     }
     catch (err) {
       res.status(err.status).json(err);
@@ -25,8 +25,8 @@ router.route('/signin')
   .post(validateBody(schemas.signin), passportLocal, async (req, res, next) => {
     const authController = req.container.resolve('authController');
     try {
-      let result = await authController.signin(req.user);
-      res.cookie(COOKIE_TOKEN, result.token, { httpOnly: true }).status(200).json(result);
+      let result = await authController.signIn(req.user);
+      res.status(200).cookie(COOKIE_TOKEN, result.token, { httpOnly: true }).json(result);
     }
     catch (err) {
       res.status(err.status).json(err);
@@ -36,7 +36,7 @@ router.route('/signin')
 router.route('/signout')
   .post(passportJWT, async (req, res, next) => {
     try {
-      res.clearCookie(COOKIE_TOKEN).status(200).send();
+      res.status(200).clearCookie(COOKIE_TOKEN).send();
     } catch (err) {
       res.status(err.status).json(err);
     }    

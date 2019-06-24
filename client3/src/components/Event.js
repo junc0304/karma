@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
+import React from 'react';
 import Board from './board/Board';
 import { BOARD_TYPE } from '../config';
 
-const Event = ({ board, getPosts }) => {
+const Event = () => {
 
   return(
     <Board 

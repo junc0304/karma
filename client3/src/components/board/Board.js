@@ -1,100 +1,72 @@
 import React, { memo, useState, useEffect } from 'react';
-import { Table, Jumbotron, Container, Modal } from 'react-bootstrap';
+import { Jumbotron, ButtonGroup, Button } from 'react-bootstrap';
 import { connect } from 'react-redux'
 
-import Pagination from './Board.Pagination';
-import TableBody from './Board.TableBody';
-import EditButtonComponent from './Board.CreateButton';
-import BoardForm from './Board.Form';
-import SelectedRow from './Board.Row';
+import TableComponent from './Table';
+import PaginationComponent from './Pagination';
+import FormComponent from './Form';
 import * as actions from '../../actions';
 
-import { BOARD_PROPERTY ,USER_TYPE} from '../../config';
-
+import { BOARD_PROPERTY, USER_TYPE } from '../../config';
 const { PAGE_SIZE, PAGINATION_SIZE } = BOARD_PROPERTY;
 
-const Board = memo(({
-  getPosts, createPost, updatePost, getComments, //actions
-  post: { data },                   //store
-  title, type, role = "ADMIN" }) => {
+const Board = memo(({ getPosts, title, post, type, role = "ADMIN" }) => {
 
   const [currentPage, setCurrentPage] = useState(1);
   const [showForm, setShowForm] = useState(false);
   const isAdmin = role === USER_TYPE.ADMIN;
-  const [showRow, setShowRow] = useState(false);
-  const [row, setRow] = useState({});
+
   useEffect(() => {
     const fetchData = async () => {
-      await getPosts(type); }
+      await getPosts(type);
+    }
     fetchData();
-  }, []);
-
-  const onRowClick = async (item) => {
-    //await getComments(item);
-    setRow(item);
-    setShowRow(true);
-  }
-
-  const onSubmit = async (formData) => {
-    console.log(formData)
-    await createPost({ ...formData, type });
-    await getPosts(type);
-  }
-
-  const onSubmitEdit = async (formData) => {
-    console.log(formData)
-    await createPost({ ...formData, type });
-    await getPosts(type);
-  }
+  }, [getPosts, type]);
 
   return (
-    <Container>
-      <Jumbotron style={{ wordWrap: "break-word" }}>
+      <Jumbotron style={{ wordWrap: "break-word", padding: "15px 15px" }}>
         <h1 className="display-4">
           {title}
           {isAdmin &&
-            <EditButtonComponent
-              setShow={setShowForm} />}</h1>
+          <CreateButton
+            setShow={setShowForm} />}
+        </h1>
         <hr className="my-3" />
-        <Table variant="light">
-          <thead>
-            <tr className="d-flex text-center" >
-              <th className="col-1 d-none d-sm-block">
-                #</th>
-              <th className="col-6 ">
-                Title</th>
-              <th className="col-3 ">
-                Date</th>
-              <th className="col-2 d-none d-sm-block">
-                By</th>
-            </tr>
-          </thead>
-          <TableBody
-            data={data}
-            pageSize={PAGE_SIZE}
-            onClick={onRowClick}
-            currentPage={currentPage} />
-        </Table>
+        <TableComponent
+          data={post.data}
+          pageSize={PAGE_SIZE}
+          currentPage={currentPage} />
         <hr className="my-3" />
-        <Pagination
-          dataSize={data.length}
+        <PaginationComponent
+          dataSize={post.data.length}
           pageSize={PAGE_SIZE}
           paginationSize={PAGINATION_SIZE}
           currentPage={currentPage}
           setCurrentPage={setCurrentPage} />
-      </Jumbotron>
-      { isAdmin &&
-        <BoardForm
-          data={data}
+        {isAdmin &&
+        <FormComponent
+          data={post.data}
+          type={type}
           show={showForm}
-          setShow={setShowForm}
-          onSubmit={onSubmit} /> }
-      { <SelectedRow 
-          data={row}
-          show={showRow}
-          setShow={setShowRow}
-          onSubmit={onSubmitEdit} /> }
-    </Container>
+          setShow={setShowForm} />}
+      </Jumbotron>
+     
+  );
+});
+
+const CreateButton = memo(({ setShow }) => {
+  return (
+    <div style={{ position: "relative" }}>
+      <ButtonGroup
+        style={{ 
+          position: "absolute", right: "1px", bottom: "0px", 
+          minHeight: "35px", minWidth: "35px" }}>
+        <Button
+          variant="light"
+          onClick={()=>setShow(true)}>
+          +</Button>
+      </ButtonGroup>
+    </div>
   );
 });
 

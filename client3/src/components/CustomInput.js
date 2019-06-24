@@ -1,21 +1,21 @@
 import React, {memo} from 'react';
 import { Form } from 'react-bootstrap';
 
-const CustomInput = memo(({ input: { value, onChange }, title, name, id, placeholder, defaultValue, rows, type, as, style, disabled }) => {
+const CustomInput = memo((
+  { input: { onChange, value }, style, name, id, placeholder, defaultValue, rows, type, as, disabled }) => {
   return (
     <Form.Group>
-      <Form.Label >
-        {title}</Form.Label>
       <Form.Control
         as={as}
         name={name}
         id={id}
         placeholder={placeholder}
+        onChange={onChange}
         type={type}
         disabled={disabled}
         rows={rows}
-        defaultValue={defaultValue}
-        style={style} />
+        style={{...style, backgroundColor:"white"}}
+        defaultValue={defaultValue}/>
     </Form.Group>
   );
 });
