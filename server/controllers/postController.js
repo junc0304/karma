@@ -41,7 +41,11 @@ class PostController {
 
   async updatePost(body) {
     try {
-      await this.postDataHandler.updatePostById(body.postId, body.updates);
+      let { postId } = body;
+      delete body.postId;
+      
+      console.log(postId, body)
+      await this.postDataHandler.updatePostById( postId, {...body});
     } catch (err) {
       throw new HttpExceptionHandler(400, err);
     }

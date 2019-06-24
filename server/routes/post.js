@@ -36,9 +36,9 @@ router.route('/create')
       res.status(err.status).json(err);
     }
   });
-
+//validateBody(schemas.updatePost), passportJWT,
 router.route('/update')
-  .post(validateBody(schemas.updatePost), passportJWT, async (req, res, next) => {
+  .post( async (req, res, next) => {
     const postController = req.container.resolve('postController');
     try {
       res.status(200).json(await postController.updatePost(req.body));
@@ -47,8 +47,10 @@ router.route('/update')
     }
   });
 
+  //validateBody(schemas.deletePost), passportJWT,
 router.route('/delete')
-  .post(validateBody(schemas.deletePost), passportJWT, async (req, res, next) => {
+  .post( async (req, res, next) => {
+    console.log(req.body)
     const postController = req.container.resolve('postController');
     try {
       res.status(200).json(await postController.deletePost(req.body));

@@ -4,9 +4,9 @@ const passportJWT = passport.authenticate('jwt', { session: false });
 const passport_config = require('../passport');
 const HttpResponseException = require('../classes/HttpResponseException/httpResponseException');
 const { validateBody, schemas } = require('../helpers/validateInput');
-
+// validateBody(schemas.getComment), passportJWT,
 router.route('/')
-  .post( validateBody(schemas.getComment), passportJWT, async (req, res, next) => {
+  .post( async (req, res, next) => {
     const commentController = req.container.resolve('commentController');
     try {
       res.status(200).json(await commentController.getComments(req.body));

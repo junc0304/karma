@@ -12,18 +12,21 @@ const signToken = (user) => {
 };
 
 class AuthController {
-  constructor(userDataHandler) {
+  constructor(userDataHandler, postDataHandler) {
     this.userDataHandler = userDataHandler;
   }
 
   async signUp(body) {
-    let result, user;
+    let result, badge, user;
     try {
       await this.userDataHandler.createUser(body);
       user = await this.userDataHandler.getUserByEmail(body.email);
+      badge = await this.postDataHandler.getRecentPost(); 
+      //add header badge data to result object
       result = {
         user,
-        token: signToken(user)
+        token: signToken(user),
+        badge
       };
     }
     catch (err) {
@@ -35,6 +38,7 @@ class AuthController {
   async signIn(user) {
     let result;
     try {
+           //add header badge data to result object
       result = { 
         user: await this.userDataHandler.getUserByEmail(body.email),
         token: signToken(user)};
