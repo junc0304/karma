@@ -18,9 +18,7 @@ class PageDataHandler {
   async getPageByType(type) {
     var result;
     try {
-      console.log("getPageByType")
       result = await Page.findOne({ type: type });
-      console.log("aaa",result);
     }
     catch (err) {
       throw new Error(err);
@@ -33,7 +31,6 @@ class PageDataHandler {
     try {
       newPage = await new Page({ ...pageItem });
       await newPage.save();
-
     }
     catch (err) {
       throw new Error(err);
@@ -42,7 +39,7 @@ class PageDataHandler {
 
   async updatePage(type, updates) {
     try {
-      console.log(type, updates)
+      console.log("class",type, updates)
       await Page.updateOne({ type }, { $set: { ...updates } },{upsert: true});
     }
     catch (err) {

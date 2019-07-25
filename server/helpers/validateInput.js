@@ -4,11 +4,15 @@ const Config = require('../configuration');
 module.exports = {
   validateBody: (schema) => {
     return (req, res, next) => {
+      console.log("started");
 
-      const result = Joi.validate(req.body, schema);
-      if (result.error) {
-        return res.status(400).json(result.error);
-      }
+      const result = Joi.validate(req.body, schema, {abortEarly: false});
+      result.then().catch(error => {
+        const errorMessage = error.details.map(err => err.message);
+        console.log(errorMessage)
+        return res.status(400).json({ error: errorMessage });
+      })
+
       if (!req.value) {
         req.value = {};
       }
@@ -21,20 +25,20 @@ module.exports = {
     signUp: Joi.object().keys({
       name: Joi.string().required(),
       email: Joi.string().email().required(),
-      password: Joi.string().required(),
-
+      password: Joi.string().min(8).max(16).regex(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/).required(),
       unit: Joi.string().optional(),
       address: Joi.string().required(),
       city: Joi.string().required(),
       province: Joi.string().required(),
       postalCode: Joi.string().optional(),
-
+      comment: Joi.string(),
       depotName: Joi.string().required(),
     }),
 
+
     signIn: Joi.object().keys({
       email: Joi.string().email().required(),
-      password: Joi.string().required()
+      password: Joi.string().min(8).max(16).regex(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/).required(),
     }),
 
     getPost: {
@@ -49,20 +53,13 @@ module.exports = {
     createPost: Joi.object().keys({
       type: Joi.string().valid(Config.BOARD_TYPE).required(),
       title: Joi.string().required(),
-      content: Joi.string().required(),
-      authorId: Joi.string().required(),
-      authorName: Joi.string().required(),
-      password: Joi.string().required()
+      content: Joi.string().required()
     }),
 
     updatePost: Joi.object().keys({
-      type: Joi.string().valid(Config.BOARD_TYPE),
       postId: Joi.string().required(),
-      update: {
-        title: Joi.string().required(),
-        content: Joi.string().required(),
-        password: Joi.string().required()
-      }
+      title: Joi.string().required(), 
+      content: Joi.string().required()
     }),
 
     deletePost: Joi.object().keys({
@@ -70,28 +67,24 @@ module.exports = {
     }),
 
     getPage: Joi.object().keys({
-      type: Joi.string().valid(Config.BOARD_TYPE).required(),
+      type: Joi.string().valid(Config.PAGE_TYPE).required(),
     }),
 
     createPage: Joi.object().keys({
-      type: Joi.string().valid(Config.BOARD_TYPE).required(),
+      type: Joi.string().valid(Config.PAGE_TYPE).required(),
       title: Joi.string().required(),
       content: Joi.string().required(),
-      authorId: Joi.string().required(),
-      authorName: Joi.string().required(),
     }),
 
     updatePage: Joi.object().keys({
-      type: Joi.string().valid(Config.BOARD_TYPE),
-      postId: Joi.string(),
-      update: {
-        content: Joi.string().required(),
-      }
+      type: Joi.string().valid(Config.PAGE_TYPE).required(),
+      title: Joi.string().required(),
+      content: Joi.string().required(),
     }),
 
     deletePage: Joi.object().keys({
       postId: Joi.string(),
-      type: Joi.string().valid(Config.BOARD_TYPE).required(),
+      type: Joi.string().valid(Config.PAGE_TYPE).required(),
     }),
 
     getUser: {
@@ -115,23 +108,17 @@ module.exports = {
 
     getComment: Joi.object().keys({
       postId: Joi.string().required(),
-      commentId: Joi.string().required(),
     }),
 
     createComment: Joi.object().keys({
-      postId: Joi.string().required(),
-      commentId: Joi.string().required(),
+      postId: Joi.string().required(),      
       content: Joi.string().required(),
-
-      status: Joi.string().required().default("ACTIVE"),
     }),
 
     updateComment: Joi.object().keys({
       postId: Joi.string().required(),
       commentId: Joi.string().required(),
       content: Joi.string().optional(),
-
-      status: Joi.string().optional(),
     }),
 
     deleteComment: Joi.object().keys({

@@ -1,38 +1,36 @@
 const router = require('express-promise-router')();
 const passport = require('passport');
 const passportJWT = passport.authenticate('jwt', { session: false });
-const passport_config = require('../passport');
-const HttpResponseException = require('../classes/HttpResponseException/httpResponseException');
 const { validateBody, schemas } = require('../helpers/validateInput');
-//validateBody(schemas.getPage), passportJWT, 
+
 router.route('/get')
-  .post(async (req, res, next) => {
+  .post(validateBody(schemas.getPage), passportJWT, async (req, res, next) => {
     const pageController = req.container.resolve('pageController');
     try {
-      console.log("router",req.body)
-      res.status(200).json(await pageController.getPageByType(req.body));
+      let page = await pageController.getPageByType(req.body);
+      res.status(200).json(page);
     } catch (err) {
       res.status(err.status).json(err);
     }
   });
-//validateBody(schemas.createPage), passportJWT,
+
 router.route('/create')
-  .post(
-    async (req, res, next) => {
+  .post(validateBody(schemas.createPage), passportJWT, async (req, res, next) => {
     const pageController = req.container.resolve('pageController');
     try {
-      res.status(200).json(await pageController.createPage(req.user, req.body));
+      await pageController.createPage(req.user, req.body);
+      res.status(200).json({success: true});
     } catch (err) {
       res.status(err.status).json(err.message);
     }
   });
-//validateBody(schemas.updatePage), passportJWT,
+
 router.route('/update')
-  .post( async (req, res, next) => {
+  .post(validateBody(schemas.updatePage), passportJWT, async (req, res, next) => {
     const pageController = req.container.resolve('pageController');
     try {
-      console.log(req.body);
-      res.status(200).json(await pageController.updatePage(req.body));
+      await pageController.updatePage(req.body);
+      res.status(200).json({success: true});
     } catch (err) {
       console.log(err)
       res.status(err.status).json(err);
@@ -43,7 +41,8 @@ router.route('/delete')
   .post(validateBody(schemas.deletePage), passportJWT, async (req, res, next) => {
     const pageController = req.container.resolve('pageController');
     try {
-      res.status(200).json(await pageController.deletePage(req.body));
+      await pageController.deletePage(req.body);
+      res.status(200).json({success: true});
     } catch (err) {
       res.status(err.status).json(err);
     }

@@ -6,20 +6,20 @@ const { USER_ROLES } = require('../configuration');
 
 const userSchema = new Schema({
   userId:     { type: ObjectId},
-  name:       { type: String, lowercase: true, required: true },
-  email:      { type: String, lowercase: true, required: true },
-  password:   { type: String, select: false },
-  depotName:  { type: String },
-  address1:   { type: String },
+  name:       { type: String, required: true },
+  email:      { type: String, lowercase: true, required: true, unique: true },
+  password:   { type: String, required: true, select: false },
+  depotName:  { type: String, required: true },
+  address:    { type: String },
   unit:       { type: String },
-  city:       { type: String },
-  province:   { type: String },
+  city:       { type: String, enum:[] },
+  province:   { type: String, default:"BC" },
   postalCode: { type: String },
   role:       { type: String, enum: [USER_ROLES.ADMIN, USER_ROLES.USER, USER_ROLES.OWNER], default: USER_ROLES.USER },
   notify:     { type: Boolean, default: false },
   created:    { type: Date, default: Date.now()},
   updated:    { type: Date },
-  comment:{ type: String },
+  comment:    { type: String },
 });
 
 userSchema.pre('save', async function (next) {

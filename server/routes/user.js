@@ -19,7 +19,8 @@ router.route('/get')
   .post( validateBody(schemas.getUser.getOne), passportJWT, async (req, res, next) => {
     var userController = req.container.resolve('userController');
     try {
-      res.status(200).json( await userController.getUserById(req.body));
+      console.log(user);
+      res.status(200).json( await userController.getUserById(user.body));
     } catch (err) {
       res.status(err.status).json(err);
     }

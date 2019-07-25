@@ -63,6 +63,7 @@ class UserDataHandler {
   }
 
   async createUser(formItem) {
+    var newUser;
     try {
       newUser = await new User({ ...formItem });
       await newUser.save();

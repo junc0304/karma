@@ -1,8 +1,9 @@
 const HttpExceptionHandler = require('../classes/HttpResponseException/httpResponseException');
 
 class PostController {
-  constructor(postDataHandler) {
+  constructor(postDataHandler, commentDataHandler) {
     this.postDataHandler = postDataHandler;
+    this.commentDataHandler = commentDataHandler;
   }
 
   async getPostsByType(body) {
@@ -11,7 +12,7 @@ class PostController {
       result = { 
         post:  await this.postDataHandler.getPostsByType(body.type)
       }
-      console.log(result)
+      //console.log(result)
     } catch (err) {
       throw new HttpExceptionHandler(400, err);
     }
@@ -30,11 +31,29 @@ class PostController {
     return result;
   }
 
-  async createPost(/* user, */ body) {
+  async getNewPosts(body) {
+    let result;
     try {
-      await this.postDataHandler.createPost({
-        ...body/* , authorId: user.id, authorName: user.name  */});
+      let { days } = body;
+      result = {
+        type: [ ...await this.postDataHandler.getNewPosts(days)]
+      };
     } catch (err) {
+      throw new HttpExceptionHandler(400, err);
+    }
+    return result;
+  }
+
+  async createPost( user, body) {
+    try {
+      let { id, name } = user;
+      let maxIndexItem = await this.postDataHandler.getItemWithMaxIndex( body.type );
+      let nextIndex = 
+        maxIndexItem.length > 0 ?  maxIndexItem[0].index + 1 : 1 ;
+      await this.postDataHandler.createPost({
+        ...body, index: nextIndex, authorId: id, authorName: name });
+    } catch (err) {
+      console.log(err)
       throw new HttpExceptionHandler(400, err);
     }
   }
@@ -43,8 +62,6 @@ class PostController {
     try {
       let { postId } = body;
       delete body.postId;
-      
-      console.log(postId, body)
       await this.postDataHandler.updatePostById( postId, {...body});
     } catch (err) {
       throw new HttpExceptionHandler(400, err);
@@ -52,9 +69,12 @@ class PostController {
   }
 
   async deletePost(body) {
-    try {
-      await this.postDataHandler.deletePost(body.postId);
+    try {  
+      let {postId} = body;
+      await this.commentDataHandler.deleteComments(postId);
+      await this.postDataHandler.deletePost(postId);
     } catch (err) {
+      console.log(err)
       throw new HttpExceptionHandler(400, err);
     }
   }

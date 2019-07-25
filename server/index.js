@@ -28,11 +28,17 @@ app.use((req, res, next) => {
   next();
 });
 
+
 app.use('/user', userRouter);
 app.use('/post', postRouter);
 app.use('/comment', commentRouter);
 app.use('/page', pageRouter);
 app.use('/auth', authRouter);
+
+app.use((error, req, res, next) =>{
+
+  res.json({ message: error.message });
+})
 
 const port = process.env.PORT || SERVER_PORT;
 app.listen(port, () => {

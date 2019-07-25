@@ -10,11 +10,13 @@ const HttpResponseException = require('../classes/HttpResponseException/httpResp
 const { validateBody, schemas } = require('../helpers/validateInput');
 
 router.route('/signup')
-  .post(validateBody(schemas.signup), async (req, res, next) => {
+  .post(validateBody(schemas.signUp), async (req, res, next) => {
     const authController = req.container.resolve('authController');
     try {
-      let result = await authController.signUp(req.body);
-      res.status(200).cookie(COOKIE_TOKEN, result.token, { httpOnly: true }).json(result);
+      console.log("user signup request")
+      let {user, token}= await authController.signUp(req.body);
+      res.cookie(COOKIE_TOKEN, token, { httpOnly: true })
+      res.status(200).json(user);
     }
     catch (err) {
       res.status(err.status).json(err);
@@ -22,21 +24,26 @@ router.route('/signup')
   });
 
 router.route('/signin')
-  .post(validateBody(schemas.signin), passportLocal, async (req, res, next) => {
+  .post(validateBody(schemas.signIn), passportLocal, async (req, res, next) => {
     const authController = req.container.resolve('authController');
     try {
-      let result = await authController.signIn(req.user);
-      res.status(200).cookie(COOKIE_TOKEN, result.token, { httpOnly: true }).json(result);
+      console.log("user login request")
+      let { user, token } = await authController.signIn(req.body, req.user);
+      res.cookie(COOKIE_TOKEN, token, { httpOnly: true });
+      res.status(200).json(user);
     }
     catch (err) {
-      res.status(err.status).json(err);
+      console.log(err)
+      res.status(err.status).json({Error: "Sign In failed"});
     }
   });
 
 router.route('/signout')
   .post(passportJWT, async (req, res, next) => {
     try {
-      res.status(200).clearCookie(COOKIE_TOKEN).send();
+      console.log("sign out request")
+      res.clearCookie(COOKIE_TOKEN);
+      res.status(200).json({success: true});
     } catch (err) {
       res.status(err.status).json(err);
     }    

@@ -2,6 +2,11 @@ const JWT = require('jsonwebtoken');
 const HttpExceptionHandler = require('../classes/HttpResponseException/httpResponseException');
 const { JWT_SECRET, JWT_EXPIRY, TOKEN_ISSUER } = require('../configuration');
 
+const SIGNIN_ERROR = {
+  EMAIL_EXISTS: "Email already exists",
+  INVALID_INPUT: "",
+}
+
 const signToken = (user) => {
   return JWT.sign({
     iss: TOKEN_ISSUER,
@@ -12,22 +17,19 @@ const signToken = (user) => {
 };
 
 class AuthController {
-  constructor(userDataHandler, postDataHandler) {
+  constructor(userDataHandler) {
     this.userDataHandler = userDataHandler;
   }
 
   async signUp(body) {
-    let result, badge, user;
+    let result, user;
     try {
+      if ( await this.userDataHandler.foundEmail(body.email) ) {
+        return { error: "email already exists" }
+      }
       await this.userDataHandler.createUser(body);
       user = await this.userDataHandler.getUserByEmail(body.email);
-      badge = await this.postDataHandler.getRecentPost(); 
-      //add header badge data to result object
-      result = {
-        user,
-        token: signToken(user),
-        badge
-      };
+      result = { token: signToken(user) };
     }
     catch (err) {
       throw new HttpExceptionHandler(400, err);
@@ -35,13 +37,11 @@ class AuthController {
     return result;
   }
 
-  async signIn(user) {
+  async signIn(body, user) {
     let result;
     try {
-           //add header badge data to result object
-      result = { 
-        user: await this.userDataHandler.getUserByEmail(body.email),
-        token: signToken(user)};
+      let { userId, name, email, role } = await this.userDataHandler.getUserByEmail(body.email);
+      result = { user: { userId, name, email, role }, token: signToken(user) } 
     }
     catch (err) {
       throw new HttpExceptionHandler(400, err);

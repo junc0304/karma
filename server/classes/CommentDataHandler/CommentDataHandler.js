@@ -4,10 +4,19 @@ class CommentDataHandler {
   constructor() {
   }
 
+  async deleteComments(postId) {
+    try{
+      await Comment.deleteMany({postId});
+    }
+    catch(err) {
+      throw new Error(err);
+    }
+  }
+  
   async getComments(postId) {
     var result;
     try {
-      result = await Comment.find({ postId });
+      result = await Comment.find({ postId: postId }).sort({created:-1});
     }
     catch (err) {
       throw new Error(err);
@@ -16,13 +25,16 @@ class CommentDataHandler {
   }
 
   async createComment(commentItem) {
+    var result;
     try {
-      let comment = await new Comment({ ...commentItem });
-      await comment.save();
+      let newComment = new Comment({ ...commentItem });
+      await newComment.save();
+      result = newComment._id;
     }
     catch (err) {
       throw new Error(err);
     }
+    return result;
   }
 
   async updateComment(commentId, updates) {
@@ -41,6 +53,18 @@ class CommentDataHandler {
     catch (err) {
       throw new Error(err);
     }
+  }
+
+  
+  async searchComment(fields) {   
+    let result;
+    try {
+     result = await Comment.findOne({ ...fields });
+    }
+    catch (err) {
+      throw new Error(err);
+    }
+    return result;
   }
 }
 

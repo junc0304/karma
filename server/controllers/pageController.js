@@ -8,9 +8,7 @@ class PageController {
   async getPages() {
     let result;
     try {
-      result = {
-        page: await this.pageDataHandler.getPages()
-      };
+      result = { page: await this.pageDataHandler.getPages()};
     } catch (err) {
       throw new HttpExceptionHandler(400, err);
     }
@@ -20,10 +18,7 @@ class PageController {
   async getPageByType(body) {
     let result;
     try {
-      console.log("controller", body)
-      result = {
-        page: await this.pageDataHandler.getPageByType(body.type)
-      };
+      result = { page : await this.pageDataHandler.getPageByType(body.type) };
     } catch (err) {
       throw new HttpExceptionHandler(400, err);
     }
@@ -32,21 +27,17 @@ class PageController {
 
   async createPage(user, body) {
     try {
-      await this.pageDataHandler.createPage({
-        ...page, type: body.type, authorId: "5cff7bcb668bd02340f3876b", authorName: "Jun" });
+      let { userId, name } = user;
+      await this.pageDataHandler.createPage({ ...body, authorId: userId, authorName: name });
     } catch (err) {
-      console.log(err)
       throw new HttpExceptionHandler(400, err);
     }
   }
 
   async updatePage(body) {
     try {
-      let { type } = body;
-      delete body.type;
-      console.log("update-controller", body);
-      await this.pageDataHandler.updatePage(type, body);
-
+      let { type, ...update} = body;
+      await this.pageDataHandler.updatePage(type, update);
     } catch (err) {
       throw new HttpExceptionHandler(400, err);
     }
@@ -54,7 +45,8 @@ class PageController {
 
   async deletePage(body) {
     try {
-      await this.pageDataHandler.deletePage(body.type);
+      let {type} = body;
+      await this.pageDataHandler.deletePage(type);
     } catch (err) {
       throw new HttpExceptionHandler(400, err);
     }

@@ -5,19 +5,54 @@ class PostDataHandler {
   constructor() {
   }
 
-  async getRecentPosts() {
-    var result, date;
+  async getCommentsByPostId(postId) {
+    var result;
     try {
-      //get date of 5 days ago
-      date = new Date();
-      date.setDate(date.getDate() -5);
-      result = await Post.find({created:{$gt: date }}).sort({type: -1, created:-1});
+      result = await Post.findOne({ postId }, "comments");
     }
-    catch {
+    catch (err) {
       throw new Error(err);
     }
     return result;
   }
+
+  async getItemWithMaxIndex(type) {
+    var result;
+    try {
+      result = await Post.find({ type }).sort({ index: -1 }).limit(1);
+    }
+    catch (err) {
+      throw new Error(err);
+    }
+    return result;
+  }
+
+  async addCommentToPost(postId, commentId) {
+    try {
+      await Post.findOneAndUpdate({ postId }, { $push: { comments: commentId } });
+    }
+    catch (err) {
+      console.log(err)
+      throw new Error(err);
+    }
+  }
+
+  async getNewPosts(days) {
+    var result, date;
+    try {
+      date = new Date();
+      date.setDate(date.getDate() - days);
+      result =
+        await Post.find({ created: { $gt: date } })
+          .distinct('type', function (err, types) { [types] });
+    }
+    catch (err) {
+      console.log(err)
+      throw new Error(err);
+    }
+    return result;
+  }
+
   async searchPosts(condition) {
     var result;
     try {
@@ -28,10 +63,11 @@ class PostDataHandler {
     }
     return result;
   }
+  
   async getPostById(postId) {
     var result;
     try {
-      result = await Post.findOne({postId});
+      result = await Post.findOne({ postId });
     }
     catch (err) {
       throw new Error(err);
@@ -42,7 +78,7 @@ class PostDataHandler {
   async getPostsByType(type) {
     var result;
     try {
-      result = await Post.find({ type }).sort({created:-1});
+      result = await Post.find({ type }).sort({ created: -1 });
     }
     catch (err) {
       throw new Error(err);
@@ -53,6 +89,7 @@ class PostDataHandler {
   async createPost(postItem) {
     var newPost;
     try {
+      console.log(postItem)
       newPost = await new Post({ ...postItem });
       await newPost.save();
     }
@@ -74,6 +111,15 @@ class PostDataHandler {
   async deletePost(postId) {
     try {
       await Post.deleteOne({ postId });
+    }
+    catch (err) {
+      throw new Error(err);
+    }
+  }
+
+  async deleteCommentInPost(postId, commentId) {
+    try {
+      await Post.findOneAndUpdate({ postId }, { $pull: { comments: commentId } });
     }
     catch (err) {
       throw new Error(err);

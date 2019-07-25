@@ -6,12 +6,11 @@ const Config = require('../configuration');
 const postSchema = new Schema({
     postId:       { type: ObjectId, unique: true},
     type:         { type: String, enum: Config.BOARD_TYPE, required: true },
-    index:        { type: Number},//, required: true, unique:true },
+    index:        { type: Number, required: true },
     title:        { type: String, required: true },
-    content:      { type: String },
-    authorId:     { type: ObjectId},// required: true},
-    authorName:   { type: String},// required: true},
-    password:     { type: String, required: true, select: false },
+    content:      { type: String, required: true },
+    authorId:     { type: ObjectId, required: true },
+    authorName:   { type: String, required: true },
     created:      { type: Date, defalut: Date.now() },
     updated:      { type: Date },
     comments:     [{ type: ObjectId }], //comment schema
@@ -30,7 +29,6 @@ postSchema.pre('save', async function (next) {
 
 postSchema.pre('findOneAndUpdate', async function (next) {
   try {
-    
     this.updated = Date.now();
     next();
   }

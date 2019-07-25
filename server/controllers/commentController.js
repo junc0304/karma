@@ -1,45 +1,61 @@
 const HttpExceptionHandler = require('../classes/HttpResponseException/httpResponseException');
 
 class CommentController {
-  constructor(commentDataHandler) {
+  constructor(commentDataHandler, postDataHandler) {
     this.commentDataHandler = commentDataHandler;
+    this.postDataHandler = postDataHandler;
   }
 
   async getComments(body) {
     var result;
     try {
       result = { 
-        comment: await this.commentDataHandler.getComments(body.postId)
+        comment: await this.commentDataHandler.getComments(body.postId),
+        postId: body.postId
       };
     } catch (err) {
+      console.log(err)
       throw new HttpExceptionHandler(400, err);
     }
     return result;
   }
 
-  async createComment(body) {
+  async createComment(user, body) {
     try {
-      await this.commentDataHandler.createComment(body.comment);
+      console.log( user, body )
+      let { postId, content } = body;
+      let { userId, name } = user;
+      await this.commentDataHandler.createComment({ authorId: userId, authorName: name, postId: postId, content: content });
+      let { commentId } = await this.commentDataHandler.searchComment({authorId: userId, authorName: name, postId: postId, content: content });
+      await this.postDataHandler.addCommentToPost(postId, commentId);
     } catch (err) {
+      console.log(err)
       throw new HttpExceptionHandler(400, err);
     }
   }
 
   async updateComment(body) {
     try {
-      await this.commentDataHandler.updateComment(body.commentId, body.updates);
+      let { commentId } = body;
+      delete body[commentId];
+      await this.commentDataHandler.updateComment(commentId, body);
     } catch (err) {
+      console.log(err)
       throw new HttpExceptionHandler(400, err);
     }
   }
 
   async deleteComment(body) {
     try {
-      await this.commentDataHandler.deleteComment(body.commentId);
+      let {commentId, postId} = body
+      await this.commentDataHandler.deleteComment(commentId);
+      await this.postDataHandler.deleteCommentInPost(postId, commentId);
     } catch (err) {
+      console.log(err)
       throw new HttpExceptionHandler(400, err);
     }
   }
+
 }
 
 module.exports = CommentController;
