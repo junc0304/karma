@@ -35,7 +35,6 @@ const TableRowView = memo(({ getPosts, updatePost, deletePost, getComments, data
       title: event.target.title.value,
       content: event.target.content.value 
     };
-
     await updatePost(formData);
     await getPosts(type);
     setEditMode(false);

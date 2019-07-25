@@ -111,17 +111,15 @@ const FormComponent = memo(({ data, show, onClose, onSubmit, onDelete }) => {
             <Row style={{ paddingLeft: "0px", marginBottom: "0px" }}
             >
               {!editMode ? (
-                <div>{formDate(formData.year, formData.month)}</div>)
-                : (
+                <div>{formDate(formData.year, formData.month)}</div>) : (
                   <Fragment>
                     <Form.Label
                       as={Col}
                       style={{ paddingLeft: "15px", fontSize: "14px" }}
                     >
                       Year:
-              </Form.Label>
+                    </Form.Label>
                     <Col style={{ paddingRight: "0px" }}>
-
                       <Form.Control
                         as="select"
                         name="year"
@@ -142,7 +140,7 @@ const FormComponent = memo(({ data, show, onClose, onSubmit, onDelete }) => {
                       style={{ paddingLeft: "15px", fontSize: "14px" }}
                     >
                       Month:
-              </Form.Label> {/*replace with ICON?*/}
+                    </Form.Label> {/*replace with ICON?*/}
                     <Col style={{ paddingRight: "0px" }}>
 
                       <Form.Control

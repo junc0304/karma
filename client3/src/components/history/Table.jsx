@@ -3,7 +3,9 @@ import { Table } from 'react-bootstrap';
 import RowFormComponent from './Form';
 
 const TableComponent = ({data}) => {
+  
   const [ row, setRow ] = useState({ data:{}, show:false});
+
   const handleOpenRow = (item) => setRow({ data: item, show: true });
   const handleCloseRow = () => setRow({ data: {}, show: false });
   const handleDeleteRow = () => { /* delete logic */ };

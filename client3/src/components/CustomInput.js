@@ -1,20 +1,22 @@
-import React, { memo, useState, Fragment } from 'react';
+import React, { memo, useState, Fragment, useEffect } from 'react';
 import { Form } from 'react-bootstrap';
 import _ from 'lodash';
 
-function CustomInput (props){
-  const [input, setInput] = useState({[props.name]: [ '', '']});
+const CustomInput = ({edit = true, validation = (v) => null, onChange, password ,...props }) => {
+  const [input, setInput] = useState({[props.name]: ['', '']});
 
   const formStyle = props.style || ({
       backgroundColor: "white",
       borderRadius: "5px"
     });
 
+  const debFunc = _.debounce((name, value, valid) => onChange(name, value, valid) , 200)
+
   const handleChange = (event) => {
     let { name, value } = event.target;
-    let valid = props.validation(value);
-    setInput({ ...input, [name]: [value, valid] });
-    props.onChange(name, value, valid == null);
+    let valid = !password? validation(value.trim()): validation(password,value.trim());
+    setInput({ ...input, [name]: [value.trim(), valid] });
+    debFunc(name, value.trim(), valid == null );
   }
 
   return (
@@ -23,10 +25,10 @@ function CustomInput (props){
         {...props}
         onChange={handleChange}
         value={input[props.name][0]}
-        readOnly={props.edit}
-        disabled={props.edit}
+        readOnly={!edit}
+        disabled={!edit}
         style={formStyle}
-        isInvalid={input[props.name][1]}
+        isInvalid={props.isInvalid || input[props.name][1]}
       >
         {props.children}
       </Form.Control>
