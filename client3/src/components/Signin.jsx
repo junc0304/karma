@@ -7,7 +7,7 @@ import CustomInput from './CustomInput';
 import CustomButton from './CustomButton';
 import { email, password } from '../helpers';
 
-const SignIn = ({ signIn, errorMessage, history }) => {
+function SignIn ({ signIn, errorMessage, history }) {
   var formData = { email: '', password: '' };
   //let validated = { email: false, password: false };
 

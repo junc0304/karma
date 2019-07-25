@@ -2,7 +2,7 @@ import React, { memo, useState, Fragment } from 'react';
 import { Form } from 'react-bootstrap';
 import _ from 'lodash';
 
-const CustomInput = ({edit = true, validation = (v) => null, onChange, ...props }) => {
+function CustomInput (props){
   const [input, setInput] = useState({[props.name]: [ '', '']});
 
   const formStyle = props.style || ({
@@ -12,9 +12,9 @@ const CustomInput = ({edit = true, validation = (v) => null, onChange, ...props 
 
   const handleChange = (event) => {
     let { name, value } = event.target;
-    let valid = validation(value);
+    let valid = props.validation(value);
     setInput({ ...input, [name]: [value, valid] });
-    onChange(name, value, valid == null);
+    props.onChange(name, value, valid == null);
   }
 
   return (
@@ -23,8 +23,8 @@ const CustomInput = ({edit = true, validation = (v) => null, onChange, ...props 
         {...props}
         onChange={handleChange}
         value={input[props.name][0]}
-        readOnly={!edit}
-        disabled={!edit}
+        readOnly={props.edit}
+        disabled={props.edit}
         style={formStyle}
         isInvalid={input[props.name][1]}
       >
