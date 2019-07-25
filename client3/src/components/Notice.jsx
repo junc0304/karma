@@ -1,11 +1,10 @@
 import React from 'react';
 import { connect } from 'react-redux'
-import Board from './board/Board';
+import Board from './board/Board.jsx';
 import * as actions from '../actions';
 import { BOARD_TYPE } from '../config';
 
 const Notice = () => {
-
   return(
     <Board 
       title="Notice"

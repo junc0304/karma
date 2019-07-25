@@ -1,11 +1,11 @@
 import axios from 'axios';
 import {
   //auth
-  AUTH_SIGN_UP, AUTH_SIGN_OUT, AUTH_SIGN_IN, AUTH_ERROR,
+  AUTH_SIGN_UP, AUTH_SIGN_OUT, AUTH_SIGN_IN, AUTH_ERROR, AUTH_SIGN_UP_ERROR, AUTH_SIGN_IN_ERROR,
   //board
   GET_POST, CREATE_POST, UPDATE_POST, DELETE_POST, RESET_POST, POST_ERROR,
   //member
-  MEMBER_ERROR, GET_MEMBER, UPDATE_MEMBER, MEMBER_DELETE,
+  MEMBER_ERROR, GET_MEMBER, UPDATE_MEMBER, MEMBER_DELETE, RESET_MEMBER,
   //page
   GET_PAGE, CREATE_PAGE, UPDATE_PAGE, DELETE_PAGE, RESET_PAGE, PAGE_ERROR,
   //comment
@@ -24,8 +24,8 @@ export const signUp = (data) => {
       });
     } catch (err) {
       dispatch({
-        type: AUTH_ERROR,
-        payload: err
+        type: AUTH_SIGN_UP_ERROR,
+        payload: 'Required information is missing or incomplete. Please correct your entries and try again.'
       })
     }
   };
@@ -34,15 +34,17 @@ export const signUp = (data) => {
 export const signIn = (data) => {
   return async dispatch => {
     try {
+      console.log(data)
       let res = await axios.post('http://localhost:4000/auth/signin', data);
       dispatch({
         type: AUTH_SIGN_IN,
         payload: res.data
       });
     } catch (err) {
+      console.log(err)
       dispatch({
-        type: AUTH_ERROR,
-        payload: err
+        type: AUTH_SIGN_IN_ERROR,
+        payload: 'Incorrect User ID and/or password.'
       })
     }
   };
@@ -50,9 +52,18 @@ export const signIn = (data) => {
 
 export const signOut = () => {
   return async dispatch => {
-    await axios.post('http://localhost:5000/auth/signout');
+    await axios.post('http://localhost:4000/auth/signout');
     dispatch({
       type: AUTH_SIGN_OUT
+    });
+    dispatch({
+      type: RESET_POST
+    });
+    dispatch({
+      type: RESET_PAGE
+    });
+    dispatch({
+      type: RESET_MEMBER
     })
   };
 }
@@ -80,6 +91,7 @@ export const getPosts = (type) => {
       await dispatch({
         type: RESET_POST,
       });
+      console.log(type)
       const res = await axios.post(`http://localhost:4000/post/`, {type});
       console.log(res.data)
       dispatch({
@@ -95,6 +107,28 @@ export const getPosts = (type) => {
   }
 }
 
+
+export const getPagePosts = (type, pageSize, lastItemDate) => {
+  console.log("board GET PAGE:", type);
+  return async dispatch => {
+    try {
+      await dispatch({
+        type: RESET_POST,
+      });
+      const res = await axios.post(`http://localhost:4000/post/`, {type, pageSize, lastItemDate});
+      console.log(res.data)
+      dispatch({
+        type: getPostType(type),
+        payload: res.data
+      });
+    } catch (err) {
+      dispatch({
+        type: POST_ERROR,
+        payload: err
+      });
+    }
+  }
+}
 
 export const createPost = (data) => {
   console.log("board POST:", data);
@@ -319,7 +353,7 @@ export const getComments = (data) => {
       let res = await axios.post(`http://localhost:4000/comment/`, data);
       dispatch({
         type: GET_COMMENT,
-        payload: res.comment
+        payload: res.data
       });
     } 
     catch (err) {

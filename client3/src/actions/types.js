@@ -3,6 +3,8 @@ export const AUTH_SIGN_UP         = "AUTH_SIGN_UP";
 export const AUTH_SIGN_IN         = "AUTH_SIGN_IN";
 export const AUTH_SIGN_OUT        = "AUTH_SIGN_OUT";
 export const AUTH_ERROR           = "AUTH_ERROR";
+export const AUTH_SIGN_UP_ERROR   = "AUTH_SIGN_UP_ERROR";
+export const AUTH_SIGN_IN_ERROR   = "AUTH_SIGN_IN_ERROR";
 //get board
 /* export const BOARD_GET_MEETING    = "BOARD_GET_MEETING";
 export const BOARD_GET_EVENT      = "BOARD_GET_EVENT";
@@ -14,8 +16,10 @@ export const GET_POST = {
   EVENT:        "GET_EVENT",
   NOTICE:       "GET_NOTICE",
   DISCUSSION:   "GET_DISCUSSION",
-  ERROR: "ERROR"
 };
+
+export const GET_RECENT  = "GET_RECENT";
+export const RESET_RECENT = "RESET_RECENT";
 
 export const CREATE_POST         = "CREATE_POST";
 export const UPDATE_POST         = "UPDATE_POST";
@@ -27,6 +31,7 @@ export const GET_MEMBER           = "GET_MEMBER";
 export const UPDATE_MEMBER        = "UPDATE_MEMBER";
 export const MEMBER_ERROR         = "MEMBER_ERROR";
 export const MEMBER_DELETE        = "MEMBER_DELETE";
+export const RESET_MEMBER = "RESET_MEMBER";
 //page
 export const GET_PAGE = {
   HOME: "GET_HOME",

@@ -1,4 +1,4 @@
-import { GET_MEMBER, UPDATE_MEMBER, MEMBER_ERROR } from '../actions/types';
+import { GET_MEMBER, UPDATE_MEMBER, MEMBER_ERROR, RESET_MEMBER } from '../actions/types';
 
 const initialState = {
   data: [],
@@ -11,6 +11,8 @@ const memberReducer = (state = initialState, action) => {
       return { ...state, data: action.payload.user , errorMessage: '' };
     case UPDATE_MEMBER:
       return { ...state, data: action.payload.user , errorMessage: '' };
+    case RESET_MEMBER:
+      return { ...state, data:{}, errorMessage: ''};
     case MEMBER_ERROR:
       return { ...state, errorMessage: action.payload.error };
     default:

@@ -7,20 +7,23 @@ import { createStore, applyMiddleware } from 'redux';
 import { Provider } from 'react-redux';
 import reduxThunk from 'redux-thunk';
 import axios from 'axios';
+import './index.css';
+
+import CheckAuth from './components/HOC/CheckAuth.jsx'
 
 //page
-import App from './components/App';
-import Home from './components/Home';
-import History from './components/History';
-import Summary from './components/Summary';
-import Membership from './components/Membership';
-import Member from './components/Member';
-import Meeting from './components/Meeting';
-import Event from './components/Event';
-import Discussion from './components/Discussion';
-import Notice from './components/Notice';
-import SignIn from './components/Signin';
-import SignUp from './components/Signup';
+import App from './components/App.jsx';
+import Home from './components/Home.jsx';
+import History from './components/History.jsx';
+import Summary from './components/Summary.jsx';
+import Membership from './components/Membership.jsx';
+import Member from './components/Member.jsx';
+import Meeting from './components/Meeting.jsx';
+import Event from './components/Event.jsx';
+import Discussion from './components/Discussion.jsx';
+import Notice from './components/Notice.jsx';
+import SignIn from './components/Signin.jsx';
+import SignUp from './components/Signup.jsx';
 
 import reducers from './reducers';
 
@@ -31,17 +34,18 @@ ReactDOM.render(
   <Provider store={store}>
     <BrowserRouter>
       <App>
-        <Route exact path="/home" component={Home} />
+        <Route exact path="/home" component={CheckAuth(Home)} />
         <Route exact path="/history" component={History} />
-        <Route exact path="/summary" component={Summary} />
-        <Route exact path="/howtojoin" component={Membership} />
-        <Route exact path="/member" component={Member} />
-        <Route exact path="/meeting" component={Meeting} />
-        <Route exact path="/event" component={Event} />
-        <Route exact path="/notice" component={Notice} />
-        <Route exact path="/Discussion" component={Discussion} />
+        <Route exact path="/summary" component={CheckAuth(Summary)} />
+        <Route exact path="/howtojoin" component={CheckAuth(Membership)} />
+        <Route exact path="/member" component={CheckAuth(Member)} />
+        <Route exact path="/meeting" component={CheckAuth(Meeting)} />
+        <Route exact path="/event" component={CheckAuth(Event)} />
+        <Route exact path="/notice" component={CheckAuth(Notice)} />
+        <Route exact path="/Discussion" component={CheckAuth(Discussion)} />
         <Route exact path="/signin" component={SignIn} />
         <Route exact path="/signup" component={SignUp} />
+        <Route exact path="/" component={SignIn} />
       </App>
     </BrowserRouter>
   </Provider>

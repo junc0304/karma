@@ -1,43 +1,51 @@
-import React, { memo } from 'react';
+import React, { memo,useState,useEffect } from 'react';
 import { Form, Button, Modal, ButtonGroup, Jumbotron } from 'react-bootstrap';
 import { connect } from 'react-redux';
-
+import {EditorState, convertToRaw} from 'draft-js';
 import * as actions from '../../actions';
+import RichTextEditor from './RichText.jsx';
+import {EditIcon, TrashIcon, CancelIcon} from '../icons';
 
-const FormComponent = memo(({ type, getPage, createPage, updatePage, data, show, setShow, onSubmit }) => {
- 
+const FormComponent = memo(({ type, getPage, createPage, updatePage, data, show, setShow,content, onSubmit, editMode }) => {
   const dataExist = (data) => data? true: false;
+  const [editorState, setEditorState] = useState(EditorState.createEmpty());
 
-  const formHeader = () => {
-    if(data) return "Edit: "
-    return "Create: "
+  useEffect(() => {
+    setEditorState(content)
+  }, [data]);
+
+  const formatContent = (editorState) => {
+    let contentState = editorState.getCurrentContent();
+    return JSON.stringify(convertToRaw(contentState))
   }
-  
   const handleSubmit = async (event) => {
     event.preventDefault();
-    let { title, content} = event.target;
+    let { pageTitle} = event.target;
     let formData = {
       type: type,
-      title: title.value,
-      content: content.value
+      title: pageTitle.value,
+      content: formatContent(editorState)
     }
     if (dataExist(data)) {
       await updatePage(formData); 
-    } else {
+    } 
+    else {
       await createPage(formData);
     }
     await getPage(type);
     setShow(false);
   }
 
+
+  
   return (
-    <Modal
+   /*  <Modal
       centered
       show={show}
-      onHide={() => setShow(false)} >
+      onHide={() => setShow(false)} > */
+      <div>
       <Modal.Header>
-        {formHeader()}
-        {data.title}</Modal.Header>
+        {data.type}</Modal.Header>
       <Modal.Body>
         <Jumbotron style={{ padding: "20px", marginBottom: "0px" }} >
           <Form onSubmit={handleSubmit}>
@@ -46,27 +54,24 @@ const FormComponent = memo(({ type, getPage, createPage, updatePage, data, show,
               {data.title}</Form.Label>
               <Form.Control
                 className="lead input-lg"
-                name="title"
+                name="pageTitle"
+                //onChange={handleChange}
                 defaultValue={data.title} />
               <hr className="my-4" />
             </Form.Group>
             <Form.Group>
-              <Form.Label>
-                Content</Form.Label>
-              <Form.Control
-                as="textarea"
-                type="textarea"
-                name="content"
-                rows={10}
-                defaultValue={data.content}
-                style={{ resize: "none", whiteSpace: "preWrap" }} />
+              <RichTextEditor 
+                editMode={editMode} 
+                editorState={editorState} 
+                setEditorState={setEditorState} />
             </Form.Group>
             <ButtonComponent 
               setShow={setShow} />
           </Form>
         </Jumbotron>
       </Modal.Body>
-    </Modal>
+      </div>
+    /* </Modal> */
   );
 });
 
@@ -98,6 +103,3 @@ function mapStateToProps(state) {
 }
 
 export default connect(mapStateToProps, actions)(FormComponent);
-
-
-//export default EditForm;

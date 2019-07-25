@@ -1,21 +1,25 @@
-import { AUTH_SIGN_UP, AUTH_SIGN_IN, AUTH_SIGN_OUT, AUTH_ERROR } from '../actions/types';
+import { AUTH_SIGN_UP, AUTH_SIGN_IN, AUTH_SIGN_OUT, AUTH_ERROR, AUTH_SIGN_UP_ERROR, AUTH_SIGN_IN_ERROR } from '../actions/types';
 
 const initialState = {
   user: {},
   isAuthenticated: false,
-  errorMessage: ''
+  signUpErrorMessage: '',
+  signInErrorMessage: ''
 }
 
 const authReducer = (state = initialState, action) => {
   switch (action.type) {
     case AUTH_SIGN_UP:
-      return { ...state, user: action.payload.user, isAuthenticated: true, errorMessage: '' };
+      return { ...state, user: action.payload, isAuthenticated: true, signUpErrorMessage: '', signInErrorMessage: '' };
     case AUTH_SIGN_IN:
-      return { ...state, user: action.payload.user, isAuthenticated: true, errorMessage: '' };
+      console.log(action)
+      return { ...state, user: action.payload, isAuthenticated: true, signUpErrorMessage: '', signInErrorMessage: '' };
     case AUTH_SIGN_OUT:
-      return { ...state, user: {} , isAuthenticated: false, errorMessage: '' };
-    case AUTH_ERROR:
-      return { ...state, errorMessage: action.payload };
+      return { ...state, user: {}, isAuthenticated: false, signUpErrorMessage: '', signInErrorMessage: '' };
+    case AUTH_SIGN_UP_ERROR:
+      return { ...state, signUpErrorMessage: action.payload, signInErrorMessage: '' };
+    case AUTH_SIGN_IN_ERROR:
+      return { ...state, signUpErrorMessage: '', signInErrorMessage: action.payload };
     default:
       return state;
   }

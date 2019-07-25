@@ -1,5 +1,13 @@
 
 
+.modal-backdrop {
+  background-color: rgba(0,0,0,.0001) !important;
+}
+
+.modal-content {
+  background-color: rgba(240,240,0240,.95) !important;
+}
+
 @media all and (max-width: 479px) { 
   .d-flex .col1 {
       display:none;

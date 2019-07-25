@@ -1,5 +1,5 @@
 import React from 'react';
-import Board from './board/Board';
+import Board from './board/Board.jsx';
 import { BOARD_TYPE } from '../config';
 
 const Discussion = () => {
@@ -7,7 +7,7 @@ const Discussion = () => {
   return(
     <Board 
       title="Discussion"
-      type={BOARD_TYPE.DISCUSSION} />
+      type={BOARD_TYPE.DISCUSSION} adminOnly={false} />
   );
 }
 

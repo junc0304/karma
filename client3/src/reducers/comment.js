@@ -10,7 +10,8 @@ const commentReducer = (state = initialState, action) => {
   switch (action.type) {
     //board get actions
     case GET_COMMENT:
-      return { ...state, postId: action.payload.comment.postId, data: action.payload.comment, errorMessage: '' };
+      console.log(action.payload)
+      return { ...state, postId: action.payload.postId ,data: action.payload.comment, errorMessage: '' };
     case CREATE_COMMENT:
       return { ...state, errorMessage: '' };
     case UPDATE_COMMENT:
