@@ -2,10 +2,10 @@ import React, { memo, useState, Fragment } from 'react';
 import { Form } from 'react-bootstrap';
 import _ from 'lodash';
 
-const CustomInput = ({edit = true, validation = (v) => null, onChange, style, name, children}) => {
-  const [input, setInput] = useState({[name]: [ '', '']});
+const CustomInput = ({edit = true, validation = (v) => null, onChange, ...props }) => {
+  const [input, setInput] = useState({[props.name]: [ '', '']});
 
-  const formStyle = style || ({
+  const formStyle = props.style || ({
       backgroundColor: "white",
       borderRadius: "5px"
     });
@@ -20,18 +20,18 @@ const CustomInput = ({edit = true, validation = (v) => null, onChange, style, na
   return (
     <Fragment>
       <Form.Control
- 
+        {...props}
         onChange={handleChange}
-        value={input[name][0]}
+        value={input[props.name][0]}
         readOnly={!edit}
         disabled={!edit}
         style={formStyle}
-        isInvalid={input[name][1]}
+        isInvalid={input[props.name][1]}
       >
-        {children}
+        {props.children}
       </Form.Control>
       <Form.Control.Feedback type="invalid">
-        {input[name][1]}
+        {input[props.name][1]}
       </Form.Control.Feedback>
     </Fragment>
   )

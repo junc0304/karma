@@ -8,20 +8,22 @@ import CustomButton from './CustomButton';
 import { email, password } from '../helpers';
 
 const SignIn = ({ signIn, errorMessage, history }) => {
-  let formData = { email: '', password: '' };
+  var formData = { email: '', password: '' };
   //let validated = { email: false, password: false };
 
   const [validated, setValidated] = useState( { email: false, password: false });
-  const onChange = (name, value, valid) => {
+  function onChange(name, value, valid) {
+    console.log(name, value)
     formData = { ...formData, [name]: value };
+    console.log(formData)
     setValidated ({ ...validated, [name]: valid });
   }
 
   useEffect(() => {
-    console.log(validated)
+    console.log(formData, validated)
   }, )
 
-  const onSubmit = async (event) => {
+  async function onSubmit (event) {
     event.preventDefault();
     console.log(formData, validated)
     if (validated.email && validated.password) {
