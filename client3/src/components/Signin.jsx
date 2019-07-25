@@ -1,4 +1,4 @@
-import React , {useState}from 'react';
+import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { Jumbotron, Form, Button, Alert } from 'react-bootstrap';
 import * as actions from '../actions';
@@ -6,25 +6,29 @@ import { JUMBOTRON_BG_COMMON } from '../config';
 import CustomInput from './CustomInput';
 import CustomButton from './CustomButton';
 import { email, password } from '../helpers';
-const SignIn = ({ signIn, errorMessage, history }) => {
-  let formData = { email:'', password:''};
-  let validated = { email:false, password: false };
 
+const SignIn = ({ signIn, errorMessage, history }) => {
+  let formData = { email: '', password: '' };
+  //let validated = { email: false, password: false };
+
+  const [validated, setValidated] = useState( { email: false, password: false });
   const onChange = (name, value, valid) => {
-    formData = {...formData, [name]:value };
-    validated = { ...validated,  [name]:valid };
+    formData = { ...formData, [name]: value };
+    setValidated ({ ...validated, [name]: valid });
   }
+
+  useEffect(() => {
+    console.log(validated)
+  }, )
 
   const onSubmit = async (event) => {
     event.preventDefault();
     console.log(formData, validated)
-    if(validated.email && validated.password) {
+    if (validated.email && validated.password) {
       await signIn(formData);
       if (!errorMessage) {
         history.push('/home');
       }
-      formData={};
-      validated={};
     }
   }
 
@@ -46,7 +50,7 @@ const SignIn = ({ signIn, errorMessage, history }) => {
             name="email"
             type="email"
             onChange={onChange}
-            validation={email} 
+            validation={email}
           />
         </Form.Group>
         <Form.Group>
@@ -61,13 +65,13 @@ const SignIn = ({ signIn, errorMessage, history }) => {
         </Form.Group>
         {errorMessage &&
           <Alert wait={1000} variant="danger">
-            {errorMessage}</Alert>} 
-     <Button
+            {errorMessage}</Alert>}
+        <Button
           className="d-flex ml-auto"
           type="submit"
           variant="light"
         >
-          Sign In</Button> 
+          Sign In</Button>
       </Form>
     </Jumbotron>
   );
