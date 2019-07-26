@@ -5,10 +5,14 @@ import { BOARD_PROPERTY } from '../../config';
 import PostView from './Table.Row.View.jsx';
 
 const TableRowComponent = memo(({ item, onClick }) => {
-  let {index, title, created, authorName, comments} = item;
+  const { index, title, created, authorName, comments} = item;
+
   const isNew = () => new Date().setDate(new Date().getDate() -5) < new Date(item.created);
-  const formatTime = (time) => new Intl.DateTimeFormat('en-US', { month: "short", day: "numeric", year: "numeric" }).format(new Date(time));
   const commentExist = (item) => item.comments.length > 0;
+  const formatTime = (time) => ( 
+    new Intl.DateTimeFormat('en-US', { month: "short", day: "numeric", year: "numeric" }).format(new Date(time))
+  );
+
   return (
     <tr
       className="text-center" 
@@ -20,8 +24,12 @@ const TableRowComponent = memo(({ item, onClick }) => {
       </td>
       <td xs={8} sm={6} md={6} lg={6} style={{ whiteSpace: "nowrap", overflow: "hidden", textOverflow:"ellipsis"}}>
         {`${title} `} 
-        {commentExist(item) && <span style={{fontSize:"12px"}}>{` [${comments.length}] `}</span>}
-        {isNew() && <Badge variant="danger" style={{fontSize:"10px"}}>new</Badge>} 
+        {commentExist(item) && (
+          <span style={{fontSize:"12px"}}>{` [${comments.length}] `}</span>
+        )}
+        {isNew() && (
+          <Badge variant="danger" style={{fontSize:"10px"}}>new</Badge>
+        )} 
       </td>
       <td xs={4} sm={3} md={3} lg={3}>
         {formatTime(created)}
@@ -73,15 +81,10 @@ const TableComponent = memo(({ page, data }) => {
     loadData();
   }, [data, page]);
 
-  useEffect(()=> {
-    console.log(rows);
-  })
-
   const handleOpenRow = (item) => setRow({ data: item, show: true });
   const handleCloseRow = () => setRow({ data: {}, show: false });
   const handleDeleteRow = () => { /* delete logic */ };
   const handleSubmit = (formData) => {/* submit logic */ };
-
 
   return (
     <Fragment>

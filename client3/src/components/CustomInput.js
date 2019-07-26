@@ -4,19 +4,16 @@ import _ from 'lodash';
 
 const CustomInput = ({edit = true, validation = (v) => null, onChange, password ,...props }) => {
   const [input, setInput] = useState({[props.name]: ['', '']});
+  const formStyle = props.style || ({ backgroundColor: "white", borderRadius: "5px" });
 
-  const formStyle = props.style || ({
-      backgroundColor: "white",
-      borderRadius: "5px"
-    });
-
-  const debFunc = _.debounce((name, value, valid) => onChange(name, value, valid) , 200)
-
+  const debouncedOnChange = _.debounce((name, value, valid) => onChange(name, value, valid) , 200);
   const handleChange = (event) => {
     let { name, value } = event.target;
-    let valid = !password? validation(value.trim()): validation(password,value.trim());
-    setInput({ ...input, [name]: [value.trim(), valid] });
-    debFunc(name, value.trim(), valid == null );
+    let validated = !password 
+      ? validation(name, value)
+      : validation(password, value);
+    setInput({ ...input, [name]: [value, validated] });
+    debouncedOnChange(name, value, validated == null );
   }
 
   return (

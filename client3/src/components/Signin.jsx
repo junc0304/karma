@@ -1,69 +1,85 @@
-import React , {useRef}from 'react';
+import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { Jumbotron, Form, Button, Alert } from 'react-bootstrap';
-import * as actions from '../actions';
-import { JUMBOTRON_BG_COMMON } from '../config';
-import { signInEmail, signInPassword } from '../helpers';
 import CustomInput from './CustomInput';
 
+import * as actions from '../actions';
+import { JUMBOTRON_BG_COMMON } from '../config';
+import { validateEmailSimple, validatePasswordSimple } from '../helpers';
 
-function SignIn ({ signIn, errorMessage, history }) {
-
-  const formData = useRef({email:'', password:''}).current;
-  const valid = useRef({email:false, password: false}).current;
-
-  const onChange = (name, value, validated) => {
-    formData[name] = value;
-    valid[name] = validated;
-  }
-
-  const onSubmit = async (event) => {
-    event.preventDefault();
-    if(valid.email && valid.password) {
-      await signIn(formData);
-      if (!errorMessage) {
-        history.push('/home');
+const SignIn = (props) => {
+  let formData = { email: '', password: '' };
+  let valid = { email: false, password: false };
+  
+  const ViewSignIn = ({ isAuthenticated, signIn, signReset, errorMessage, history }) => {
+    useEffect(() => {
+      let checkAuth = () => {
+        if(isAuthenticated){
+          history.push('/home')
+        }
+      }
+      checkAuth();
+    } ,[isAuthenticated, history]);
+    const handleChange = (name, value, validated) => {
+      formData[name] = value;
+      valid[name] = validated;
+      console.log(name, validated)
+    }
+    const handleSubmit = async (event) => {
+      event.preventDefault();
+      try {
+        if (!(valid.email && valid.password)) return;
+        await signReset();
+        await signIn(formData);
+      }
+      catch (error) {
+        console.log(error)
       }
     }
-  }
 
-  return (
-    <Jumbotron style={{ backgroundColor: JUMBOTRON_BG_COMMON }}>
-      <h1 className="display-3">Sign In</h1>
-      <p className="lead">Sign in using your Email!</p>
-      <hr className="my-3" />
-      <Form noValidate onSubmit={onSubmit} >
-        <Form.Group>
-          <Form.Label>
-            Email
-          </Form.Label>
-          <CustomInput
-            required
-            name="email"
-            type="email"
-            onChange={onChange}
-            validation={signInEmail} 
-          />
-        </Form.Group>
-        <Form.Group>
-          <Form.Label>
-            Password
-          </Form.Label>
-          <CustomInput
-            required
-            name="password"
-            type="password"
-            onChange={onChange}
-            validation={signInPassword} 
-          />
-        </Form.Group>
-        {errorMessage && <Alert variant="danger">{errorMessage}</Alert>} 
-        <Button className="d-flex ml-auto" type="submit" variant="light" >
-          Sign In
-        </Button> 
-      </Form>
-    </Jumbotron>
-  );
+    return (
+      <Jumbotron style={{ backgroundColor: JUMBOTRON_BG_COMMON }}>
+        <h1 className="display-3">Sign In</h1>
+        <p className="lead">Sign in using your Email!</p>
+        <hr className="my-3" />
+        <Form noValidate onSubmit={handleSubmit} >
+          <Form.Group>
+            <Form.Label>
+              Email
+            </Form.Label>
+            <CustomInput
+              required
+              name="email"
+              type="email"
+              onChange={handleChange}
+              validation={validateEmailSimple}
+            />
+          </Form.Group>
+          <Form.Group>
+            <Form.Label>
+              Password
+            </Form.Label>
+            <CustomInput
+              required
+              name="password"
+              type="password"
+              onChange={handleChange}
+              validation={validatePasswordSimple}
+            />
+          </Form.Group>
+          {errorMessage && <Alert variant="danger">{errorMessage}</Alert>}
+          <Button
+            className="d-flex ml-auto"
+            type="submit"
+            variant="light"
+          >
+            Sign In
+          </Button>
+        </Form>
+      </Jumbotron>
+    );
+  }
+  return <ViewSignIn {...props}/>
 }
 
 const mapStateToProps = (state) => {
@@ -74,3 +90,16 @@ const mapStateToProps = (state) => {
 }
 
 export default connect(mapStateToProps, actions)(SignIn);
+
+
+
+/*
+const mapStateToProps = (state) => {
+  return {
+    isAuthenticated: state.auth.isAuthenticated,
+    errorMessage: state.auth.signInErrorMessage
+  }
+}
+
+export default connect(mapStateToProps, actions)(SignIn);
+ */

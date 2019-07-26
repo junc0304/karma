@@ -1,12 +1,14 @@
 import React, { memo, useState, useEffect } from 'react';
 import { Form, Modal, Jumbotron, Col, Row, ButtonGroup, Button } from 'react-bootstrap';
 import { connect } from 'react-redux';
-import {isUserAdmin } from '../../helpers';
-import Comment from './Comment.jsx';
 import * as actions from '../../actions'
+
+import { isUserAdmin } from '../../helpers';
+import Comment from './Comment.jsx';
 import {EditIcon, TrashIcon, ExIcon} from '../icons';
 import {JUMBOTRON_BG_COMMON} from '../../config'
 import './Board.css'
+
 //single row view component
 const TableRowView = memo(({ getPosts, updatePost, deletePost, getComments, data, show, onClose, type, user : {  role="ADMIN" , userId } }) => {
   const [editMode, setEditMode] = useState(false);

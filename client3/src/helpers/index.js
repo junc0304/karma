@@ -9,60 +9,49 @@ export const isUserAdmin = (role) => {
     return false;
   }
 
+const capitalizeFirst = (string) => {
+  return (string.charAt(0).toUpperCase() + string.slice(1));
+}
 
-export const signInEmail = (value) => {
+export const validateEmailSimple = (name, value) => {
   return !value.match(EMAIL_REGEX) 
-    ? "Invalid Email" 
+    ? `Invalid "${capitalizeFirst(name)}"` 
     : null;
 }
 
-export const signInPassword = (value) => {
+export const validatePasswordSimple = (name, value) => {
   return !value || value.length < 8 || value.length > 16 
-    ? "Password length has to be 8 to 16" 
+    ? `"${name}" length has to be 8 to 16` 
     : null;
 }
 
-export const userPassword = (value) => {
-
+export const validatePassword = (name, value) => {
   return !value || value.length < 8 || value.length > 16 
-    ? "Password must have 8 to 16 characters." 
+    ? `"${name}" must have 8 to 16 characters.` 
     :!value.match(PASSWORD_REGEX) 
-      ? "Password must contain at least one lowercase letter, one uppercase letter, and one numeric digit."
+      ? `"${capitalizeFirst(name)}" must contain at least one lowercase letter, one uppercase letter, and one numeric digit.`
       : null ;
 }
-
-export const userEmail = (value) => {
+export const validateEmail = (name, value) => {
   return !value.match(EMAIL_REGEX) 
-    ? "Please enter a valid email address to use as your User ID." 
+    ? `Please enter a valid "${capitalizeFirst(name)}" to use as your User ID.` 
     :null;
 }
 
-export const userConfirmPassword = (password, value) => {
+export const validateConfirmPassword = (password, value) => {
   console.log(password, value)
- return password && value !== password ? "Password and confirm password does not match."  : null;
+ return password && value !== password ? `Password and "Confirm Password" does not match.`  : null;
 }
 
-export const userName = (value) => {
-  return !value? "Please enter your name." : null;
+export const validateEmpty = (name, value) => {
+  return !value || !value.length?`Please enter your "${capitalizeFirst(name)}".`:null;
 }
 
-export const depotName = (value) => {
-  return !value? "Please enter your depot name.":null;
+export const validateEmptySelection = (name, value) => {
+  return !value || !value.length? `Please choose a "${capitalizeFirst(name)}".` : null 
 }
 
-export const userAddress = (value) => {
-  return !value? "Please enter an address.":null;
-}
-
-export const userCity = (value) => {
-  return !value || !value.length? "Please choose a city." : null 
-}
-
-export const userProvince = (value) => {
-  return !value || !value.length? "Please choose a province." : null;
-}
-
-export const userPostalCode = (value) => {
-  return !value ? "Please enter a postal code." 
-  :!value.match(POSTAL_CODE_REGEX) ? "Please enter a valid postal code." : null;
+export const validatePostalCode = (name, value) => {
+  return !value ? `Please enter a "Postal Code".` 
+  :!value.match(POSTAL_CODE_REGEX) ? `Please enter a valid "Postal Code".` : null;
 }

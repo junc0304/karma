@@ -1,76 +1,69 @@
 import React, { memo, useState, useRef } from 'react';
 import { Form, Button, Modal, ButtonGroup, Jumbotron } from 'react-bootstrap';
 import { connect } from 'react-redux';
+import CustomInput from '../CustomInput';
 import _ from 'lodash';
 
 import { InvisibleIcon, VisibleIcon, RefreshIcon } from '../icons'
 import * as actions from '../../actions';
 
-const FormComponent = memo(({ getPosts, createPost, show, onClose, type }) => {
+const FormComponent = memo(props => {
 
-  const [formData, setFormData] = useState({ type: type });
-  const title = useRef();
-  const content = useRef();
+  let formData = { type: props.type, title: '', content: '' };
 
-  const setFormDataDebounced = _.debounce((name, value) => setFormData({ ...formData, [name]: value }), 300);
-  const handleChange = (event) => setFormDataDebounced(event.target.name, event.target.value);
-  const handleSubmit = async (event) => {
-    event.preventDefault();
-    await createPost(formData);
-    await getPosts(type);
-  };
-
-  const onFocusTitle = () => {
-    title.current.focus();
-  }
-  const onFocusContent = () => {
-    content.current.focus();
-  }
-
-  return (
-    <Modal
-      show={show}
-      onHide={onClose} >
-      <Jumbotron style={{ padding: "20px", marginBottom: "0px" }} >
-        <Form onSubmit={handleSubmit} >
-          <Modal.Header style={{ borderRadius: "5px", padding: "5px 0px 16px 15px" }}>
-            <h3>{type}</h3>
-          </Modal.Header>
-          <Modal.Body
-            onClick={onFocusTitle}
-            style={{ backgroundColor: "white", borderRadius: "5px" }}
-          >
-            <Form.Label style={{ display: "flex", alignItems: "center" }} >
-              Title:
-          </Form.Label>
-            <Form.Control
-              className="lead input-lg"
-              type="text"
-              name="title"
-              ref={title}
-              onChange={handleChange}
-              style={{ border: "0px solid #900" }}
-            />
-          </Modal.Body>
-          <Modal.Body style={{ backgroundColor: "white", borderRadius: "5px", marginTop: "10px" }} onClick={onFocusContent}>
-            <Form.Label style={{ display: "flex", alignItems: "center" }} >
-              Content:
+  const ViewComponent = ({ getPosts, createPost, show, onClose, type }) => {
+    const handleChange = (name, value, validated) => {
+      formData[name] = value;
+      console.log(formData);
+    }
+    const handleSubmit = async (event) => {
+      event.preventDefault();
+      await createPost(formData);
+      onClose();
+      await getPosts(type);
+    };
+    return (
+      <Modal
+        show={show}
+        onHide={onClose}
+      >
+        <Jumbotron style={{ padding: "20px", marginBottom: "0px" }} >
+          <Form onSubmit={handleSubmit} >
+            <Modal.Header style={{ borderRadius: "5px", padding: "5px 0px 16px 15px" }}>
+              <h3>{type}</h3>
+            </Modal.Header>
+            <Modal.Body style={{ backgroundColor: "white", borderRadius: "5px" }}>
+              <Form.Label style={{ display: "flex", alignItems: "center" }} >
+                Title:
             </Form.Label>
-            <Form.Control
-              as="textarea"
-              name="content"
-              rows={10}
-              onChange={handleChange}
-              ref={content}
-              style={{ padding: "16px", resize: "none", whiteSpace: "preWrap", backgroundColor: "white", borderRadius: "5px", minHeight: "300px", border: "0px solid #900" }}
-            />
-          </Modal.Body>
-          <FormButtons onClose={onClose} />
-        </Form>
-      </Jumbotron>
+              <CustomInput
+                required
+                name="title"
+                type="text"
+                onChange={handleChange}
+              />
+            </Modal.Body>
+            <Modal.Body style={{ backgroundColor: "white", borderRadius: "5px", marginTop: "10px" }} >
+              <Form.Label style={{ display: "flex", alignItems: "center" }} >
+                Content:
+              </Form.Label>
+              <CustomInput
+                name='content'
+                as='textarea'
+                type='text'
+                rows={10}
+                onChange={handleChange}
+                style={{ padding: "16px", resize: "none", whiteSpace: "preWrap", backgroundColor: "white", borderRadius: "5px", minHeight: "300px", border: "0px solid #900" }}
+              />
+            </Modal.Body>
+            <FormButtons onClose={onClose} />
+          </Form>
+        </Jumbotron>
+      </Modal>
+    );
+  }
 
-    </Modal>
-  );
+  return <ViewComponent {...props} />
 });
 
 const FormButtons = memo(({ onClose }) => {
@@ -80,7 +73,6 @@ const FormButtons = memo(({ onClose }) => {
         <Button
           type="submit"
           variant="light"
-          onClick={onClose}
           style={{ hight: "1rem", width: "5rem", marginRight: "5px" }}
         >
           Create
@@ -104,6 +96,3 @@ function mapStateToProps(state) {
   }
 }
 export default connect(mapStateToProps, actions)(FormComponent);
-
-
-//export default EditForm;

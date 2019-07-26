@@ -1,7 +1,7 @@
 import axios from 'axios';
 import {
   //auth
-  AUTH_SIGN_UP, AUTH_SIGN_OUT, AUTH_SIGN_IN, AUTH_ERROR, AUTH_SIGN_UP_ERROR, AUTH_SIGN_IN_ERROR,
+  AUTH_SIGN_UP, AUTH_SIGN_OUT, AUTH_SIGN_IN, AUTH_SIGN_UP_ERROR, AUTH_SIGN_IN_ERROR, AUTH_SIGN_RESET,
   //board
   GET_POST, CREATE_POST, UPDATE_POST, DELETE_POST, RESET_POST, POST_ERROR,
   //member
@@ -34,18 +34,19 @@ export const signUp = (data) => {
 export const signIn = (data) => {
   return async dispatch => {
     try {
-      console.log(data)
       let res = await axios.post('http://localhost:4000/auth/signin', data);
       dispatch({
         type: AUTH_SIGN_IN,
         payload: res.data
       });
-    } catch (err) {
-      console.log(err)
+      console.log("sign in dispatched")
+    } 
+    catch (err) {
+      console.log("sign error occured")
       dispatch({
         type: AUTH_SIGN_IN_ERROR,
         payload: 'Incorrect User ID and/or password.'
-      })
+      });
     }
   };
 }
@@ -66,6 +67,14 @@ export const signOut = () => {
       type: RESET_MEMBER
     })
   };
+}
+
+export const signReset = () => {
+  return async dispatch => {
+    dispatch({
+      type: AUTH_SIGN_RESET
+    })
+  }
 }
 
 const getPostType = (type) => {

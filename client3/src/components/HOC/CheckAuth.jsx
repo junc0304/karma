@@ -3,21 +3,25 @@ import { connect } from 'react-redux';
 
 const CheckAuth = (Component) => {
 
-  function AuthController ({isAuth, history}) {
+  function AuthController ({isAuth, history, errorMessage}) {
     const [showComponent, setShowComponent] = useState(false);
+
     useEffect(()=> {
       setShowComponent(false);
       if (!isAuth) {
         history.push('/signin');
       }
       setShowComponent(true);
-    });
+    }, [isAuth, errorMessage, history]);
+
   return ( showComponent && <Component /> );
   }
 
   const mapStateToProps = (state) => {
     return {
-      isAuth: state.auth.isAuthenticated
+      isAuth: state.auth.isAuthenticated,
+      errorMessage: state.auth.signInrrorMessage || state.auth.signUpErrorMessage 
+
     }
   }
   

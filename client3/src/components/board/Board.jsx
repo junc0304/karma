@@ -11,7 +11,6 @@ import * as actions from '../../actions';
 
 import { PlusIcon} from '../icons'
 
-
 import { BOARD_PROPERTY, USER_TYPE } from '../../config';
 const { PAGE_SIZE, PAGINATION_SIZE } = BOARD_PROPERTY;
 
@@ -24,7 +23,6 @@ const Board = memo(({ getPosts, title, data, type, role }) => {
     const fetchData = async () => await getPosts(type);
     fetchData();
   }, [getPosts, type]);
-
 
   useEffect(() => {
     console.log(data)
@@ -53,7 +51,8 @@ const Board = memo(({ getPosts, title, data, type, role }) => {
         <PaginationComponent
           dataSize={data.length}
           currentPage={currentPage}
-          setCurrentPage={setCurrentPage} />
+          setCurrentPage={setCurrentPage} 
+        />
         {isUserAdmin(role) && (
           <FormComponent
             data={data}
@@ -79,7 +78,8 @@ const CreateButton = memo(({ onOpen }) => {
           variant="light"
           onClick={onOpen}
           style={{backgroundColor:"rgba(255,255,255,0)", border:"0px solid red"}}
-          > <PlusIcon style={{textAlign:"center", verticalAlign:"middle"}}/></Button>
+        > 
+        <PlusIcon style={{textAlign:"center", verticalAlign:"middle"}}/></Button>
       </ButtonGroup>
     </div>
   );

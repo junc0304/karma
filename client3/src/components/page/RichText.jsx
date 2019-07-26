@@ -158,8 +158,7 @@ const BlockStyleControls = memo(({ editorState, onToggle }) => {
 var INLINE_STYLES = [
   { label: 'B', style: 'BOLD', buttonStyle: { fontWeight: "bold" } },
   { label: 'I', style: 'ITALIC', buttonStyle: { fontStyle: "italic" } },
-  { label: 'U', style: 'UNDERLINE', buttonStyle: { textDecoration: "underline" } },
-  // { label: 'Monospace', style: 'CODE' },
+  { label: 'U', style: 'UNDERLINE', buttonStyle: { textDecoration: "underline" }},
 ];
 const InlineStyleControls = memo(({ editorState, onToggle }) => {
   var currentStyle = editorState.getCurrentInlineStyle();

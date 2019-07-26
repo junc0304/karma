@@ -13,6 +13,7 @@ const PaginationComponent = memo(({ dataSize, currentPage, setCurrentPage }) => 
   const [currentPagers, setCurrentPagers] = useState(1);
   const lastPage = Math.max(Math.ceil(dataSize / PAGE_SIZE), 1);
   const lastPager = Math.max(Math.ceil(dataSize / (PAGE_SIZE * PAGINATION_SIZE)), 1);
+
   useEffect(() => {
     const getPagers = () => {
       let pagerItems = [];
@@ -26,6 +27,7 @@ const PaginationComponent = memo(({ dataSize, currentPage, setCurrentPage }) => 
     }
     getPagers();
   }, [lastPage, currentPagers, currentPage, setCurrentPage]);
+  
   const toNextPagers = () => {
     setCurrentPage((currentPagers) * PAGINATION_SIZE + 1);
     setCurrentPagers(currentPagers + 1);
