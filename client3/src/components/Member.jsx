@@ -6,6 +6,7 @@ import ViewComponent from './member/View.jsx';
 import * as actions from '../actions';
 
 const Member = memo(({member, getMembers}) => {
+
   const [data, setData] = useState([]);
   const [showModal, setShowModal] = useState(false);
   const [modalData, setModalData] = useState([]);
@@ -24,7 +25,6 @@ const Member = memo(({member, getMembers}) => {
 
   useEffect(()=> {
     setData(Object.values(member.data))
-    console.log(data)
   }, [member])
 
   return (
@@ -33,14 +33,11 @@ const Member = memo(({member, getMembers}) => {
         <hr className="my-3" />
         <TableComponent data={data} onClick={onClickRow}/>
         <ViewComponent data={modalData} setShow={setShowModal} show={showModal} />
-
-
     </Jumbotron>
   );
 });
 
 const mapStateToProps = (state) => {
-  console.log('state', state);
   return {
     user: state.user,
     member: state.member,

@@ -1,21 +1,12 @@
 import React, { useRef, useState, useEffect, memo } from 'react';
-import { Editor, EditorState, RichUtils, convertToRaw, convertFromRaw } from 'draft-js';
+import { Editor, RichUtils } from 'draft-js';
+import _ from 'lodash';
 
-const RichTextEditor = memo(({ editMode, editorState, setEditorState, onChangeEditorState }) => {
+const maxDepth = 4;
+
+const RichTextEditor = memo(({ edit, defaultValue, onChange /* editorState, onChangeEditorState  */ }) => {
   const [className, setClassName] = useState('RichEditor-editor');
-  const editor = useRef();
-  const onChange = (editorState) => {
-    onChangeEditorState(editorState);
-  } 
-
-  const handleKeyCommand = (command, editorState) => {
-    const newState = RichUtils.handleKeyCommand(editorState, command);
-    if (newState) {
-      onChange(newState);
-      return true;
-    }
-    return false;
-  }
+  const [editorState, setEditorState] = useState(defaultValue);
 
   useEffect(() => {
     var contentState = editorState.getCurrentContent();
@@ -25,46 +16,58 @@ const RichTextEditor = memo(({ editMode, editorState, setEditorState, onChangeEd
       }
     }
   }, [editorState]);
+ 
 
-  const onFocus = () => {
-    editor.current.focus();
+  const editor = useRef();
+  const debouncedOnChange = _.debounce((editorState) => onChange(editorState), 100);
+  const debouncedStateChange = _.debounce((editorState) => setEditorState(editorState), 30);
+  const onChangeEditorState = (editorState) => {
+    debouncedStateChange(editorState);
+    debouncedOnChange(editorState);
   }
-  const onTab = (event) => {
-    let maxDepth = 4;
-    onChange(RichUtils.onTab(event, editorState, maxDepth));
+  const handleKeyCommand = (command, editorState) => {
+    const newState = RichUtils.handleKeyCommand(editorState, command);
+    if (newState) {
+      onChangeEditorState(newState);
+      return true;
+    }
+    return false;
   }
+  const onFocus = () => editor.current.focus();
+  const onTab = (event) => onChangeEditorState(RichUtils.onTab(event, editorState, maxDepth));
+  const toggleBlockType = (blockType) => onChangeEditorState(RichUtils.toggleBlockType(editorState, blockType));
+  const toggleInlineStyle = (inlineStyle) => onChangeEditorState(RichUtils.toggleInlineStyle(editorState, inlineStyle));
 
-  const toggleBlockType = (blockType) => {
-    onChange(RichUtils.toggleBlockType(editorState, blockType));
-  }
-
-  const toggleInlineStyle = (inlineStyle) => {
-    onChange(RichUtils.toggleInlineStyle(editorState, inlineStyle));
-  }
   return (
-    <div className="RichEditor-root" onClick={onFocus}
-      style={{ background: "#fff", border:editMode?"1px solid #ddd":"0px solid #ddd", fontSize: "14px", padding: "15px", minHeight: "200px", borderRadius: "5px" , backgroundColor:editMode?"rgba(255, 255, 255, 0.8)":"inherit"}}>
-      {editMode &&
+    <div
+      onClick={onFocus}
+      className="RichEditor-root"
+      style={{ background: "#fff", border: edit ? "1px solid #ddd" : "0px solid #ddd", fontSize: "14px", padding: "15px", minHeight: "200px", borderRadius: "5px", backgroundColor: edit ? "rgba(255, 255, 255, 0.8)" : "inherit" }}>
+      {edit && (
         <BlockStyleControls
           editorState={editorState}
-          onToggle={toggleBlockType} />}
-      {editMode &&
+          onToggle={toggleBlockType}
+        />
+      )}
+      {edit && (
         <InlineStyleControls
           editorState={editorState}
-          onToggle={toggleInlineStyle} />}
-      {editMode &&
-        <hr className="my-6" />}
+          onToggle={toggleInlineStyle}
+        />
+      )}
+      {edit && <hr className="my-6" />}
       <div className={className} >
         <Editor
           blockStyleFn={getBlockStyle}
           customStyleMap={styleMap}
           onTab={onTab}
           editorState={editorState}
-          onChange={onChange}
-          readOnly={!editMode}
+          onChange={onChangeEditorState}
+          readOnly={!edit}
           ref={editor}
           spellCheck={true}
-          handleKeyCommand={handleKeyCommand} />
+          handleKeyCommand={handleKeyCommand}
+        />
       </div>
     </div>
   );
@@ -158,7 +161,7 @@ const BlockStyleControls = memo(({ editorState, onToggle }) => {
 var INLINE_STYLES = [
   { label: 'B', style: 'BOLD', buttonStyle: { fontWeight: "bold" } },
   { label: 'I', style: 'ITALIC', buttonStyle: { fontStyle: "italic" } },
-  { label: 'U', style: 'UNDERLINE', buttonStyle: { textDecoration: "underline" }},
+  { label: 'U', style: 'UNDERLINE', buttonStyle: { textDecoration: "underline" } },
 ];
 const InlineStyleControls = memo(({ editorState, onToggle }) => {
   var currentStyle = editorState.getCurrentInlineStyle();

@@ -42,9 +42,15 @@ const MenuButtonsComponent = memo(({ onClose, onDelete, onModeChange, edit }) =>
 });
 
 const FormComponent = memo(({ data, show, onClose, onSubmit, onDelete }) => {
+
   const [formData, setFormData] = useState({});
   const [editMode, setEditMode] = useState(false);
 
+  useEffect(() => {
+    const fetchData = ()=> {}
+    fetchData();
+  },[]);
+  
   useEffect(() => setFormData(data), [data]);
 
   const setFormDataDebounced = _.debounce((name, value) => setFormData({ ...formData, [name]: value }), 300);

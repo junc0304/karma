@@ -8,7 +8,8 @@ const Notice = () => {
   return(
     <Board 
       title="Notice"
-      type={BOARD_TYPE.NOTICE} />
+      type={BOARD_TYPE.NOTICE}
+    />
   );
 }
 

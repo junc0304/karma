@@ -6,7 +6,8 @@ const Membership = memo(({role = USER_TYPE.ADMIN }) => {
   return (
     <Page
       role={role}
-      type={PAGE_TYPE.MEMBERSHIP} />
+      type={PAGE_TYPE.MEMBERSHIP} 
+    />
   );
 });
 

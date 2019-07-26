@@ -34,7 +34,6 @@ const AuthMenu = memo(({signOut, isAuth}) => {
 
 
 const AboutMenu = () => {
-  
   return (
     <NavDropdown title={"About" } id="about-dropdown">
       <NavDropdown.Item as={Link} to="/home">Greeting</NavDropdown.Item>

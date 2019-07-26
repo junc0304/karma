@@ -7,34 +7,46 @@ import * as actions from '../actions';
 import { JUMBOTRON_BG_COMMON } from '../config';
 import { validateEmailSimple, validatePasswordSimple } from '../helpers';
 
-const SignIn = (props) => {
+const SignIn = ({ isAuthenticated, history, ...props }) => {
+
   let formData = { email: '', password: '' };
   let valid = { email: false, password: false };
-  
-  const ViewSignIn = ({ isAuthenticated, signIn, signReset, errorMessage, history }) => {
-    useEffect(() => {
-      let checkAuth = () => {
-        if(isAuthenticated){
-          history.push('/home')
-        }
+
+  useEffect(() => {
+    let checkAuth = () => {
+      if (isAuthenticated) {
+        history.push('/home');
       }
-      checkAuth();
-    } ,[isAuthenticated, history]);
+    }
+    checkAuth();
+  }, [isAuthenticated, history]);
+
+
+  const ViewSignIn = ({ signIn, signReset, errorMessage }) => {
     const handleChange = (name, value, validated) => {
       formData[name] = value;
       valid[name] = validated;
       console.log(name, validated)
     }
+
     const handleSubmit = async (event) => {
       event.preventDefault();
       try {
-        if (!(valid.email && valid.password)) return;
+        if (hasErrors(valid)) return;
         await signReset();
         await signIn(formData);
       }
       catch (error) {
         console.log(error)
       }
+    }
+
+    const hasErrors = (item) => {
+      console.log(item)
+      if (!item.length) return false;
+      let correct = true;
+      Object.values(item).forEach((value) => correct &= value);
+      return !correct;
     }
 
     return (
@@ -79,7 +91,7 @@ const SignIn = (props) => {
       </Jumbotron>
     );
   }
-  return <ViewSignIn {...props}/>
+  return <ViewSignIn {...props} />
 }
 
 const mapStateToProps = (state) => {

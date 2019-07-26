@@ -3,7 +3,7 @@ import { Jumbotron } from 'react-bootstrap';
 import { TrashIcon, EditIcon, ExIcon } from './icons';
 import TableComponent from './history/Table.jsx';
 import {HistoryContext} from './history/HistoryContext.jsx';
-const _ = require('lodash');
+import _ from 'lodash';
 
 const sampleData = [
   { year: "1980", month: "1", title: "칼마 협회 창립총회 ", content: "(초대회장– 김 종진 / NORTH VAN RECYCLING LTD.)" },

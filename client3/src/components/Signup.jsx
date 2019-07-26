@@ -13,11 +13,12 @@ const SignUp = props => {
 
   const ViewComponent = ({ signUp, errorMessage, history }) => {
     const [ confirmPassword, setConfirmPassword ] = useState(true);
+
     const onSubmit = async (event) => {
       event.preventDefault();
-      console.log(formData, validationError)
-      if (hasErrors(validationError)) return;
-      console.log("aaaa")
+      if (hasErrors(validationError)) {
+        return;
+      }
       await signUp(trimSpaces(formData));
       if (!errorMessage) {
         history.push('/home');
