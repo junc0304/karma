@@ -3,7 +3,7 @@ import { Form, Modal, Jumbotron, Col, Row, ButtonGroup, Button } from 'react-boo
 import { connect } from 'react-redux';
 import * as actions from '../../actions'
 
-import { isUserAdmin } from '../../helpers';
+import { isAdmin } from '../../helpers';
 import Comment from './Comment.jsx';
 import {EditIcon, TrashIcon, ExIcon} from '../icons';
 import {JUMBOTRON_BG_COMMON} from '../../config'
@@ -62,7 +62,7 @@ const TableRowView = memo(({ getPosts, updatePost, deletePost, getComments, data
           <Modal.Header style={{ borderRadius: "5px", padding: "5px 0px 16px 15px"}}>
           <h3>{currentData.type}</h3>
             <MenuButton
-              isAuth={(isUserAdmin(role) || userId === currentData.ownerId )}
+              isAuth={(isAdmin(role) || userId === currentData.ownerId )}
               editMode={editMode}
               onClose={onCloseModal}
               onEdit={onEdit}

@@ -8,14 +8,14 @@ import * as actions from '../../actions';
 import RichTextEditor from './RichText.jsx';
 import { JUMBOTRON_BG_COMMON } from '../../config';
 import { EditIcon } from '../icons';
-import { isUserAdmin, fromEditorStateToRaw, fromRawToEditorState } from '../../helpers';
+import { isUserAdmin, convertText } from '../../helpers';
 
 const Page = memo((props) => {
 
   let { type, getPage } = props;
   let formData = { type };
   const [edit, setEdit] = useState(false);
-  
+
   useEffect(() => { 
     (async () => await getPage(type))(); 
   }, [type]);
@@ -37,7 +37,7 @@ const Page = memo((props) => {
     }
 
     const handleTitleChange = (name, value, valid) => formData[name] = value;
-    const handleContentChange = (value) => formData.content = fromEditorStateToRaw(value);
+    const handleContentChange = (value) => formData.content = convertText.toRaw(value);
     const handleEditModeChange = () => setEdit(!edit);
     const handleEditModeEnd = () => setEdit(false);
 
@@ -59,7 +59,7 @@ const Page = memo((props) => {
           <hr className="my-4" />
           <RichTextEditor
             edit={edit}
-            defaultValue={fromRawToEditorState(data.content)}
+            defaultValue={convertText.toEditorState(data.content)}
             onChange={handleContentChange}
           />
           {edit && <SaveCancelButton onClick={handleEditModeEnd} />}

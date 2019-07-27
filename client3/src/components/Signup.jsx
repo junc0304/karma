@@ -4,7 +4,7 @@ import { Jumbotron, Form, Alert, Button, ButtonGroup } from 'react-bootstrap';
 import * as actions from '../actions';
 import { CITIES_IN_BC } from '../config'
 import CustomInput from './CustomInput';
-import { validateEmail, validatePassword, validateConfirmPassword, validateEmpty, validatePostalCode } from '../helpers'
+import { validate } from '../helpers'
 
 const SignUp = props => {
 
@@ -73,7 +73,7 @@ const SignUp = props => {
                 type="email"
                 name="email"
                 onChange={onChange}
-                validation={validateEmail}
+                validation={validate.email}
               />
               <Form.Text>
                 **This Email address is your User ID
@@ -88,7 +88,7 @@ const SignUp = props => {
                 type="password"
                 placeholder="Password"
                 onChange={onChange}
-                validation={validatePassword}
+                validation={validate.password}
               />
               <Form.Label>
                 Confirm Password
@@ -100,7 +100,7 @@ const SignUp = props => {
                 onChange={onPasswordConfirmChange}
                 password={formData.password}
                 isInvalid={!confirmPassword}
-                validation={validateConfirmPassword}
+                validation={validate.confirmPassword}
                 placeholder="Confirm Password"
               />
             </Form.Group>
@@ -120,7 +120,7 @@ const SignUp = props => {
                 type="text"
                 placeholder="John Doe"
                 onChange={onChange}
-                validation={validateEmpty}
+                validation={validate.empty}
               />
             </Form.Group >
             <Form.Group className="col-6">
@@ -133,7 +133,7 @@ const SignUp = props => {
                 type="text"
                 placeholder="e.g. Burnaby Return-It bottle depot..."
                 onChange={onChange}
-                validation={validateEmpty}
+                validation={validate.empty}
               />
             </Form.Group>
           </Form.Row>
@@ -159,7 +159,7 @@ const SignUp = props => {
                 type="text"
                 placeholder="1234 Main St"
                 onChange={onChange}
-                validation={validateEmpty}
+                validation={validate.empty}
               />
             </Form.Group>
           </Form.Row>
@@ -174,7 +174,7 @@ const SignUp = props => {
                 name="city"
                 type="text"
                 onChange={onChange}
-                validation={validateEmpty}
+                validation={validate.emptySelection}
               >
                 <option value={""} />
                 {CITIES_IN_BC.map((item, index) => <option key={index}> {item} </option>)}
@@ -190,7 +190,7 @@ const SignUp = props => {
                 name="province"
                 type="text"
                 onChange={onChange}
-                validation={validateEmpty}
+                validation={validate.emptySelection}
               >
                 <option value={""} />
                 <option>British Columbia</option>
@@ -205,7 +205,7 @@ const SignUp = props => {
                 name="postalCode"
                 type="text"
                 onChange={onChange}
-                validation={validatePostalCode}
+                validation={validate.postalCode}
               />
             </Form.Group>
           </Form.Row>

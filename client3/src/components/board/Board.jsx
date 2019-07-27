@@ -1,88 +1,111 @@
-import React, { memo, useState, useEffect } from 'react';
+import React, { memo, useState, useEffect, useReducer } from 'react';
 import { Jumbotron, ButtonGroup, Button } from 'react-bootstrap';
 import { connect } from 'react-redux'
 
 import TableComponent from './Table.jsx';
 import PaginationComponent from './Pagination.jsx';
 import FormComponent from './Form.jsx';
-import {BoardContext} from './BoardContext.jsx';
-import { isUserAdmin } from '../../helpers'
+import { BoardContext } from './BoardContext.jsx';
+import { isAdmin } from '../../helpers'
 import * as actions from '../../actions';
-
-import { PlusIcon} from '../icons'
-
+import { paginationReducer } from './BoardReducer';
+import { PlusIcon } from '../icons'
 import { BOARD_PROPERTY, USER_TYPE } from '../../config';
-const { PAGE_SIZE, PAGINATION_SIZE } = BOARD_PROPERTY;
 
-const Board = memo(({ getPosts, title, data, type, role }) => {
+function Board ( props/* { getPosts, title, data, type, role} */)  {
 
-  const [currentPage, setCurrentPage] = useState(1);
-  const [showForm, setShowForm] = useState(false);
-
-  useEffect(() => {
-    const fetchData = async () => await getPosts(type);
+  const { getPosts, title, data, type, role } = props;
+  const { PAGE_SIZE, PAGINATION_SIZE } = BOARD_PROPERTY;
+  const lastPage = Math.ceil(data.length / PAGE_SIZE);
+  const lastPageSet = Math.ceil(lastPage / PAGINATION_SIZE);
+  const initialPageState = {
+    page: { start: 1, current: 1, end: PAGINATION_SIZE }, pageSet: 1,
+    pageSize: PAGE_SIZE, pageSetSize: PAGINATION_SIZE, lastPage, lastPageSet
+  };
+  
+  //above constants only resets when type is changed
+  useEffect(() =>{ 
+    let fetchData = async () => getPosts(type);
     fetchData();
-  }, [getPosts, type]);
+  }, [type, getPosts]);
 
-  useEffect(() => {
-    console.log(data)
-  })
+  const BoardView = (/* { title, data, role } */) => {
+    const [currentPage, setCurrentPage] = useState(1);
+    const [showForm, setShowForm] = useState(false);
+    const [pageState, dispatch] = useReducer(paginationReducer, initialPageState);
 
-  const handleCloseForm = () => setShowForm(false);
-  const handleOpenForm = () => setShowForm(true);
-  const handlePageChange = () => {
-    
-  }
+    useEffect(() => {
+      console.log(pageState);
+    })
 
-  return (
-    <BoardContext.Provider value = {data}>
-      <Jumbotron style={{ wordWrap: "break-word", padding: "15px 15px", backgroundColor:"rgba(255,255,255,0.8)" }}>
-        <h3>
-          {title}
-          {isUserAdmin(role) && (
-            <CreateButton onOpen={handleOpenForm} />
-          )}
-        </h3>
-        <hr className="my-3" />
-        <TableComponent
-          data={data}
-          page={currentPage} />
-        <hr className="my-3" />
-        <PaginationComponent
-          dataSize={data.length}
-          currentPage={currentPage}
-          setCurrentPage={setCurrentPage} 
-        />
-        {isUserAdmin(role) && (
-          <FormComponent
+    const handleNextPage = () => dispatch({ type: 'nextPage' });
+    const handlePrevPage = () => dispatch({ type: 'prevPage' });
+    const handleNextPageSet = () => dispatch({ type: 'nextPageSet' });
+    const handlePrevPageSet = () => dispatch({ type: 'prevPageSet' });
+    const handleLastPage = () => dispatch({ type: 'lastPage' });
+    const handleFirstPage = () => dispatch({ type: 'firstPage' });
+
+    const handleCloseForm = () => setShowForm(false);
+    const handleOpenForm = () => setShowForm(true);
+    const handlePageChange = () => {
+
+    }
+
+    return (
+      <BoardContext.Provider value={data}>
+        <Jumbotron style={{ wordWrap: "break-word", padding: "15px 15px", backgroundColor: "rgba(255,255,255,0.8)" }}>
+          <h3>
+            <Button onClick={handleNextPage}>aa</Button>
+            <Button onClick={handlePrevPage}>bb</Button>
+            {title}
+            {isAdmin(role) && (
+              <CreateButton onOpen={handleOpenForm} />
+            )}
+          </h3>
+          <hr className="my-3" />
+          <TableComponent
             data={data}
-            show={showForm}
-            onClose={handleCloseForm} 
+            page={currentPage} />
+          <hr className="my-3" />
+          <PaginationComponent
+            dataSize={data.length}
+            currentPage={currentPage}
+            setCurrentPage={setCurrentPage}
           />
-        )}
-      </Jumbotron>
-    </BoardContext.Provider>
-  );
-});
+          {isAdmin(role) && (
+            <FormComponent
+              data={data}
+              show={showForm}
+              onClose={handleCloseForm}
+            />
+          )}
+        </Jumbotron>
+      </BoardContext.Provider>
+    );
+  }
+  return <BoardView {...props} />
+}
 
 const CreateButton = memo(({ onOpen }) => {
   return (
     <div style={{ position: "relative" }}>
       <ButtonGroup
-        style={{ 
-          position: "absolute", right: "1px", bottom: "0px", 
-          minHeight: "30px", minWidth: "30px" }}>
-        <Button 
+        style={{
+          position: "absolute", right: "1px", bottom: "0px",
+          minHeight: "30px", minWidth: "30px"
+        }}>
+        <Button
           size="sm"
           fontSize="large"
           variant="light"
           onClick={onOpen}
-          style={{backgroundColor:"rgba(255,255,255,0)", border:"0px solid red"}}
-        > 
-        <PlusIcon style={{textAlign:"center", verticalAlign:"middle"}}/></Button>
+          style={{ backgroundColor: "rgba(255,255,255,0)", border: "0px solid red" }}
+        >
+          <PlusIcon style={{ textAlign: "center", verticalAlign: "middle" }} /></Button>
       </ButtonGroup>
     </div>
   );
+
 });
 
 const mapStateToProps = (state) => {

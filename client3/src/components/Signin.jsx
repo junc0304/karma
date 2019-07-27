@@ -5,7 +5,7 @@ import CustomInput from './CustomInput';
 
 import * as actions from '../actions';
 import { JUMBOTRON_BG_COMMON } from '../config';
-import { validateEmailSimple, validatePasswordSimple } from '../helpers';
+import { validate } from '../helpers';
 
 const SignIn = ({ isAuthenticated, history, ...props }) => {
 
@@ -64,7 +64,7 @@ const SignIn = ({ isAuthenticated, history, ...props }) => {
               name="email"
               type="email"
               onChange={handleChange}
-              validation={validateEmailSimple}
+              validation={validate.simpleEmail}
             />
           </Form.Group>
           <Form.Group>
@@ -76,7 +76,7 @@ const SignIn = ({ isAuthenticated, history, ...props }) => {
               name="password"
               type="password"
               onChange={handleChange}
-              validation={validatePasswordSimple}
+              validation={validate.simplePassword}
             />
           </Form.Group>
           {errorMessage && <Alert variant="danger">{errorMessage}</Alert>}
