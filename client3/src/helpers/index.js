@@ -52,7 +52,17 @@ export const isEmpty = (input) => {
   return Object.keys(input).length === 0
 };
 
-export const format = { 
+export const dateTime = { 
   shortDate : (date) => new Intl.DateTimeFormat('en-US', { month: "short", day: "numeric", year: "numeric" }).format( new Date(date)),
+  arrYears: (years) => {
+    let arrYear = [];
+    let thisYear = new Date().getFullYear();
+    for (let i = thisYear; i > thisYear - years; i--) {
+      arrYear.push(i);
+    }
+    return arrYear;
+  },
+  arrMonths: [1,2,3,4,5,6,7,8,9,10,11,12],
+  historyDate: (year, month) => `${year} - ${month}`
 
 };

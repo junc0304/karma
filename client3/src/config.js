@@ -25,7 +25,7 @@ export const BOARD_PROPERTY = {
 
 export const MEMBER_PROPERTY = {
   PAGE_SIZE: 10,
-  PAGINATION_SIZE: 5
+  PAGINATION_SIZE: 4
 };
 
 export const BADGE_MARK_DAYS = 5;

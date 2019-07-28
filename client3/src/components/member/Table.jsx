@@ -1,5 +1,5 @@
-import React, {useState, memo} from 'react';
-import {Table, Row, Col} from 'react-bootstrap';
+import React, {memo} from 'react';
+import {Table} from 'react-bootstrap';
 
 const TableComponent = memo(({data, onClick}) => {
   return (

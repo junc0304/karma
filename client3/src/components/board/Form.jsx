@@ -1,7 +1,7 @@
 import React, { memo, useState, useRef } from 'react';
 import { Form, Button, Modal, ButtonGroup, Jumbotron } from 'react-bootstrap';
 import { connect } from 'react-redux';
-import CustomInput from '../CustomInput';
+import CustomInput from '../shared/CustomInput';
 import _ from 'lodash';
 
 import { InvisibleIcon, VisibleIcon, RefreshIcon } from '../icons'

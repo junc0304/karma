@@ -3,7 +3,7 @@ import { Form, Button, ButtonGroup, Jumbotron } from 'react-bootstrap';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
-import CustomInput from '../CustomInput';
+import CustomInput from '../shared/CustomInput';
 import * as actions from '../../actions';
 import RichTextEditor from './RichText.jsx';
 import { JUMBOTRON_BG_COMMON } from '../../config';

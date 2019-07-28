@@ -1,30 +1,161 @@
-import React, { useState, useEffect, useContext, Fragment, memo } from 'react';
-import { Col, Form, Jumbotron, Row, Modal, ButtonGroup, Button } from 'react-bootstrap';
+import React, { memo, useState, useEffect, Fragment, useContext } from 'react';
+import {Jumbotron, Modal, Form, ButtonGroup, Button, Row, Col } from 'react-bootstrap';
 import { HistoryContext } from './HistoryContext.jsx';
-import { TrashIcon, EditIcon, ExIcon } from '../icons';
-const _ = require('lodash');
+import { DeleteIcon, EditIcon, CancelIcon } from '../icons';
+import { isEmpty, dateTime } from '../../helpers/index.js';
+import CustomInput from '../shared/CustomInput'
 
-const MenuButtonsComponent = memo(({ onClose, onDelete, onModeChange, edit }) => {
+const HistoryForm = memo(({ data, show, onClose, createHistory, updateHistory, deleteHistory }) => {
+
+  let formData = { ...data };
+
+  const FormView = () => {
+    const [edit, setEdit] = useState(false);
+    const hasData = !isEmpty(data);
+    const onUpdate = edit && !isEmpty(data);
+    const onCreate = edit && isEmpty(data);
+    const onView = !edit;
+
+    useEffect(() => setEdit(!hasData), [data]);
+
+    const handleChange = (name, value, validated) => formData[name] = value;
+    const handleCreate = async () => await createHistory(formData);
+    const handleUpdate = async () => await updateHistory(formData);
+    const handleDelete = async () => await deleteHistory(formData);
+    const handleEditChange = () => setEdit(!edit);
+
+    return (
+      <Modal size="xl" show={show} onHide={onClose} >
+        <Jumbotron style={{ margin: "0px", padding: "16px" }} >
+          <Form noValidate >
+            <Modal.Header style={{ margin: "", paddingLeft: "0px", paddingRight: "0px" }} >
+              {onView && <h3>History View</h3>}
+              {onUpdate && <h3>History Update</h3>}
+              {onCreate && <h3>History Create</h3>}
+              <MenuButtons
+                edit={edit}
+                hasData={hasData}
+                onClose={onClose}
+                onDelete={handleDelete}
+                onChangeEdit={handleEditChange}
+              />
+            </Modal.Header>
+            <Modal.Body style={{ paddingBottom: "0px" }} >
+              <Row style={{ paddingLeft: "0px", marginBottom: "0px" }} >
+                <Col style={{ paddingLeft: "0px", paddingRight: "0px" }} >
+                  <CustomInput
+                    defaultValue={data.title}
+                    name="title"
+                    type="text"
+                    placeholder="Title"
+                    edit={edit}
+                    onChange={handleChange}
+                    style={{ borderRadius: "5px", padding: "4px 8px", backgroundColor: "white", borderColor: edit && hasData ? "pink" : null }}
+                  />
+                </Col>
+              </Row>
+            </Modal.Body>
+            <Modal.Body style={{ padding: "5px 16px" }} >
+              <Row style={{ paddingLeft: "0px", marginBottom: "0px" }}
+              >
+                <Fragment>
+                  <Form.Label
+                    as={Col}
+                    style={{ paddingLeft: "15px", fontSize: "14px" }}
+                  >
+                    Year:
+                      </Form.Label>
+                  <Col style={{ paddingRight: "0px" }}>
+                    <CustomInput
+                      as="select"
+                      name="year"
+                      type="text"
+                      edit={edit}
+                      onChange={handleChange}
+                      defaultValue={data.year || -1}
+                      style={{ borderRadius: "5px", padding: "4px 8px", color: "black", textAlign: "center", backgroundColor: "white" }}
+                    >
+                      <option value={-1} disabled >{formData.year}</option>
+                      <YearOptions />
+                    </CustomInput>
+                  </Col>
+                  <Form.Label
+                    as={Col}
+                    style={{ paddingLeft: "15px", fontSize: "14px" }}
+                  >
+                    Month:
+                      </Form.Label> {/*replace with ICON?*/}
+                  <Col style={{ paddingRight: "0px" }}>
+                    <CustomInput
+                      as="select"
+                      name="month"
+                      type="text"
+                      edit={edit}
+                      onChange={handleChange}
+                      defaultValue={data.month || -1}
+                      style={{ borderRadius: "5px", padding: "4px 8px", color: "black", textAlign: "center", backgroundColor: "white" }}
+                    >
+                      <option value={-1} disabled >{formData.month}</option>
+                      < MonthOptions />
+                    </CustomInput>
+                  </Col>
+                </Fragment>
+              </Row>
+            </Modal.Body>
+            <hr className="my-8" />
+            <Modal.Body style={{ paddingTop: "0px" }} >
+              <Row>
+                <CustomInput
+                  name="content"
+                  as="textarea"
+                  type="text"
+                  rows={5}
+                  defaultValue={data.content}
+                  edit={edit}
+                  placeholder="Content"
+                  onChange={handleChange}
+                  style={{ borderRadius: "5px", padding: "4px 8px", minHeight: "5rem", backgroundColor: "white", borderColor: edit && hasData ? "pink" : null }}
+                />
+              </Row>
+            </Modal.Body>
+          </Form>
+          <FormButtons
+            edit={edit}
+            hasData={hasData}
+            onSave={handleUpdate}
+            onCreate={handleCreate}
+            onCancel={onClose}
+          />
+        </Jumbotron>
+      </Modal >
+    );
+  }
+  return <FormView />
+});
+
+const MenuButtons = memo(({ onClose, onDelete, onChangeEdit, hasData, edit }) => {
   const { isAdmin } = useContext(HistoryContext);
   return (
     <div className="d-flex">
       <ButtonGroup className=" d-flex ml-auto">
-        {isAdmin && edit && (
+        {isAdmin && hasData && edit &&  (
           <Button
+            as={Button}
             size="sm"
             variant="danger"
             onClick={onDelete}
             style={{ marginRight: "5px" }}
           >
-            <TrashIcon style={{ textAlign: "center", verticalAlign: "middle" }} />
+            <DeleteIcon style={{ textAlign: "center", verticalAlign: "middle" }} />
           </Button>
         )}
-        {isAdmin && (
+        {isAdmin && hasData && (
           <Button
             size="sm"
             variant="light"
             active={edit}
-            onClick={onModeChange}
+            onClick={onChangeEdit}
+            style={{ textAlign: "center", verticalAlign: "middle" }}
           >
             <EditIcon style={{ textAlign: "center", verticalAlign: "middle" }} />
           </Button>
@@ -33,161 +164,68 @@ const MenuButtonsComponent = memo(({ onClose, onDelete, onModeChange, edit }) =>
           size="sm"
           variant="light"
           onClick={onClose}
+          style={{ textAlign: "center", verticalAlign: "middle" }}
         >
-          <ExIcon style={{ textAlign: "center", verticalAlign: "middle" }} />
+          <CancelIcon style={{ textAlign: "center", verticalAlign: "middle" }} />
         </Button>
       </ButtonGroup>
     </div>
   );
 });
 
-const FormComponent = memo(({ data, show, onClose, onSubmit, onDelete }) => {
-
-  const [formData, setFormData] = useState({});
-  const [editMode, setEditMode] = useState(false);
-
-  useEffect(() => {
-    const fetchData = ()=> {}
-    fetchData();
-  },[]);
-  
-  useEffect(() => setFormData(data), [data]);
-
-  const setFormDataDebounced = _.debounce((name, value) => setFormData({ ...formData, [name]: value }), 300);
-  const handleChange = (event) => setFormDataDebounced(event.target.name, event.target.value);
-  const handleSubmit = (event) => [event.preventDefault(), onSubmit(formData)];
-  const handleDelete = () => onDelete();
-  const handleModeChange = () => setEditMode(!editMode);
-  const createYearArray = () => {
-    let arrYear = [];
-    let thisYear = new Date().getFullYear();
-    for (let i = thisYear; i > thisYear - 60; i--) {
-      arrYear.push(<option value={i} key={`year-${i}`}>{i}</option>);
-    }
-    return arrYear;
-  }
-  const createMonthArray = () => {
-    let arrMonth = [];
-    for (let i = 1; i <= 12; i++) {
-      arrMonth.push(<option value={i} key={`month-${i}`}>{i}</option>);
-    }
-    return arrMonth;
-  }
-  const formDate = (year, month) => {
-    return `${year}-${month}`
-  }
+const FormButtons = memo(({ onUpdate, onSave, onCancel, edit, hasData }) => {
+  const { isAdmin } = useContext(HistoryContext);
   return (
-    <Modal
-      centered
-      show={show}
-      onHide={onClose}
-    >
-      <Jumbotron style={{ margin: "0px", padding: "16px" }} >
-        <Form
-          onSubmit={handleSubmit}
-        >
-          <Modal.Header style={{ margin: "", paddingRight: "0px" }} >
-            <h3>View History</h3>
-            {/* closeModal, deleteRow, editRow, onEditMode */}
-            <MenuButtonsComponent
-              edit={editMode}
-              onClose={onClose}
-              onDelete={handleDelete}
-              onModeChange={handleModeChange}
-            />
-          </Modal.Header>
-          <Modal.Body style={{ paddingBottom: "0px" }} >
-            <Row style={{ paddingLeft: "0px", marginBottom: "0px" }} >
-              <Col style={{ paddingLeft: "0px", paddingRight: "0px" }} >
-                <Form.Control
-                  name="title"
-                  type="text"
-                  placeholder="Title"
-                  defaultValue={formData.title}
-                  readOnly={!editMode}
-                  disabled={!editMode}
-                  plaintext={!editMode}
-                  onChange={handleChange}
-                  style={{ borderRadius: "5px", padding: "4px 8px", backgroundColor: "white" }}
-                />
-              </Col>
-            </Row>
-          </Modal.Body>
-          <Modal.Body style={{ padding: "5px 16px" }} >
-            <Row style={{ paddingLeft: "0px", marginBottom: "0px" }}
-            >
-              {!editMode ? (
-                <div>{formDate(formData.year, formData.month)}</div>) : (
-                  <Fragment>
-                    <Form.Label
-                      as={Col}
-                      style={{ paddingLeft: "15px", fontSize: "14px" }}
-                    >
-                      Year:
-                    </Form.Label>
-                    <Col style={{ paddingRight: "0px" }}>
-                      <Form.Control
-                        as="select"
-                        name="year"
-                        type="text"
-                        readOnly={!editMode}
-                        disabled={!editMode}
-                        plaintext={!editMode}
-                        onChange={handleChange}
-                        defaultValue={-1}
-                        style={{ borderRadius: "5px", padding: "4px 8px", color: "black", textAlign: "center", backgroundColor: "white" }}
-                      >
-                        <option value={-1} disabled >{formData.year}</option>
-                        {createYearArray(formData.year)}
-                      </Form.Control>
-                    </Col>
-                    <Form.Label
-                      as={Col}
-                      style={{ paddingLeft: "15px", fontSize: "14px" }}
-                    >
-                      Month:
-                    </Form.Label> {/*replace with ICON?*/}
-                    <Col style={{ paddingRight: "0px" }}>
-
-                      <Form.Control
-                        as="select"
-                        name="month"
-                        type="text"
-                        readOnly={!editMode}
-                        disabled={!editMode}
-                        plaintext={!editMode}
-                        defaultValue={-1}
-                        onChange={handleChange}
-                        style={{ borderRadius: "5px", padding: "4px 8px", textAlign: "center", backgroundColor: "white", }}
-                      >
-                        <option value={-1} disabled >{formData.month}</option>
-                        {createMonthArray()}
-                      </Form.Control>
-                    </Col>
-                  </Fragment>
-                )}
-            </Row>
-          </Modal.Body>
-          <hr className="my-8" />
-          <Modal.Body style={{ paddingTop: "0px" }} >
-            <Row>
-              <Form.Control
-                name="content"
-                type="text"
-                rows={8}
-                defaultValue={formData.content}
-                readOnly={!editMode}
-                disabled={!editMode}
-                plaintext={!editMode}
-                onChange={handleChange}
-                style={{ borderRadius: "5px", padding: "4px 8px", minHeight: "5rem", backgroundColor: "white", borderColor: !editMode ? null : "pink" }}
-              />
-            </Row>
-          </Modal.Body>
-        </Form>
-      </Jumbotron>
-    </Modal>
+    <Form.Group className="d-flex">
+      {isAdmin && edit && (
+        <ButtonGroup className="ml-auto" style={{ marginTop: "15px" }}>
+          {hasData ? (
+            <Button
+              type="submit"
+              variant="light"
+              onClick={onUpdate}
+              style={{ hight: "1rem", width: "5rem", marginRight: "5px" }} >
+              Update
+          </Button>
+          ) : (
+              <Button
+                type="submit"
+                variant="light"
+                onClick={onSave}
+                style={{ hight: "1rem", width: "5rem", marginRight: "5px" }} >
+                Create
+            </Button>
+            )}
+          <Button
+            variant="light"
+            style={{ width: "5rem" }}
+            onClick={onCancel}>
+            Cancel</Button>
+        </ButtonGroup>)}
+    </Form.Group>
   );
 });
 
-export default FormComponent;
+const YearOptions = () => {
+  let years = dateTime.arrYears(50);
+  return (
+    <Fragment>
+      {years.map((item, index) =>
+        <option value={item} key={`year-${index}`}>{item}</option>
+      )}
+    </Fragment>
+  );
+}
+
+const MonthOptions = () => {
+  let months = dateTime.arrMonths;
+  return (
+    <Fragment>
+      {months.map((item, index) =>
+        <option value={item} key={`year-${index}`}>{item}</option>
+      )}
+    </Fragment>
+  );
+}
+
+export default HistoryForm;

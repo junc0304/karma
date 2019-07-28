@@ -3,7 +3,7 @@ import { Table, Row, Col,Badge } from 'react-bootstrap';
 
 import { BOARD_PROPERTY } from '../../config';
 import PostView from './Table.Row.View.jsx';
-import { isWithinDays , isEmpty, format} from '../../helpers';
+import { isWithinDays , isEmpty, dateTime} from '../../helpers';
 
 const TableRowComponent = memo(({ item, onClick }) => {
   const { index, title, created, authorName, comments} = item;
@@ -13,18 +13,20 @@ const TableRowComponent = memo(({ item, onClick }) => {
   //const formatTime = (time) => (  new Intl.DateTimeFormat('en-US', { month: "short", day: "numeric", year: "numeric" }).format(new Date(time)) );
 
   return (
-    <tr className="text-center" key={index} onClick={() => onClick(item)} >
+    <tr 
+      className="text-center" 
+      key={index} 
+      onClick={() => onClick(item)}
+    >
       <td className="d-none d-sm-block" xs={"auto"} sm={1} md={1} lg={1} >{index}</td>
-      <td xs={8} sm={6} md={6} lg={6} style={{ whiteSpace: "nowrap", overflow: "hidden", textOverflow:"ellipsis"}}>
+      <td xs={8} sm={6} md={6} lg={6} style={{ width:'100%',  whiteSpace: "nowrap", overflow: "hidden", textOverflow:"ellipsis"}}>
         {title} 
-        {!isEmpty(comments) && (
-          <span style={{fontSize:"12px"}}>{` [${comments.length}]`}</span>
-        )}
-        {isWithinDays(created, 5) && (
-          <Badge variant="danger" style={{fontSize:"10px"}}>new</Badge>
-        )} 
+        {!isEmpty(comments) && <span style={{fontSize:"12px"}}>{` [${comments.length}]`}</span>}
+        {isWithinDays(created, 5) &&<Badge variant="danger" style={{fontSize:"10px"}}>N</Badge>} 
       </td>
-      <td xs={4} sm={3} md={3} lg={3}>{format.shortDate(created)}</td>
+      <td xs={4} sm={3} md={3} lg={3} style={{wordBreak:'keep-all'}}>
+        <span style={{ whiteSpace:"nowrap"}}>{dateTime.shortDate(created)}</span>
+      </td>
       <td className="d-none d-sm-block" xs={"auto"} sm={2} md={2} lg={2} >{authorName}</td>
     </tr>
   );
@@ -33,12 +35,12 @@ const TableRowComponent = memo(({ item, onClick }) => {
 //table header
 const TableHeaderComponent = memo(() => {
   return (
-    <thead>
+    <thead  style={{padding: '0px!important'}} >
       <tr className="text-center">
-        <th className="d-none d-sm-block" xs={"auto"} sm={1} md={1} lg={1}>#</th>
-        <th xs={8} sm={6} md={6} lg={6}>Title</th>
-        <th xs={4} sm={3} md={3} lg={3}>Date</th>
-        <th className="d-none d-sm-block" xs={"auto"} sm={2} md={2} lg={2}>By</th>
+        <td className="d-none d-sm-block" xs={"auto"} sm={1} md={1} lg={1} >#</td>
+        <td xs={8} sm={6} md={6} lg={6} >Title</td>
+        <td xs={4} sm={3} md={3} lg={3} >Date</td>
+        <td className="d-none d-sm-block" xs={"auto"} sm={2} md={2} lg={2} >By</td>
       </tr>
     </thead>
   );
@@ -54,6 +56,9 @@ const TableBodyComponent = memo(({ data, onClick }) => {
     </tbody>
   );
 });
+
+
+
 
 //table
 const TableComponent = memo(({ page, data }) => {
@@ -77,7 +82,7 @@ const TableComponent = memo(({ page, data }) => {
 
   return (
     <Fragment>
-      <Table variant="light" hover>
+      <Table size="sm" variant="light" hover style={{width:'100%'}}>
         <TableHeaderComponent />
         <TableBodyComponent 
           data={rows} 

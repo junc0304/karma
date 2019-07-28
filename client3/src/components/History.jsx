@@ -1,9 +1,11 @@
 import React, { useState, useEffect, memo } from 'react';
-import { Jumbotron } from 'react-bootstrap';
-import { TrashIcon, EditIcon, ExIcon } from './icons';
-import TableComponent from './history/Table.jsx';
-import {HistoryContext} from './history/HistoryContext.jsx';
-import _ from 'lodash';
+import { Jumbotron, Button , ButtonGroup } from 'react-bootstrap';
+import { HistoryContext } from './history/HistoryContext';
+import TableComponent from './history/Table';
+import RowFormComponent from './history/Form';
+
+import { isEmpty } from '../helpers';
+import { PlusIcon } from './icons';
 
 const sampleData = [
   { year: "1980", month: "1", title: "칼마 협회 창립총회 ", content: "(초대회장– 김 종진 / NORTH VAN RECYCLING LTD.)" },
@@ -17,56 +19,68 @@ const sampleData = [
   { year: "1980", month: "9", title: "ENCORP 핸드링피 미팅 4차", content: "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa" }
 ]
 
-const History = memo(({ getHistory, isAdmin, historyData }) => {
+const History = memo(({ getHistory, isAdmin,/* data */  }) => {
+
+  const [row, setRow] = useState({ data: {}, show: false });
+  //debug to be deleted
   const [data, setData] = useState({});
-  const [formData, setFormData] = useState({});
-  const [showModal, setShowModal] = useState(false);
-
-  //fetchData
-  useEffect(() => {
-    const fetchData = async () => {
-      //fetch history data
-    }
-    fetchData();
-  }, [getHistory]);
-
+  useEffect(() => console.log("row", row, isEmpty(row)))
   //load data from props
   useEffect(() => {
     setData(sampleData);
   }, [sampleData]);
+  //debug
 
-  const handleSubmit = (formData) => {
-    //submig formData
-  }
+  //fetchData
+  useEffect(() => {
+    const fetchData = async () => {/* fetch history data */ }
+    fetchData();
+  }, [getHistory]);
 
-  const showRowData = (rowData) => {
-    setFormData(rowData);
-    setShowModal(true);
-  }
-
-  const deleteRow = () => {
-
-  }
-
-  const closeModal = () => {
-    setShowModal(false);
-  }
-
-  const openModal = () => {
-    setShowModal(true);
-  }
+  const handleOpenForm = (data) => setRow({ data, show: true });
+  const handleOpenEmptyForm = () => setRow({ data: {}, show: true });
+  const handleCloseForm = () => setRow({ data: {}, show: false });
 
   return (
-    <HistoryContext.Provider value={{ showRowData, openModal, data }}>
+    <HistoryContext.Provider value={{isAdmin:true}}>
       <Jumbotron>
         <h1 className="display-4">
           History</h1>
+        <CreateButton onClick={handleOpenEmptyForm} />
         <hr className="my-4" />
-        <TableComponent data={data} />
+        <TableComponent
+          data={data}
+          onClick={handleOpenForm}
+        />
+        <RowFormComponent
+          data={row.data}
+          show={row.show}
+          onClose={handleCloseForm}
+        />
       </Jumbotron>
     </HistoryContext.Provider>
   );
 });
+
+
+const CreateButton = memo(({ onClick }) => {
+  return (
+    <div style={{ position: "relative" }}>
+      <ButtonGroup style={{ position: "absolute", right: "1px", bottom: "0px", minHeight: "30px", minWidth: "30px"}} >
+        <Button
+          size="sm"
+          fontSize="large"
+          variant="light"
+          onClick={onClick}
+          style={{ backgroundColor: "rgba(255,255,255,0)", border: "0px" }}
+        >
+          <PlusIcon style={{ textAlign: "center", verticalAlign: "middle" }} />
+        </Button>
+      </ButtonGroup>
+    </div>
+  );
+});
+
 
 
 export default memo(History);

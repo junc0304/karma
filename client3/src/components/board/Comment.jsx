@@ -1,7 +1,7 @@
 import React, { memo, useState, useEffect, Fragment } from 'react';
 import { Form, Col, Row, Button, ButtonGroup, InputGroup } from 'react-bootstrap';
 import { connect } from 'react-redux';
-import {InvisibleIcon, VisibleIcon, RefreshIcon, ListIcon, DateIcon, PersonIcon, Icon} from '../icons'
+import { RefreshIcon, ListIcon, DateIcon, PersonIcon } from '../icons'
 import _ from 'lodash';
 
 import * as actions from '../../actions'

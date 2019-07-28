@@ -3,7 +3,6 @@ import {  Button } from 'react-bootstrap';
 import _ from 'lodash';
 
 const CustomButton = ({ edit, ...props }) => {
- 
   return (
     <Fragment>
       <Button
@@ -11,6 +10,7 @@ const CustomButton = ({ edit, ...props }) => {
         type="submit"
         variant="light"
         disabled={!edit}
+        {...props}
        >
         {props.children}
       </Button>

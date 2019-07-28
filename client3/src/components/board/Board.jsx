@@ -1,38 +1,40 @@
-import React, { memo, useState, useEffect, useReducer } from 'react';
+import React, { memo, useState, useEffect, useReducer, useRef } from 'react';
 import { Jumbotron, ButtonGroup, Button } from 'react-bootstrap';
 import { connect } from 'react-redux'
 
 import TableComponent from './Table.jsx';
-import PaginationComponent from './Pagination.jsx';
+//import PaginationComponent from './Pagination.jsx';
 import FormComponent from './Form.jsx';
 import { BoardContext } from './BoardContext.jsx';
 import { isAdmin } from '../../helpers'
 import * as actions from '../../actions';
-import { paginationReducer } from './BoardReducer';
+import { pageReducer } from './PageReducer';
 import { PlusIcon } from '../icons'
 import { BOARD_PROPERTY, USER_TYPE } from '../../config';
+const { PAGE_SIZE, PAGINATION_SIZE } = BOARD_PROPERTY;
+
+
 
 function Board ( props/* { getPosts, title, data, type, role} */)  {
 
   const { getPosts, title, data, type, role } = props;
-  const { PAGE_SIZE, PAGINATION_SIZE } = BOARD_PROPERTY;
-  const lastPage = Math.ceil(data.length / PAGE_SIZE);
-  const lastPageSet = Math.ceil(lastPage / PAGINATION_SIZE);
+  const lastPage = Math.max(Math.ceil(data.length / PAGE_SIZE) , 1);
+  const lastPageSet = Math.max(Math.ceil(lastPage / PAGINATION_SIZE), 1);
   const initialPageState = {
-    page: { start: 1, current: 1, end: PAGINATION_SIZE }, pageSet: 1,
+    page: { start: 1, current: 1, end: Math.min(PAGINATION_SIZE, lastPage)}, pageSet: 1,
     pageSize: PAGE_SIZE, pageSetSize: PAGINATION_SIZE, lastPage, lastPageSet
   };
-  
+
   //above constants only resets when type is changed
-  useEffect(() =>{ 
-    let fetchData = async () => getPosts(type);
+  useEffect(() => { 
+    let fetchData = async () => await getPosts(type);
     fetchData();
-  }, [type, getPosts]);
+  }, [type]);
 
   const BoardView = (/* { title, data, role } */) => {
     const [currentPage, setCurrentPage] = useState(1);
     const [showForm, setShowForm] = useState(false);
-    const [pageState, dispatch] = useReducer(paginationReducer, initialPageState);
+    const [pageState, dispatch] = useReducer(pageReducer, initialPageState);
 
     useEffect(() => {
       console.log(pageState);
@@ -47,9 +49,6 @@ function Board ( props/* { getPosts, title, data, type, role} */)  {
 
     const handleCloseForm = () => setShowForm(false);
     const handleOpenForm = () => setShowForm(true);
-    const handlePageChange = () => {
-
-    }
 
     return (
       <BoardContext.Provider value={data}>
@@ -67,11 +66,12 @@ function Board ( props/* { getPosts, title, data, type, role} */)  {
             data={data}
             page={currentPage} />
           <hr className="my-3" />
-          <PaginationComponent
+         {/*  <PaginationComponent
             dataSize={data.length}
             currentPage={currentPage}
             setCurrentPage={setCurrentPage}
-          />
+          /> */}
+          
           {isAdmin(role) && (
             <FormComponent
               data={data}
@@ -84,6 +84,11 @@ function Board ( props/* { getPosts, title, data, type, role} */)  {
     );
   }
   return <BoardView {...props} />
+}
+
+const PaginationComponent = () => {
+
+  
 }
 
 const CreateButton = memo(({ onOpen }) => {
@@ -109,7 +114,6 @@ const CreateButton = memo(({ onOpen }) => {
 });
 
 const mapStateToProps = (state) => {
-  console.log('state', state);
   return {
     user: state.auth.user,
     role: state.auth.user.role,

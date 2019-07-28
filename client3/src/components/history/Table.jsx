@@ -1,33 +1,17 @@
-import React, { useState,  memo, useContext, Fragment } from 'react';
+import React, { Fragment, memo } from 'react';
 import { Table } from 'react-bootstrap';
-import RowFormComponent from './Form';
 
-const TableComponent = ({data}) => {
-  
-  const [ row, setRow ] = useState({ data:{}, show:false});
-
-  const handleOpenRow = (item) => setRow({ data: item, show: true });
-  const handleCloseRow = () => setRow({ data: {}, show: false });
-  const handleDeleteRow = () => { /* delete logic */ };
-  const handleSubmit = (formData) => {/* submit logic */ };
-
+const TableComponent = ({ data, onClick }) => {
   return (
     <Fragment>
       <Table hover variant="light" size="sm" >
         <TableHeaderComponent />
         <TableBodyComponent
           data={data}
-          onClick={handleOpenRow} 
+          onClick={onClick}
         />
       </Table>
-      <RowFormComponent 
-        data={row.data} 
-        show={row.show} 
-        onClose={handleCloseRow} 
-        onDelete={handleDeleteRow} 
-        onSubmit={handleSubmit} 
-      />
-   </Fragment>
+    </Fragment>
   );
 };
 
@@ -39,13 +23,13 @@ const TableHeaderComponent = memo(function () {
         <th>Month</th>
         <th>Title</th>
       </tr>
-   </thead>
+    </thead>
   );
 });
 
 const TableRowComponent = memo(function ({ item, index, onClick }) {
   return (
-    <tr key={index} onClick={onClick}>
+    <tr key={`history-row-${index}`} onClick={onClick}>
       <td>{item.year}</td>
       <td>{item.month}</td>
       <td>{item.title}</td>
@@ -53,14 +37,14 @@ const TableRowComponent = memo(function ({ item, index, onClick }) {
   );
 });
 
-const TableBodyComponent = memo(function ({data, onClick}) {
+const TableBodyComponent = memo(function ({ data, onClick }) {
   return (
     <tbody>
       {Object.values(data).map((item, index) => (
-        <TableRowComponent 
-          key={index} 
-          item={item} 
-          index={index} 
+        <TableRowComponent
+          key={`history-row-${index}`}
+          item={item}
+          index={index}
           onClick={() => onClick(item)}
         />
       ))}

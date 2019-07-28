@@ -5,18 +5,17 @@ import * as actions from '../../actions'
 
 import { isAdmin } from '../../helpers';
 import Comment from './Comment.jsx';
-import {EditIcon, TrashIcon, ExIcon} from '../icons';
-import {JUMBOTRON_BG_COMMON} from '../../config'
+import { EditIcon, TrashIcon, CancelIcon } from '../icons';
 import './Board.css'
 
 //single row view component
-const TableRowView = memo(({ getPosts, updatePost, deletePost, getComments, data, show, onClose, type, user : {  role="ADMIN" , userId } }) => {
+const TableRowView = memo(({ getPosts, updatePost, deletePost, getComments, data, show, onClose, type, user: { role = "ADMIN", userId } }) => {
   const [editMode, setEditMode] = useState(false);
   const [currentData, setCurrentData] = useState({});
-  
-  useEffect(()=> {
+
+  useEffect(() => {
     setCurrentData(data);
-  },[data])
+  }, [data])
 
   const onEdit = () => {
     setEditMode(!editMode);
@@ -35,7 +34,7 @@ const TableRowView = memo(({ getPosts, updatePost, deletePost, getComments, data
     let formData = {
       postId: postId,
       title: event.target.title.value,
-      content: event.target.content.value 
+      content: event.target.content.value
     };
     await updatePost(formData);
     await getPosts(type);
@@ -50,19 +49,19 @@ const TableRowView = memo(({ getPosts, updatePost, deletePost, getComments, data
 
   const onClickShowComments = async () => {
     let { postId } = currentData;
-    await getComments({postId});
+    await getComments({ postId });
   }
 
   return (
     <Modal
       show={show}
       onHide={onCloseModal} >
-      <Jumbotron style={{ padding: "15px 15px", margin: "0"}}>
+      <Jumbotron style={{ padding: "15px 15px", margin: "0" }}>
         <Form onSubmit={onClickSave}>
-          <Modal.Header style={{ borderRadius: "5px", padding: "5px 0px 16px 15px"}}>
-          <h3>{currentData.type}</h3>
+          <Modal.Header style={{ borderRadius: "5px", padding: "5px 0px 16px 15px" }}>
+            <h3>{currentData.type}</h3>
             <MenuButton
-              isAuth={(isAdmin(role) || userId === currentData.ownerId )}
+              isAuth={(isAdmin(role) || userId === currentData.ownerId)}
               editMode={editMode}
               onClose={onCloseModal}
               onEdit={onEdit}
@@ -80,10 +79,10 @@ const TableRowView = memo(({ getPosts, updatePost, deletePost, getComments, data
           {editMode &&
             <FormButtons onCancel={onClickCancel} />}
         </Form>
-        <Comment 
+        <Comment
           data={currentData.comments}
           onShow={onClickShowComments}
-          editMode={editMode} 
+          editMode={editMode}
           postId={currentData.postId} />
       </Jumbotron>
     </Modal>
@@ -95,30 +94,30 @@ const MenuButton = memo(({ isAuth = false, onClose, editMode, onEdit, onDelete }
     <div>
       <ButtonGroup className="ml-auto">
         {isAuth && editMode &&
-        <Button
-          size="sm"
-          variant="danger"
-          onClick={onDelete}
-          style={{ marginRight: "5px" }} >
-          <TrashIcon style={{textAlign:"center", verticalAlign:"middle"}} /></Button>}
+          <Button
+            size="sm"
+            variant="danger"
+            onClick={onDelete}
+            style={{ marginRight: "5px" }} >
+            <TrashIcon style={{ textAlign: "center", verticalAlign: "middle" }} /></Button>}
         {isAuth &&
+          <Button
+            size="sm"
+            variant="light"
+            active={editMode}
+            onClick={onEdit} >
+            <EditIcon style={{ textAlign: "center", verticalAlign: "middle" }} /></Button>}
         <Button
           size="sm"
-          variant="light"
-          active={editMode}
-          onClick={onEdit} >
-          <EditIcon style={{textAlign:"center", verticalAlign:"middle"}} /></Button>}
-        <Button
-        size="sm"
           variant="light"
           onClick={onClose}>
-          <ExIcon style={{textAlign:"center", verticalAlign:"middle"}} /></Button>
+          <CancelIcon style={{ textAlign: "center", verticalAlign: "middle" }} /></Button>
       </ButtonGroup>
     </div>
   );
 });
 
-const Title = memo(({ editMode = false, data: { title="" } }) => {
+const Title = memo(({ editMode = false, data: { title = "" } }) => {
   const [defaultTitle, setDefaultTitle] = useState('');
 
   useEffect(() => {
@@ -149,8 +148,8 @@ const Details = memo(({ data: { created = "", updated = "", authorName = "" } })
     let newDate = new Date(time);
     let hour = newDate.getHours();
     let min = newDate.getMinutes();
-    let show = new Date().getDate() - newDate.getDate() < 1 ;
-    return `${newDate.getFullYear()}-${newDate.getMonth()+1}-${newDate.getDate()}${show?  `-${hour<10?`0${hour}`:hour}:${min<10?`0${min}`:min}`: ``}`
+    let show = new Date().getDate() - newDate.getDate() < 1;
+    return `${newDate.getFullYear()}-${newDate.getMonth() + 1}-${newDate.getDate()}${show ? `-${hour < 10 ? `0${hour}` : hour}:${min < 10 ? `0${min}` : min}` : ``}`
   }
   return (
     <Row>

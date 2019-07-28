@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { Jumbotron, Form, Button, Alert } from 'react-bootstrap';
-import CustomInput from './CustomInput';
+import CustomInput from './shared/CustomInput';
 
 import * as actions from '../actions';
 import { JUMBOTRON_BG_COMMON } from '../config';

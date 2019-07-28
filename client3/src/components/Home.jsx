@@ -6,7 +6,8 @@ const Home = memo(({role = USER_TYPE.ADMIN }) => {
   return (
     <Page
       role={role}
-      type={PAGE_TYPE.HOME} />
+      type={PAGE_TYPE.HOME}
+    />
   );
 });
 

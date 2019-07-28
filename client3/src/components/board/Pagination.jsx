@@ -3,10 +3,6 @@ import { Pagination } from 'react-bootstrap';
 import {BOARD_PROPERTY} from '../../config';
 const {PAGINATION_SIZE, PAGE_SIZE} = BOARD_PROPERTY;
 
-
-
-
-
 const PaginationComponent = memo(({ dataSize, currentPage, setCurrentPage }) => {
 
   const [pagers, setPagers] = useState([]);
@@ -53,13 +49,13 @@ const PaginationComponent = memo(({ dataSize, currentPage, setCurrentPage }) => 
     setCurrentPagers(lastPager);
   }
   return (
-    <Pagination size="md" className="justify-content-center">
+    <Pagination size="sm" className="justify-content-center">
       <Pagination.First
         disabled={currentPage === 1}
         onClick={toFirstPage} />
-      <Pagination.Prev
+    {/*   <Pagination.Prev
         disabled={currentPage === 1}
-        onClick={toPrevPage} />
+        onClick={toPrevPage} /> */}
       <Pagination.Ellipsis
         disabled={currentPagers === 1}
         onClick={toPrevPagers} />
@@ -67,9 +63,9 @@ const PaginationComponent = memo(({ dataSize, currentPage, setCurrentPage }) => 
       <Pagination.Ellipsis
         disabled={currentPagers === lastPager}
         onClick={toNextPagers} />
-      <Pagination.Next
+    {/*   <Pagination.Next
         disabled={currentPage === lastPage}
-        onClick={toNextPage} />
+        onClick={toNextPage} /> */}
       <Pagination.Last
         disabled={currentPage === lastPage}
         onClick={toLastPage} />

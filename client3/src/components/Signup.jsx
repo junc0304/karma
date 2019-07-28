@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { Jumbotron, Form, Alert, Button, ButtonGroup } from 'react-bootstrap';
 import * as actions from '../actions';
 import { CITIES_IN_BC } from '../config'
-import CustomInput from './CustomInput';
+import CustomInput from './shared/CustomInput';
 import { validate } from '../helpers'
 
 const SignUp = props => {
