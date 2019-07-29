@@ -9,7 +9,7 @@
     "bootstrap": "^4.3.1",
     "cookie-parser": "^1.4.4",
     "draft-js": "^0.10.5",
-    "lodash": "^4.17.15",
+    "lodash": ">=4.17.13",
     "react": "^16.8.6",
     "react-bootstrap": "^1.0.0-beta.9",
     "react-dom": "^16.8.6",
