@@ -8,16 +8,18 @@ const initialState = {
 }
 
 const postReducer = (state = initialState, action) => {
+  console.log(action) 
   switch (action.type) {
     //board get actions
     case GET_POST.MEETING: 
-      return { ...state, type: BOARD_TYPE.MEETING, data: action.payload.post, errorMessage: '' };   
+      return { ...state, type: BOARD_TYPE.MEETING.NAME, data: action.payload.post, errorMessage: '' };   
     case GET_POST.EVENT: 
-      return { ...state, type: BOARD_TYPE.EVENT, data: action.payload.post, errorMessage: '' };   
-    case GET_POST.NOTICE: 
-      return { ...state, type: BOARD_TYPE.NOTICE, data: action.payload.post, errorMessage: '' };   
+      return { ...state, type: BOARD_TYPE.EVENT.NAME, data: action.payload.post, errorMessage: '' };   
+    case GET_POST.NOTICE:
+
+      return { ...state, type: BOARD_TYPE.NOTICE.NAME, data: action.payload.post, errorMessage: '' };   
     case GET_POST.DISCUSSION: 
-      return { ...state, type: BOARD_TYPE.DISCUSSION, data: action.payload.post, errorMessage: '' };   
+      return { ...state, type: BOARD_TYPE.DISCUSSION.NAME, data: action.payload.post, errorMessage: '' };   
     //create update delete reset actions
     case CREATE_POST:
       return { ...state, errorMessage: '' };

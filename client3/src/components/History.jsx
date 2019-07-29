@@ -1,10 +1,13 @@
 import React, { useState, useEffect, memo } from 'react';
-import { Jumbotron, Button , ButtonGroup } from 'react-bootstrap';
+import { Jumbotron, Button, ButtonGroup } from 'react-bootstrap';
 import { HistoryContext } from './history/HistoryContext';
+import { connect } from 'react-redux';
+import * as actions from '../actions';
+
 import TableComponent from './history/Table';
 import RowFormComponent from './history/Form';
 
-import { isEmpty } from '../helpers';
+import { isEmpty, auth } from '../helpers';
 import { PlusIcon } from './icons';
 
 const sampleData = [
@@ -19,21 +22,12 @@ const sampleData = [
   { year: "1980", month: "9", title: "ENCORP 핸드링피 미팅 4차", content: "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa" }
 ]
 
-const History = memo(({ getHistory, isAdmin,/* data */  }) => {
+const History = memo(({ getHistory, isAdmin, data }) => {
 
   const [row, setRow] = useState({ data: {}, show: false });
-  //debug to be deleted
-  const [data, setData] = useState({});
-  useEffect(() => console.log("row", row, isEmpty(row)))
-  //load data from props
-  useEffect(() => {
-    setData(sampleData);
-  }, [sampleData]);
-  //debug
-
   //fetchData
   useEffect(() => {
-    const fetchData = async () => {/* fetch history data */ }
+    const fetchData = async () => /* await getHistory(); */ //fech data to store
     fetchData();
   }, [getHistory]);
 
@@ -42,11 +36,13 @@ const History = memo(({ getHistory, isAdmin,/* data */  }) => {
   const handleCloseForm = () => setRow({ data: {}, show: false });
 
   return (
-    <HistoryContext.Provider value={{isAdmin:true}}>
+    <HistoryContext.Provider value={{ isAdmin: true }}>
       <Jumbotron>
         <h1 className="display-4">
           History</h1>
-        <CreateButton onClick={handleOpenEmptyForm} />
+        <CreateButton 
+          onClick={handleOpenEmptyForm}
+        />
         <hr className="my-4" />
         <TableComponent
           data={data}
@@ -66,7 +62,7 @@ const History = memo(({ getHistory, isAdmin,/* data */  }) => {
 const CreateButton = memo(({ onClick }) => {
   return (
     <div style={{ position: "relative" }}>
-      <ButtonGroup style={{ position: "absolute", right: "1px", bottom: "0px", minHeight: "30px", minWidth: "30px"}} >
+      <ButtonGroup style={{ position: "absolute", right: "1px", bottom: "0px", minHeight: "30px", minWidth: "30px" }} >
         <Button
           size="sm"
           fontSize="large"
@@ -81,6 +77,12 @@ const CreateButton = memo(({ onClick }) => {
   );
 });
 
+const mapStateToProps = (state) => {
+  return {
+    data: sampleData,//state.history.data,
+    isAdmin: auth.isAdmin(state.auth.user.role||"admin"),
+    errorMessage: state.auth.signInErrorMessage
+  }
+}
 
-
-export default memo(History);
+export default connect(mapStateToProps, actions)(History);

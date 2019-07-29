@@ -1,10 +1,3 @@
-export const BOARD_TYPE = {
-  MEETING: 'MEETING',
-  NOTICE: 'NOTICE',
-  EVENT: 'EVENT',
-  DISCUSSION: 'DISCUSSION',
-};
-
 export const USER_TYPE = {
   USER: 'USER',
   GUEST: 'GUEST',
@@ -17,6 +10,26 @@ export const PAGE_TYPE = {
   MEMBERSHIP: 'MEMBERSHIP',
   SUMMARY: 'SUMMARY',
 };
+
+export const BOARD_TYPE = {
+  MEETING: {
+    NAME: 'MEETING',
+    EDIT: [USER_TYPE.ADMIN, USER_TYPE.OWNER]
+  },
+  NOTICE: {
+    NAME: 'NOTICE',
+    EDIT: [USER_TYPE.ADMIN, USER_TYPE.OWNER]
+  },
+  EVENT: {
+    NAME: 'EVENT',
+    EDIT: [USER_TYPE.ADMIN, USER_TYPE.OWNER]
+  },
+  DISCUSSION: {
+    NAME: 'DISCUSSION',
+    EDIT: [USER_TYPE.ADMIN, USER_TYPE.OWNER, USER_TYPE.USER]
+  },
+};
+
 
 export const BOARD_PROPERTY = {
   PAGE_SIZE: 10,

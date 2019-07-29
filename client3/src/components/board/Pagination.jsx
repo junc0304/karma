@@ -1,76 +1,46 @@
-import React, { memo, useEffect, useState } from 'react';
+import React, { Fragment } from 'react';
 import { Pagination } from 'react-bootstrap';
-import {BOARD_PROPERTY} from '../../config';
-const {PAGINATION_SIZE, PAGE_SIZE} = BOARD_PROPERTY;
 
-const PaginationComponent = memo(({ dataSize, currentPage, setCurrentPage }) => {
+const PaginationSetComponent = ({ start, end, onClick }) => {
+  let arr = [];
+  for (let i = start; i <= end; i++) arr.push(i);
+  return (
+    <Fragment>
+      {arr.map((item, index) => (
+        <Pagination.Item 
+          key={item} 
+          onClick={() => onClick(item)}
+        >
+          {item}
+        </Pagination.Item>
+        )
+      )}
+    </Fragment>
+  )
+}
 
-  const [pagers, setPagers] = useState([]);
-  const [currentPagers, setCurrentPagers] = useState(1);
-  const lastPage = Math.max(Math.ceil(dataSize / PAGE_SIZE), 1);
-  const lastPager = Math.max(Math.ceil(dataSize / (PAGE_SIZE * PAGINATION_SIZE)), 1);
+const PaginationComponent = ({ dispatch, data }) => {
+  let { page, pageSet, lastPage, lastPageSet } = data;
 
-  useEffect(() => {
-    const getPagers = () => {
-      let pagerItems = [];
-      let firstItem = Math.ceil((currentPagers - 1) * PAGINATION_SIZE + 1);
-      let lastItem = Math.min(lastPage, firstItem + PAGINATION_SIZE - 1);
-      for (let i = firstItem; i <= lastItem; i++) {
-        pagerItems.push( 
-        <Pagination.Item key={i} onClick={() => { setCurrentPage(i) }}>{i}</Pagination.Item> );
-      }
-      setPagers(pagerItems);
-    }
-    getPagers();
-  }, [lastPage, currentPagers, currentPage, setCurrentPage]);
-  
-  const toNextPagers = () => {
-    setCurrentPage((currentPagers) * PAGINATION_SIZE + 1);
-    setCurrentPagers(currentPagers + 1);
-  }
-  const toPrevPagers = () => {
-    setCurrentPage((currentPagers - 1) * PAGINATION_SIZE);
-    setCurrentPagers(currentPagers - 1);
-  }
-  const toNextPage = () => {
-    if (currentPage % PAGINATION_SIZE === 0) setCurrentPagers(currentPagers + 1);
-    setCurrentPage(currentPage + 1);
-  }
-  const toPrevPage = () => {
-    if (currentPage % PAGINATION_SIZE === 1) setCurrentPagers(currentPagers - 1);
-    setCurrentPage(currentPage - 1);
-  }
-  const toFirstPage = () => {
-    setCurrentPage(1);
-    setCurrentPagers(1)
-  }
-  const toLastPage = () => {
-    setCurrentPage(lastPage);
-    setCurrentPagers(lastPager);
-  }
+  const handleClickNextPage = () => dispatch({ type: 'nextPage' });
+  const handleClickPrevPage = () => dispatch({ type: 'prevPage' });
+  const handleClickNextPageSet = () => dispatch({ type: 'nextPageSet' });
+  const handleClickPrevPageSet = () => dispatch({ type: 'prevPageSet' });
+  const handleClickLastPage = () => dispatch({ type: 'lastPage' });
+  const handleClickFirstPage = () => dispatch({ type: 'firstPage' });
+  const handleClickPage = (number) => dispatch({ type: 'goToPage', value: number });
+
   return (
     <Pagination size="sm" className="justify-content-center">
-      <Pagination.First
-        disabled={currentPage === 1}
-        onClick={toFirstPage} />
-    {/*   <Pagination.Prev
-        disabled={currentPage === 1}
-        onClick={toPrevPage} /> */}
-      <Pagination.Ellipsis
-        disabled={currentPagers === 1}
-        onClick={toPrevPagers} />
-      {pagers}
-      <Pagination.Ellipsis
-        disabled={currentPagers === lastPager}
-        onClick={toNextPagers} />
-    {/*   <Pagination.Next
-        disabled={currentPage === lastPage}
-        onClick={toNextPage} /> */}
-      <Pagination.Last
-        disabled={currentPage === lastPage}
-        onClick={toLastPage} />
+      <Pagination.First disabled={page.current === 1} onClick={handleClickFirstPage} />
+      <Pagination.Prev disabled={page.current === 1} onClick={handleClickPrevPage} />
+      <Pagination.Ellipsis disabled={pageSet === 1} onClick={handleClickPrevPageSet} />
+      <PaginationSetComponent start={page.start} end={page.end} onClick={handleClickPage} />
+      <Pagination.Ellipsis disabled={pageSet === lastPageSet} onClick={handleClickNextPageSet} />
+      <Pagination.Next disabled={page.current === lastPage} onClick={handleClickNextPage} />
+      <Pagination.Last disabled={page.current === lastPage} onClick={handleClickLastPage} />
     </Pagination>
-  );
-});
+  )
+}
 
 export default PaginationComponent;

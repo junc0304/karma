@@ -3,6 +3,7 @@ import { BOARD_PROPERTY } from '../../config';
 const { PAGINATION_SIZE, PAGE_SIZE } = BOARD_PROPERTY;
 
 const initialBoardState = {
+  index: { start: 0, end: PAGE_SIZE },
   page: { start: 1, current: 1, end: 1 },
   pageSet: 1,
   pageSize: PAGE_SIZE,
@@ -123,14 +124,16 @@ export const pageReducer = (state = initialBoardState, action) => {
     }
     case 'goToPage': {
       let targetPage = action.value; 
+      console.log(targetPage)
       let pageSet = Math.ceil(targetPage/pageSetSize);
+      console.log(pageSet)
       return {
         ...state,
         page: {
           ...page,
-          start: (pageSet - 1) * pageSetSize - 1,
+          start: Math.max((pageSet - 1) * pageSetSize - 1, 1),
           current: targetPage,
-          end: pageSet * pageSetSize
+          end: Math.min(pageSet * pageSetSize, lastPage)
         },
         pageSet
       }

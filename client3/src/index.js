@@ -41,7 +41,7 @@ ReactDOM.render(
         <Route exact path="/member" component={CheckAuth(Member)} />
         <Route exact path="/meeting" component={CheckAuth(Meeting)} />
         <Route exact path="/event" component={CheckAuth(Event)} />
-        <Route exact path="/notice" component={CheckAuth(Notice)} />
+        <Route exact path="/notice" component={Notice} />
         <Route exact path="/Discussion" component={CheckAuth(Discussion)} />
         <Route exact path="/signin" component={SignIn} />
         <Route exact path="/signup" component={SignUp} />

@@ -6,6 +6,7 @@ const CustomInput = ({edit = true, validation = (v) => null, onChange, defaultVa
   const [input, setInput] = useState({[props.name]: ['', '']});
   const formStyle = props.style || ({ backgroundColor: "white", borderRadius: "5px" });
 
+  useEffect(()=> defaultValue &&  setInput({ ...input, [props.name]: [defaultValue, input[props.name][1]]}), [edit]);
   const debouncedOnChange = _.debounce((name, value, valid) => onChange(name, value, valid) , 200);
   const handleChange = (event) => {
     let { name, value } = event.target;
@@ -15,23 +16,16 @@ const CustomInput = ({edit = true, validation = (v) => null, onChange, defaultVa
     setInput({ ...input, [name]: [value, validated] });
     debouncedOnChange(name, value, validated == null );
   }
-
-  useEffect(()=> {
-    console.log(defaultValue);
-    if(defaultValue) setInput({ ...input, [props.name]: [defaultValue, input[props.name][1]]})
-    console.log(defaultValue);
-  }, [])
-
   return (
     <Fragment>
       <Form.Control
+        {...props}
         onChange={handleChange}
         value={input[props.name][0]}
         readOnly={!edit}
         disabled={!edit}
         style={formStyle}
         isInvalid={props.isInvalid || input[props.name][1]}
-        {...props}
       >
         {props.children}
       </Form.Control>

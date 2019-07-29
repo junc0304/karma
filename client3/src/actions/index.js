@@ -79,13 +79,13 @@ export const signReset = () => {
 
 const getPostType = (type) => {
   switch(type) {
-    case BOARD_TYPE.MEETING :
+    case BOARD_TYPE.MEETING.NAME :
       return GET_POST.MEETING;
-    case BOARD_TYPE.NOTICE:
+    case BOARD_TYPE.NOTICE.NAME:
       return GET_POST.NOTICE;
-    case BOARD_TYPE.EVENT:
+    case BOARD_TYPE.EVENT.NAME:
       return GET_POST.EVENT;
-    case BOARD_TYPE.DISCUSSION:
+    case BOARD_TYPE.DISCUSSION.NAME:
       return GET_POST.DISCUSSION;
     default: 
       return POST_ERROR;
@@ -100,9 +100,7 @@ export const getPosts = (type) => {
       await dispatch({
         type: RESET_POST,
       });
-      console.log(type)
       const res = await axios.post(`http://localhost:4000/post/`, {type});
-      console.log(res.data)
       dispatch({
         type: getPostType(type),
         payload: res.data
@@ -140,7 +138,7 @@ export const getPagePosts = (type, pageSize, lastItemDate) => {
 }
 
 export const createPost = (data) => {
-  console.log("board POST:", data);
+  console.log("create POST:", data);
   return async dispatch => {
     try {
       await axios.post(`http://localhost:4000/post/create`, data);

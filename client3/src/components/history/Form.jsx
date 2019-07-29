@@ -1,4 +1,5 @@
-import React, { memo, useState, useEffect, Fragment, useContext } from 'react';
+'use strict';
+import React, { memo, useState, useEffect, Fragment, useContext, StrictMode } from 'react';
 import {Jumbotron, Modal, Form, ButtonGroup, Button, Row, Col } from 'react-bootstrap';
 import { HistoryContext } from './HistoryContext.jsx';
 import { DeleteIcon, EditIcon, CancelIcon } from '../icons';
@@ -7,16 +8,18 @@ import CustomInput from '../shared/CustomInput'
 
 const HistoryForm = memo(({ data, show, onClose, createHistory, updateHistory, deleteHistory }) => {
 
-  let formData = { ...data };
+  let formData = {};
 
+  //View Component
   const FormView = () => {
+
     const [edit, setEdit] = useState(false);
+    useEffect(() => setEdit(isEmpty(data)), [data]);
+
     const hasData = !isEmpty(data);
     const onUpdate = edit && !isEmpty(data);
     const onCreate = edit && isEmpty(data);
     const onView = !edit;
-
-    useEffect(() => setEdit(!hasData), [data]);
 
     const handleChange = (name, value, validated) => formData[name] = value;
     const handleCreate = async () => await createHistory(formData);
@@ -181,7 +184,6 @@ const FormButtons = memo(({ onUpdate, onSave, onCancel, edit, hasData }) => {
         <ButtonGroup className="ml-auto" style={{ marginTop: "15px" }}>
           {hasData ? (
             <Button
-              type="submit"
               variant="light"
               onClick={onUpdate}
               style={{ hight: "1rem", width: "5rem", marginRight: "5px" }} >
@@ -189,7 +191,6 @@ const FormButtons = memo(({ onUpdate, onSave, onCancel, edit, hasData }) => {
           </Button>
           ) : (
               <Button
-                type="submit"
                 variant="light"
                 onClick={onSave}
                 style={{ hight: "1rem", width: "5rem", marginRight: "5px" }} >

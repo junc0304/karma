@@ -9,8 +9,6 @@ import {BOARD_TYPE, BADGE_MARK_DAYS} from '../../config';
 import * as actions from '../../actions';
 import axios from 'axios';
 
-
-
 const AuthMenu = memo(({signOut, isAuth}) => {
     const onClickSignOut = async () => {
       await signOut();
@@ -59,10 +57,10 @@ const BoardsMenu = memo(({isAuth}) => {
       try{
         let {data:{type}} = await axios.post(`http://localhost:4000/post/getNew`, { days: BADGE_MARK_DAYS });
         setBadgeData({
-          [BOARD_TYPE.MEETING]: type.includes(BOARD_TYPE.MEETING),
-          [BOARD_TYPE.NOTICE]: type.includes(BOARD_TYPE.NOTICE),
-          [BOARD_TYPE.EVENT]: type.includes(BOARD_TYPE.EVENT),
-          [BOARD_TYPE.DISCUSSION]: type.includes(BOARD_TYPE.DISCUSSION)});
+          [BOARD_TYPE.MEETING.NAME]: type.includes(BOARD_TYPE.MEETING.NAME),
+          [BOARD_TYPE.NOTICE.NAME]: type.includes(BOARD_TYPE.NOTICE.NAME),
+          [BOARD_TYPE.EVENT.NAME]: type.includes(BOARD_TYPE.EVENT.NAME),
+          [BOARD_TYPE.DISCUSSION.NAME]: type.includes(BOARD_TYPE.DISCUSSION.NAME)});
       } catch(err) {
         console.log(err.message);
       }
@@ -79,11 +77,11 @@ const BoardsMenu = memo(({isAuth}) => {
     }
   }, [isAuth]);
   return (
-    <NavDropdown title={["Boards ", (badgeData.MEETING||badgeData.NOTICE||badgeData.EVENT||badgeData.DISCUSSION)&&<Badge key="new" variant="danger">New</Badge>]} id="board-dropdown">
-      <NavDropdown.Item as={Link} to="/meeting">{"Meetings "}{badgeData.MEETING&&<Badge variant="danger">New</Badge>}</NavDropdown.Item>
-      <NavDropdown.Item as={Link} to="/notice">{"Notices "}{badgeData.NOTICE&&<Badge variant="danger">New</Badge>}</NavDropdown.Item>
-      <NavDropdown.Item as={Link} to="/event">{"Events "}{badgeData.EVENT&&<Badge variant="danger">New</Badge>}</NavDropdown.Item>
-      <NavDropdown.Item as={Link} to="/Discussion">{"Discussion "}{badgeData.DISCUSSION&&<Badge variant="danger">New</Badge>}</NavDropdown.Item>
+    <NavDropdown title={["Boards ", (badgeData.MEETING||badgeData.NOTICE||badgeData.EVENT||badgeData.DISCUSSION)&&<Badge key="new" variant="danger">N</Badge>]} id="board-dropdown">
+      <NavDropdown.Item as={Link} to="/meeting">{"Meetings "}{badgeData.MEETING&&<Badge variant="danger">N</Badge>}</NavDropdown.Item>
+      <NavDropdown.Item as={Link} to="/notice">{"Notices "}{badgeData.NOTICE&&<Badge variant="danger">N</Badge>}</NavDropdown.Item>
+      <NavDropdown.Item as={Link} to="/event">{"Events "}{badgeData.EVENT&&<Badge variant="danger">N</Badge>}</NavDropdown.Item>
+      <NavDropdown.Item as={Link} to="/Discussion">{"Discussion "}{badgeData.DISCUSSION&&<Badge variant="danger">N</Badge>}</NavDropdown.Item>
     </NavDropdown>
   );
 });
