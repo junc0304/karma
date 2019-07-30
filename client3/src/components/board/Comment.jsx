@@ -3,7 +3,6 @@ import { Form, Col, Row, Button, ButtonGroup, InputGroup } from 'react-bootstrap
 import { connect } from 'react-redux';
 import { RefreshIcon, ListIcon, DateIcon, PersonIcon, SendIcon } from '../icons'
 import { dateTime, isEmpty } from '../../helpers';
-import { createComment } from '../../actions';
 import CustomInput from '../shared/CustomInput';
 import * as actions from '../../actions';
 
@@ -65,15 +64,7 @@ const CommentButton = memo(({ show, data, onShowHide, onRefresh }) => {
   );
 });
 
-const CommentForm = memo(({ postId, createComment, getComments }) => {
-  let formData = { postId };
-
-  const handleChange = (name, value, validated) => formData[name] = value;
-  const handleSubmit = async () => {
-    await createComment(formData);
-    await getComments({ postId });
-  }
-
+const CommentForm = memo(({ onChange, onSubmit }) => {
   return (
     <Form
       style={{ margin: "0px 15px 0px 15px", position: "float", marginTop: "10px" }}>
@@ -83,7 +74,7 @@ const CommentForm = memo(({ postId, createComment, getComments }) => {
             name="content"
             as="textarea"
             rows={1}
-            onChange={handleChange}
+            onChange={onChange}
             placeholder="Add Comment..."
             style={{ margin: "0px 0px 0px 0px", padding: "10px 0px 10px 10px", border: "0px", resize: "none", backgroundColor: "white", borderRadius: "5px  0px 0px 5px" }}
           />
@@ -91,7 +82,7 @@ const CommentForm = memo(({ postId, createComment, getComments }) => {
             <Button
               size="sm"
               variant="light"
-              onClick={handleSubmit}
+              onClick={onSubmit}
               style={{ width: "3.5rem" }}
             >
               <SendIcon style={{ fontSize: "20px", verticalAlign: "middle" }} />
@@ -103,46 +94,38 @@ const CommentForm = memo(({ postId, createComment, getComments }) => {
   );
 });
 
-const CommentComponent = memo(({ edit, postId, data, getComments, createComment }) => {
+const CommentComponent = memo(({ edit, postId, data, show, onChange, onSubmit, onShowHide, onRefresh }) => {
 
-  const [show, setShow] = useState(false);
+  //const [show, setShow] = useState(false);
   const hasComments = !isEmpty(data);
 
-  useEffect(() => {
-    const fetchComments = async () => await getComments({ postId });
-    fetchComments();
-  }, [postId]);
+  //const handleChange = (name, value, validated) => formData[name] = value;
+  //const handleSubmit = async () => await [createComment(formData), await getComments({ postId })];
+  //const handleShowHide = () => setShow(!show);
+  //const handleRefresh = async () => await getComments({ postId });
 
-  const CommentView = () => {
-
-    const handleShowHide = () => setShow(!show);
-    const handleRefresh = async () => await getComments({ postId });
-
-    return (
-      <Fragment>
-        {hasComments && (
-          <CommentButton
-            data={data}
-            show={show}
-            onShowHide={handleShowHide}
-            onRefresh={handleRefresh}
-          />
-        )}
-        {hasComments && show && (
-          <CommentList data={data} />
-        )}
-        {!edit && (
-          <CommentForm
-            postId={postId} 
-            getComments={getComments} 
-            createComment={createComment} 
-          />
-        )}
-      </Fragment>
-    );
-
-  }
-  return <CommentView />
+  return (
+    <Fragment>
+      {hasComments && (
+        <CommentButton
+          data={data}
+          show={show}
+          onShowHide={onShowHide}
+          onRefresh={onRefresh}
+        />
+      )}
+      {hasComments && show && (
+        <CommentList data={data} />
+      )}
+      {!edit && (
+        <CommentForm
+          postId={postId}
+          onChange={onChange}
+          onSubmit={onSubmit}
+        />
+      )}
+    </Fragment>
+  );
 });
 
 

@@ -55,7 +55,12 @@ export const isEmpty = (input) => {
 };
 
 export const dateTime = {
-  shortDate: (date) => new Intl.DateTimeFormat('en-US', { month: "short", day: "numeric", year: "numeric" }).format(new Date(date)),
+  shortDate: (input) => {
+    let dateTime = new Date(input);
+
+    return { date: new Intl.DateTimeFormat('en-US', { month: "short", day: "2-digit", year: "numeric" }).format(dateTime),
+    time: new Intl.DateTimeFormat('en-US', { hour:"numeric", minute:"numeric", second:"numeric",  hour12: false}).format(dateTime) }
+  },
   arrYears: (years) => {
     let arrYear = [];
     let thisYear = new Date().getFullYear();

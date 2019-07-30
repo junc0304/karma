@@ -9,7 +9,7 @@ import {
   //page
   GET_PAGE, CREATE_PAGE, UPDATE_PAGE, DELETE_PAGE, RESET_PAGE, PAGE_ERROR,
   //comment
-  GET_COMMENT, CREATE_COMMENT, UPDATE_COMMENT,DELETE_COMMENT,RESET_COMMENT,COMMENT_ERROR
+  GET_COMMENT, CREATE_COMMENT, UPDATE_COMMENT,DELETE_COMMENT,RESET_COMMENT,COMMENT_ERROR, SET_CURRENT_POST, RESET_CURRENT_POST, SET_NEW_POST
 } from './types';
 import { PAGE_TYPE, BOARD_TYPE } from '../config';
 
@@ -183,6 +183,55 @@ export const deletePost = (data) => {
       dispatch({
         type: POST_ERROR,
         payload: err
+      });
+    }
+  }
+}
+
+export const openRow = (post) => {
+  return dispatch => {
+    try {
+     dispatch({
+        type: SET_CURRENT_POST,
+        payload: post
+      });
+    }
+    catch (err) {
+      dispatch({
+        type: POST_ERROR,
+        payload: err.message
+      });
+    }
+  }
+}
+
+export const closeRow = () => {
+  return dispatch => {
+    try {
+      dispatch({
+        type: RESET_CURRENT_POST
+      });
+    }
+    catch (err) {
+      dispatch({
+        type: POST_ERROR,
+        payload: err.message
+      });
+    }
+  }
+}
+
+export const openNewRow = () => {
+  return dispatch => {
+    try {
+      dispatch({
+        type: SET_NEW_POST
+      });
+    }
+    catch (err) {
+      dispatch({
+        type: POST_ERROR,
+        payload: err.message
       });
     }
   }

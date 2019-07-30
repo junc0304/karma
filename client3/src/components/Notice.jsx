@@ -5,12 +5,13 @@ import * as actions from '../actions';
 import TableComponent from './board/Table.jsx';
 import FormComponent from './board/Form.jsx';
 import PaginationComponent from './board/Pagination.jsx';
+import CommentForm from './board/Comment.jsx';
 import { pageReducer } from './board/PageReducer';
 import { CreateButton } from './board/Button';
 import { boardState, isEmpty } from '../helpers';
 import { BOARD_TYPE } from '../config';
 
-const Notice = ({ data, getPosts, createPost, updatePost, deletePost, user }) => {
+const Notice = ({ data, getPosts, createPost, updatePost, deletePost, getComments, createComment, user }) => {
   let type = BOARD_TYPE.NOTICE.NAME;
   let isAllowed = BOARD_TYPE.NOTICE.EDIT.includes(!isEmpty(user) ? user.role.toUpperCase() : 'ADMIN');
   let initialState = boardState.getInitialPageState(data);
@@ -47,12 +48,16 @@ const Notice = ({ data, getPosts, createPost, updatePost, deletePost, user }) =>
           data={row.data}
           show={row.show}
           onClose={handleCloseForm}
-          createPost={createPost}
-          updatePost={updatePost}
-          deletePost={deletePost}
-          getPosts={getPosts}
           editable={isAllowed}
-        />
+          rowId={row.data.postId}
+        >
+          <CommentForm
+            postId={row.data.postId}
+            getComments={getComments}
+            createComment={createComment}
+          />
+        </FormComponent>
+
         <PaginationComponent
           data={pageState}
           dispatch={dispatch}

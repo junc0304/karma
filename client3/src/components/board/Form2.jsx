@@ -9,113 +9,103 @@ import * as actions from '../../actions';
 const BoardFormComponent = memo((props) => {
   let { data, type, show, onClose, createPost, updatePost, deletePost, editable = false, getPosts, rowId, getComments } = props;
   let { postId, title, content, created, updated, authorName, comments } = data;
-  let formData = {};
+  let postForm = {};
+  let commentForm = {};
+
   useEffect(() => {
     const fetch = async () => await actions.getComments(postId);
     fetch();
-  },[])
+  }, [])
 
+  const hasData = !isEmpty(data);
+  const onUpdate = edit && !isEmpty(data);
+  const onCreate = edit && isEmpty(data);
+  const onView = !edit;
+  
   const BoardFormView = () => {
     const [edit, setEdit] = useState(false);
     useEffect(() => setEdit(isEmpty(data)), [data]);
-    
-    const hasData = !isEmpty(data);
-    const onUpdate = edit && !isEmpty(data);
-    const onCreate = edit && isEmpty(data);
-    const onView = !edit;
 
     const handleChange = (name, value, validated) => formData[name] = value;
     const handleCreate = async () => [await createPost({ ...formData, type }), await getPosts(type)];
     const handleUpdate = async () => [await updatePost({ ...formData, postId }), await getPosts(type)];
     const handleDelete = async () => [await deletePost({ ...formData, postId }), await getPosts(type)];
-    const handleEditChange = () => [setEdit(!edit), edit&&(formData={ title, content}) ];
+    const handleEditChange = () => [setEdit(!edit), edit && (formData = { title, content })];
 
     return (
-      <Modal
-        show={show}
-        onHide={onClose} >
-        <Jumbotron style={{ padding: "15px 15px", margin: "0" }}>
-          <Form noValidate>
-            <Modal.Header style={{ borderRadius: "5px", padding: "5px 0px 16px 15px" }}>
-              {onView && <h3>View post</h3>}
-              {onUpdate && <h3>Update post</h3>}
-              {onCreate && <h3>Create post</h3>}
-              <MenuButtons
-                edit={edit}
-                hasData={hasData}
-                onClose={onClose}
-                onDelete={handleDelete}
-                show={editable}
-                onChangeEdit={handleEditChange}
-              />
-            </Modal.Header>
-            <Modal.Body style={{ backgroundColor: "white", borderRadius: "5px" }}>
-              <Row>
-                <Form.Label className="col-2" column style={{ display: "flex", alignItems: "center" }} >
-                  Title:</Form.Label >
-                <Col className="col-10" style={{ paddingLeft: "0px" }}>
-                  <CustomInput
-                    size="lg"
-                    name="title"
-                    type="text"
-                    placeholder="Title"
-                    defaultValue={title}
-                    edit={edit}
-                    onChange={handleChange}
-                    style={{ verticalAlign: "middle", backgroundColor: "white", border: `2px solid ${edit && hasData ? "pink" : "white"}` }}
-                  />
-                </Col>
-              </Row>
-              {hasData && (
-                <Row>
-                  <Col className="col-7">
-                    <Form.Text>{`Created: ${dateTime.boardDate(created)}`}</Form.Text>
-                    {/* <Form.Text>{`Updated: ${dateTime.boardDate(data.updated || data.created.toString())}`}</Form.Text> */}
-                  </Col>
-                  <Col className="d-flex col-5">
-                    <Form.Text className=" ml-auto col-5">
-                      by:</Form.Text>
-                    <Col className="col-7 d-flex text-center">
-                      {authorName}
-                    </Col>
-                  </Col>
-                </Row>
-              )}
-            </Modal.Body>
-            <Modal.Body style={{ padding: "0px" }}>
+      <Form noValidate>
+        <Modal.Header style={{ borderRadius: "5px", padding: "5px 0px 16px 15px" }}>
+          {onView && <h3>View post</h3>}
+          {onUpdate && <h3>Update post</h3>}
+          {onCreate && <h3>Create post</h3>}
+          <MenuButtons
+            edit={edit}
+            hasData={hasData}
+            onClose={onClose}
+            onDelete={handleDelete}
+            show={editable}
+            onChangeEdit={handleEditChange}
+          />
+        </Modal.Header>
+        <Modal.Body style={{ backgroundColor: "white", borderRadius: "5px" }}>
+          <Row>
+            <Form.Label className="col-2" column style={{ display: "flex", alignItems: "center" }} >
+              Title:</Form.Label >
+            <Col className="col-10" style={{ paddingLeft: "0px" }}>
               <CustomInput
-                name="content"
-                as="textarea"
+                size="lg"
+                name="title"
                 type="text"
-                rows={10}
-                defaultValue={content}
+                placeholder="Title"
+                defaultValue={title}
                 edit={edit}
-                placeholder="Content"
                 onChange={handleChange}
-                style={{
-                  padding: "16px", marginTop: "10px", resize: "none", whiteSpace: "preWrap",
-                  backgroundColor: "white", borderRadius: "5px", minHeight: "300px", border: `2px solid ${edit && hasData ? "pink" : "white"}`
-                }}
+                style={{ verticalAlign: "middle", backgroundColor: "white", border: `2px solid ${edit && hasData ? "pink" : "white"}` }}
               />
-            </Modal.Body>
-            {edit && (
-              <FormButtons
-                edit={edit}
-                data={data}
-                onUpdate={handleUpdate}
-                onCreate={handleCreate}
-                onCancel={handleEditChange}
-              />
-            )}
-          </Form>
-          {!edit && (
-            <CommentComponent
-              edit={edit}
-              postId={rowId}
-            />
+            </Col>
+          </Row>
+          {hasData && (
+            <Row>
+              <Col className="col-7">
+                <Form.Text>{`Created: ${dateTime.boardDate(created)}`}</Form.Text>
+                {/* <Form.Text>{`Updated: ${dateTime.boardDate(data.updated || data.created.toString())}`}</Form.Text> */}
+              </Col>
+              <Col className="d-flex col-5">
+                <Form.Text className=" ml-auto col-5">
+                  by:</Form.Text>
+                <Col className="col-7 d-flex text-center">
+                  {authorName}
+                </Col>
+              </Col>
+            </Row>
           )}
-        </Jumbotron>
-      </Modal>
+        </Modal.Body>
+        <Modal.Body style={{ padding: "0px" }}>
+          <CustomInput
+            name="content"
+            as="textarea"
+            type="text"
+            rows={10}
+            defaultValue={content}
+            edit={edit}
+            placeholder="Content"
+            onChange={handleChange}
+            style={{
+              padding: "16px", marginTop: "10px", resize: "none", whiteSpace: "preWrap",
+              backgroundColor: "white", borderRadius: "5px", minHeight: "300px", border: `2px solid ${edit && hasData ? "pink" : "white"}`
+            }}
+          />
+        </Modal.Body>
+        {edit && (
+          <FormButtons
+            edit={edit}
+            data={data}
+            onUpdate={handleUpdate}
+            onCreate={handleCreate}
+            onCancel={handleEditChange}
+          />
+        )}
+      </Form>
     );
   }
   return <BoardFormView />

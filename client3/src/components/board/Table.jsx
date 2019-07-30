@@ -9,11 +9,11 @@ const TableComponent = memo(({ pageState, data, onClick }) => {
   const start = (page.current - 1) * pageSize;
   const end = start + pageSize;
   const [rows, setRows] = useState([]);
-
   useEffect(() => setRows(Object.values(data).slice(start, end)), [data, page]);
+
   return (
     <Fragment>
-      <Table variant="light" hover style={{ width: '100%' }}>
+      <Table size="sm" variant="light" hover style={{ width: '100%' }}>
         <TableHeaderComponent />
         <TableBodyComponent
           data={rows}
@@ -26,22 +26,28 @@ const TableComponent = memo(({ pageState, data, onClick }) => {
 
 const TableRowComponent = memo(({ item, onClick }) => {
   const { index, title, created, authorName, comments } = item;
+  let {date, time} = dateTime.shortDate(created);
+
   return (
     <tr
-      className="text-center"
+      style={{lineHeight:"99%"}}
       key={index}
       onClick={() => onClick(item)}
     >
-      <td className="d-none d-sm-block" xs={"auto"} sm={1} md={1} lg={1} >{index}</td>
-      <td xs={8} sm={6} md={6} lg={6} style={{ width: '100%', whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
-        {title}
-        {!isEmpty(comments) && <span style={{ fontSize: "12px" }}>{` [${comments.length}]`}</span>}
-        {isWithinDays(created, 5) && <Badge variant="danger" style={{ fontSize: "10px" }}>N</Badge>}
+      <td className="text-center d-none d-sm-block" xs={"auto"} sm={1} md={1} lg={1} style={{ whiteSpace: "nowrap", fontSize:"14px" }} >{index}</td>
+      <td xs={7} sm={5} md={5} lg={5} style={{ paddingLeft:"1rem", width: '100%', overflow: "hidden", textOverflow: "ellipsis" }}>
+        <span style={{ fontSize:"14px" }}>{title}</span>
+        {!isEmpty(comments) && <span style={{ fontSize: "13px", marginLeft:"2px"}}>{`[${comments.length}]`}</span>}
+        {isWithinDays(created, 5) && <Badge variant="danger" style={{ fontSize: "12px", marginLeft:"2px" }}>N</Badge>}
       </td>
-      <td xs={4} sm={3} md={3} lg={3} style={{ wordBreak: 'keep-all' }}>
-        <span style={{ whiteSpace: "nowrap" }}>{dateTime.shortDate(created)}</span>
+      <td className="text-center d-none d-sm-block" xs={"auto"} sm={2} md={2} lg={2} style={{ whiteSpace: "nowrap", fontSize:"14px" }}>
+        {authorName}
       </td>
-      <td className="d-none d-sm-block" xs={"auto"} sm={2} md={2} lg={2} >{authorName}</td>
+      <td className="text-center" xs={3} sm={2} md={2} lg={2} style={{ wordBreak: 'keep-all',lineHeight:"80%" }}>
+        <span style={{ whiteSpace: "nowrap", fontSize:"11px" }}>{date}</span>
+        <br/>
+        <span style={{ whiteSpace: "nowrap", fontSize:"11px"}}>{time}</span>
+      </td>
     </tr>
   );
 });
@@ -50,10 +56,16 @@ const TableHeaderComponent = memo(() => {
   return (
     <thead style={{ padding: '0px!important' }} >
       <tr className="text-center">
-        <td className="d-none d-sm-block" xs={"auto"} sm={1} md={1} lg={1} >#</td>
-        <td xs={8} sm={6} md={6} lg={6} >Title</td>
-        <td xs={4} sm={3} md={3} lg={3} >Date</td>
-        <td className="d-none d-sm-block" xs={"auto"} sm={2} md={2} lg={2} >By</td>
+        <td className="d-none d-sm-block" xs={"auto"} sm={1} md={1} lg={1} >
+          #
+        </td>
+        <td xs={8} sm={5} md={5} lg={5} >
+          Title
+        </td>
+        <td className="d-none d-sm-block"  xs={3} sm={3} md={3} lg={3} >
+          Author
+        </td>
+        <td xs={3} sm={3} md={3} lg={3} >Date</td>
       </tr>
     </thead>
   );
