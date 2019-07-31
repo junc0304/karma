@@ -1,6 +1,7 @@
 import React, { memo, useEffect, useState, Fragment } from 'react';
 import { Table, Badge } from 'react-bootstrap';
 import { isWithinDays, isEmpty, dateTime } from '../../helpers';
+import { flexbox } from '@material-ui/system';
 
 
 const TableComponent = memo(({ pageState, data, onClick }) => {
@@ -13,7 +14,7 @@ const TableComponent = memo(({ pageState, data, onClick }) => {
 
   return (
     <Fragment>
-      <Table size="sm" variant="light" hover style={{ width: '100%' }}>
+      <Table size="sm" variant="light" hover style={{ display:flexbox, tableLayout:"auto", overflow: "hidden", wordWrap:"break-word"}}>
         <TableHeaderComponent />
         <TableBodyComponent
           data={rows}

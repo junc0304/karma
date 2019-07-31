@@ -2,11 +2,19 @@ import React, { memo, useState, Fragment, useEffect } from 'react';
 import { Form } from 'react-bootstrap';
 import _ from 'lodash';
 
-const CustomInput = ({edit = true, validation = (v) => null, onChange, defaultValue, password ,...props }) => {
+const CustomInput = ({edit = true, validation = (v) => null, onChange, defaultValue, reset, password ,...props }) => {
   const [input, setInput] = useState({[props.name]: ['', '']});
   const formStyle = props.style || ({ backgroundColor: "white", borderRadius: "5px" });
+  console.log("custom input",defaultValue, "default")
 
-  useEffect(()=> defaultValue &&  setInput({ ...input, [props.name]: [defaultValue, input[props.name][1]]}), [edit]);
+  if(reset)
+    setInput({[props.name]: ['', '']});
+
+  useEffect(()=> {
+    if(defaultValue)
+      setInput({ ...input, [props.name]: [defaultValue, input[props.name][1]]});
+  }, [edit, defaultValue]);
+
   const debouncedOnChange = _.debounce((name, value, valid) => onChange(name, value, valid) , 200);
   const handleChange = (event) => {
     let { name, value } = event.target;
@@ -36,4 +44,4 @@ const CustomInput = ({edit = true, validation = (v) => null, onChange, defaultVa
   )
 }
 
-export default memo(CustomInput);
+export default CustomInput;

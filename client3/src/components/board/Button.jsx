@@ -2,7 +2,7 @@ import React from 'react';
 import { Button, ButtonGroup } from 'react-bootstrap';
 import { PlusIcon } from '../icons';
 
-export const CreateButton = ({ show, onClick }) => {
+const CreateButton = ({ show, onClick }) => {
   return (
     <div style={{ position: "relative" }}>
       {show && (
@@ -22,3 +22,4 @@ export const CreateButton = ({ show, onClick }) => {
   );
 }
 
+export default CreateButton;

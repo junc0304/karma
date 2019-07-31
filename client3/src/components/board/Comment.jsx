@@ -1,16 +1,24 @@
-import React, { memo, useState, useEffect, Fragment } from 'react';
-import { Form, Col, Row, Button, ButtonGroup, InputGroup } from 'react-bootstrap';
+import React, { memo, useState, useEffect, Fragment, useRef, createRef } from 'react';
+import { Form, Col, Row, Button, ButtonGroup, InputGroup, FormControl } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import { RefreshIcon, ListIcon, DateIcon, PersonIcon, SendIcon } from '../icons'
 import { dateTime, isEmpty } from '../../helpers';
 import CustomInput from '../shared/CustomInput';
 import * as actions from '../../actions';
+import _ from 'lodash';
 
-const CommentComponent = memo(({ data, postId, onChange, onCreate, onRefresh }) => {
+const CommentComponent = memo((props) => {
+
   const [show, setShow] = useState(false);
+
+  let { data, postId, createComment, getComments } = props;
+  let commentForm = {};
+
   const handleShowHideComment = () => setShow(!show);
-  const onCreateComment = () => [setShow(true), onCreate()]
-  useEffect(() => console.log("showing", show, "data empty", isEmpty(data)));
+  const handleChangeComment = (name, value, validated) => commentForm[name] = value;
+  const handleCreateComment = async () => [await createComment({ ...commentForm, postId }), await getComments({ postId })];
+  const handleRefreshComment = async () => await getComments({ postId });
+
   return (
     <Fragment>
       {!isEmpty(data) && (
@@ -18,7 +26,7 @@ const CommentComponent = memo(({ data, postId, onChange, onCreate, onRefresh }) 
           data={data}
           show={show}
           onShowHide={handleShowHideComment}
-          onRefresh={onRefresh}
+          onRefresh={handleRefreshComment}
         />
       )}
       {!isEmpty(data) && (
@@ -30,8 +38,8 @@ const CommentComponent = memo(({ data, postId, onChange, onCreate, onRefresh }) 
       <CommentForm
         show={show}
         postId={postId}
-        onChange={onChange}
-        onSubmit={onCreateComment}
+        onChange={handleChangeComment}
+        onSubmit={handleCreateComment}
       />
     </Fragment>
   );
@@ -94,26 +102,37 @@ const CommentControl = memo(({ show, data, onShowHide, onRefresh }) => {
   );
 });
 
-const CommentForm = ({ onChange, onSubmit }) => {
+const CommentForm = memo(({ onChange, onSubmit }) => {
+  const [formData, setFormData] = useState({ content: '' });
+
+  const debouncedOnChange = _.debounce((name, value) => onChange(name, value), 200);
+  const handleChange = (event) => {
+    let { name, value } = event.target;
+    setFormData({ ...formData, [name]: value });
+    debouncedOnChange(name, value, null);
+  };
+
   return (
     <Form
+      onReset={onSubmit}
       style={{ margin: "0px 15px 0px 15px", position: "float", marginTop: "10px" }}>
       <Row className="d-flex" as={Form.Group}>
         <InputGroup>
-          <CustomInput
+          <FormControl
             name="content"
             as="textarea"
             rows={1}
-            onChange={onChange}
+            onChange={handleChange}
             placeholder="Add Comment Here"
             style={{ margin: "0px 0px 0px 0px", padding: "10px 0px 10px 10px", border: "0px", resize: "none", backgroundColor: "white", borderRadius: "5px  0px 0px 5px" }}
           />
           <InputGroup.Append>
             <Button
               size="sm"
+              type="reset"
               variant="light"
-              onClick={onSubmit}
               style={{ width: "3.5rem" }}
+              disabled={!formData.content.length}
             >
               <SendIcon style={{ fontSize: "20px", verticalAlign: "middle" }} />
             </Button>
@@ -122,13 +141,14 @@ const CommentForm = ({ onChange, onSubmit }) => {
       </Row>
     </Form>
   );
-};
+});
 
 
 const mapStateToProps = (state) => {
   console.log(state);
   return {
     data: state.comment.data,
+    postId: state.comment.postId,
     errorMessage: state.auth.errorMessage
   }
 }

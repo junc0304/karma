@@ -6,7 +6,7 @@ import TableComponent from './board/Table.jsx';
 import FormComponent from './board/Form.jsx';
 import PaginationComponent from './board/Pagination.jsx';
 import { pageReducer } from './board/PageReducer';
-import { CreateButton } from './board/Button';
+import  CreateButton  from './board/Button';
 import { boardState, isEmpty } from '../helpers';
 import { BOARD_TYPE } from '../config';
 

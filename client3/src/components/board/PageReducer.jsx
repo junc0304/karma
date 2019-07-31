@@ -1,7 +1,8 @@
+import React, {createContext} from 'react';
+
 import { BOARD_PROPERTY } from '../../config';
 
 const { PAGINATION_SIZE, PAGE_SIZE } = BOARD_PROPERTY;
-
 const initialBoardState = {
   index: { start: 0, end: PAGE_SIZE },
   page: { start: 1, current: 1, end: 1 },
@@ -142,3 +143,5 @@ export const pageReducer = (state = initialBoardState, action) => {
       return state;
   }
 }
+
+export const BoardContext = createContext();
