@@ -3,15 +3,20 @@ import { Jumbotron } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import * as actions from '../actions';
 import TableComponent from './board/Table.jsx';
-import FormComponent from './board/Form.jsx';
+import FormComponent from './board/Form2.jsx';
 import PaginationComponent from './board/Pagination.jsx';
-import CommentForm from './board/Comment.jsx';
 import { pageReducer } from './board/PageReducer';
 import { CreateButton } from './board/Button';
 import { boardState, isEmpty } from '../helpers';
 import { BOARD_TYPE } from '../config';
 
-const Notice = ({ data, getPosts, createPost, updatePost, deletePost, getComments, createComment, user }) => {
+const Notice = ({
+  //from store
+  data, user,
+  //from action
+  getPosts, createPost, updatePost, deletePost, getComments, createComment
+}) => {
+
   let type = BOARD_TYPE.NOTICE.NAME;
   let isAllowed = BOARD_TYPE.NOTICE.EDIT.includes(!isEmpty(user) ? user.role.toUpperCase() : 'ADMIN');
   let initialState = boardState.getInitialPageState(data);
@@ -22,10 +27,10 @@ const Notice = ({ data, getPosts, createPost, updatePost, deletePost, getComment
   }, []);
 
   const NoticeBoard = () => {
-    const [pageState, dispatch] = useReducer(pageReducer, initialState);
     const [row, setRow] = useState({ data: {}, show: false });
-
-    const handleOpenForm = (data) => setRow({ data, show: true });
+    const [pageState, dispatch] = useReducer(pageReducer, initialState);
+   
+    const handleOpenForm = async (data) => [ await getComments({ postId: data.postId }), setRow({ data, show: true })];
     const handleOpenEmptyForm = () => setRow({ data: {}, show: true });
     const handleCloseForm = () => setRow({ data: {}, show: false });
 
@@ -50,14 +55,7 @@ const Notice = ({ data, getPosts, createPost, updatePost, deletePost, getComment
           onClose={handleCloseForm}
           editable={isAllowed}
           rowId={row.data.postId}
-        >
-          <CommentForm
-            postId={row.data.postId}
-            getComments={getComments}
-            createComment={createComment}
-          />
-        </FormComponent>
-
+        />
         <PaginationComponent
           data={pageState}
           dispatch={dispatch}

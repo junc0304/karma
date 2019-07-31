@@ -1,121 +1,152 @@
 'use strict';
-import React, { memo, useState, useEffect } from 'react';
+import React, { memo, useState, useEffect, Fragment } from 'react';
 import { Jumbotron, Modal, Form, ButtonGroup, Button, Row, Col } from 'react-bootstrap';
+import { connect } from 'react-redux';
 import { DeleteIcon, EditIcon, CancelIcon } from '../icons';
 import { isEmpty, dateTime } from '../../helpers';
-import CustomInput from '../shared/CustomInput'
+import CustomInput from '../shared/CustomInput';
 import CommentComponent from './Comment';
 import * as actions from '../../actions';
-const BoardFormComponent = memo((props) => {
-  let { data, type, show, onClose, createPost, updatePost, deletePost, editable = false, getPosts, rowId, getComments } = props;
+
+const BoardForm = memo(({
+  // from parent
+  data, type, show, onClose, editable = false,
+  // from store
+  getPosts, createPost, updatePost, deletePost,
+  comment, getComments, createComment
+}) => {
+
+  const [edit, setEdit] = useState(false);
   let { postId, title, content, created, updated, authorName, comments } = data;
   let postForm = {};
   let commentForm = {};
 
-  useEffect(() => {
-    const fetch = async () => await actions.getComments(postId);
-    fetch();
-  }, [])
-
   const hasData = !isEmpty(data);
-  const onUpdate = edit && !isEmpty(data);
-  const onCreate = edit && isEmpty(data);
-  const onView = !edit;
-  
-  const BoardFormView = () => {
-    const [edit, setEdit] = useState(false);
-    useEffect(() => setEdit(isEmpty(data)), [data]);
+  const updating = edit && !isEmpty(data);
+  const creating = edit && isEmpty(data);
+  const viewing = !edit;
 
-    const handleChange = (name, value, validated) => formData[name] = value;
-    const handleCreate = async () => [await createPost({ ...formData, type }), await getPosts(type)];
-    const handleUpdate = async () => [await updatePost({ ...formData, postId }), await getPosts(type)];
-    const handleDelete = async () => [await deletePost({ ...formData, postId }), await getPosts(type)];
-    const handleEditChange = () => [setEdit(!edit), edit && (formData = { title, content })];
+  useEffect(() => setEdit(isEmpty(data)), [data]);
 
-    return (
-      <Form noValidate>
-        <Modal.Header style={{ borderRadius: "5px", padding: "5px 0px 16px 15px" }}>
-          {onView && <h3>View post</h3>}
-          {onUpdate && <h3>Update post</h3>}
-          {onCreate && <h3>Create post</h3>}
-          <MenuButtons
-            edit={edit}
-            hasData={hasData}
-            onClose={onClose}
-            onDelete={handleDelete}
-            show={editable}
-            onChangeEdit={handleEditChange}
-          />
-        </Modal.Header>
-        <Modal.Body style={{ backgroundColor: "white", borderRadius: "5px" }}>
-          <Row>
-            <Form.Label className="col-2" column style={{ display: "flex", alignItems: "center" }} >
-              Title:</Form.Label >
-            <Col className="col-10" style={{ paddingLeft: "0px" }}>
-              <CustomInput
-                size="lg"
-                name="title"
-                type="text"
-                placeholder="Title"
-                defaultValue={title}
-                edit={edit}
-                onChange={handleChange}
-                style={{ verticalAlign: "middle", backgroundColor: "white", border: `2px solid ${edit && hasData ? "pink" : "white"}` }}
-              />
-            </Col>
-          </Row>
-          {hasData && (
-            <Row>
-              <Col className="col-7">
-                <Form.Text>{`Created: ${dateTime.boardDate(created)}`}</Form.Text>
-                {/* <Form.Text>{`Updated: ${dateTime.boardDate(data.updated || data.created.toString())}`}</Form.Text> */}
-              </Col>
-              <Col className="d-flex col-5">
-                <Form.Text className=" ml-auto col-5">
-                  by:</Form.Text>
-                <Col className="col-7 d-flex text-center">
-                  {authorName}
-                </Col>
-              </Col>
-            </Row>
-          )}
-        </Modal.Body>
-        <Modal.Body style={{ padding: "0px" }}>
-          <CustomInput
-            name="content"
-            as="textarea"
-            type="text"
-            rows={10}
-            defaultValue={content}
-            edit={edit}
-            placeholder="Content"
-            onChange={handleChange}
-            style={{
-              padding: "16px", marginTop: "10px", resize: "none", whiteSpace: "preWrap",
-              backgroundColor: "white", borderRadius: "5px", minHeight: "300px", border: `2px solid ${edit && hasData ? "pink" : "white"}`
-            }}
-          />
-        </Modal.Body>
-        {edit && (
+  const handleChangeEdit = () => setEdit(!edit);
+
+  const handleChangePost = (name, value, validated) => postForm[name] = value;
+  const handleCreatePost = async () => [await createPost({ ...postForm, type }), await getPosts(type)];
+  const handleUpdatePost = async () => [await updatePost({ ...postForm, postId }), await getPosts(type)];
+  const handlePostDelete = async () => [await deletePost({ ...postForm, postId }), await getPosts(type)];
+
+  const handleChangeComment = (name, value, validated) => commentForm[name] = value;
+  const handleCreateComment = async () => [await createComment({ ...commentForm, postId }), await getComments({postId})];
+  const handleRefreshComment = async () => await getComments({postId});
+
+  return (
+    <Modal
+      show={show}
+      onHide={onClose} >
+      <Jumbotron style={{ padding: "15px 15px", margin: "0" }}>
+        <MenuButtons
+          onEditChange={handleChangeEdit}
+          onUpdate={handleUpdatePost}
+          onDelete={handlePostDelete}
+          onClose={onClose}
+        />
+        <PostForm
+          data={data}
+          type={type}
+          edit={edit}
+          onChange={handleChangePost}
+        />
+        { updating || viewing  && (
           <FormButtons
             edit={edit}
-            data={data}
-            onUpdate={handleUpdate}
-            onCreate={handleCreate}
-            onCancel={handleEditChange}
+            dataExist={!isEmpty(data)}
+            onUpdate={handleUpdatePost}
+            onCreate={handleCreatePost}
+            onClose={onClose}
           />
         )}
-      </Form>
-    );
-  }
-  return <BoardFormView />
+        { viewing && (
+          /* {data, postId, onChange, onCreate, onRefresh } */
+          <CommentComponent
+            edit={isEmpty(data)}
+            onShowHide={handleChangeEdit}
+            onCreate={handleCreateComment}
+            onChange={handleChangeComment}
+            onRefresh={handleRefreshComment}
+          />
+        )}
+      </Jumbotron>
+    </Modal>
+  )
 });
 
-const MenuButtons = memo(({ onClose, onDelete, onChangeEdit, hasData, edit, show }) => {
+
+const PostForm = ({ data, edit, type, onChange }) => {
+
+  let { postId, title, content, authorName, created } = data;
+  let dataExist = isEmpty(data);
+
+  return (
+    <Form noValidate>
+      <Modal.Body style={{ backgroundColor: "white", borderRadius: "5px" }}>
+        <Row>
+          <Form.Label className="col-2" column style={{ display: "flex", alignItems: "center" }} >
+            Title:</Form.Label >
+          <Col className="col-10" style={{ paddingLeft: "0px" }}>
+            <CustomInput
+              size="lg"
+              name="title"
+              type="text"
+              placeholder="Title"
+              defaultValue={title}
+              edit={edit}
+              onChange={onChange}
+              style={{ verticalAlign: "middle", backgroundColor: "white", border: `2px solid ${edit && dataExist ? "pink" : "white"}` }}
+            />
+          </Col>
+        </Row>
+        {!edit && (
+          <Row>
+            <Col className="col-7">
+              <Form.Text>{`Created: ${dateTime.boardDate(created)}`}</Form.Text>
+              {/* <Form.Text>{`Updated: ${dateTime.boardDate(data.updated || data.created.toString())}`}</Form.Text> */}
+            </Col>
+            <Col className="d-flex col-5">
+              <Form.Text className=" ml-auto col-5">
+                by:</Form.Text>
+              <Col className="col-7 d-flex text-center">
+                {authorName}
+              </Col>
+            </Col>
+          </Row>
+        )}
+      </Modal.Body>
+      <Modal.Body style={{ padding: "0px" }}>
+        <CustomInput
+          name="content"
+          as="textarea"
+          type="text"
+          rows={10}
+          defaultValue={content}
+          edit={edit}
+          placeholder="Content"
+          onChange={onChange}
+          style={{
+            padding: "16px", marginTop: "10px", resize: "none", whiteSpace: "preWrap",
+            backgroundColor: "white", borderRadius: "5px", minHeight: "300px", border: `2px solid ${edit && dataExist ? "pink" : "white"}`
+          }}
+        />
+      </Modal.Body>
+    </Form>
+  );
+}
+
+
+const MenuButtons = memo(({ onClose, onDelete, onEditView, edit, show }) => {
   return (
     <div className="d-flex">
       <ButtonGroup className=" d-flex ml-auto">
-        {show && hasData && edit && (
+        {edit && (
           <Button
             as={Button}
             size="sm"
@@ -126,12 +157,12 @@ const MenuButtons = memo(({ onClose, onDelete, onChangeEdit, hasData, edit, show
             <DeleteIcon style={{ textAlign: "center", verticalAlign: "middle" }} />
           </Button>
         )}
-        {show && hasData && (
+        {show && (
           <Button
             size="sm"
             variant="light"
             active={edit}
-            onClick={onChangeEdit}
+            onClick={onEditView}
             style={{ textAlign: "center", verticalAlign: "middle", /* backgroundColor: "rgba(255,255,255,0)", border: "0px"  */ }}
           >
             <EditIcon style={{ textAlign: "center", verticalAlign: "middle" }} />
@@ -146,6 +177,7 @@ const MenuButtons = memo(({ onClose, onDelete, onChangeEdit, hasData, edit, show
           <CancelIcon style={{ textAlign: "center", verticalAlign: "middle" }} />
         </Button>
       </ButtonGroup>
+
     </div>
   );
 });
@@ -180,4 +212,12 @@ const FormButtons = memo(({ onUpdate, onCreate, onCancel, edit, data }) => {
   );
 });
 
-export default BoardFormComponent
+const mapStateToProps = (state) => {
+  return {
+    user: state.auth.user,
+    comment: state.comment
+    //data: state.post.data,
+  };
+}
+
+export default connect(mapStateToProps, actions)(BoardForm);

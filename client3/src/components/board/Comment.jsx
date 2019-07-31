@@ -1,4 +1,4 @@
-import React, { memo, useState, useEffect, Fragment } from 'react';
+import React, { memo, useState, useEffect, Fragment, forceUpdate } from 'react';
 import { Form, Col, Row, Button, ButtonGroup, InputGroup } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import { RefreshIcon, ListIcon, DateIcon, PersonIcon, SendIcon } from '../icons'
@@ -6,7 +6,37 @@ import { dateTime, isEmpty } from '../../helpers';
 import CustomInput from '../shared/CustomInput';
 import * as actions from '../../actions';
 
-const Comment = memo(({ data }) => {
+const CommentComponent = memo(({ data, postId, onChange, onCreate, onRefresh }) => {
+  const [show, setShow] = useState(false);
+  const handleShowHideComment = () => setShow(!show);
+  useEffect(() => console.log("showing", show, "data empty", isEmpty(data)));
+  return (
+    <Fragment>
+      {!isEmpty(data) && (
+        <CommentControl
+          data={data}
+          show={show}
+          onShowHide={handleShowHideComment}
+          onRefresh={onRefresh}
+        />
+      )}
+      {!isEmpty(data) && (
+        <CommentList
+          data={data}
+          show={show}
+        />
+      )}
+      <CommentForm
+        show={show}
+        postId={postId}
+        onChange={onChange}
+        onSubmit={onCreate}
+      />
+    </Fragment>
+  );
+});
+
+const Comment = memo(({ data, index }) => {
   let { content, authorName, created } = data;
   return (
     <div style={{ backgroundColor: "white", borderRadius: "5px" }}>
@@ -29,16 +59,15 @@ const Comment = memo(({ data }) => {
 });
 
 
-const CommentList = memo(({ data }) => {
+const CommentList = memo(({ data, show }) => {
   return (
-    <div>
-      {Object.values(data).map((item, index) => <Comment data={item} index={index} key={index} />)}
-    </div>
+    <Fragment>
+      {show && Object.values(data).map((item, index) => <Comment data={item} index={index} key={`comm-${index}`} />)}
+    </Fragment>
   );
 });
 
-
-const CommentButton = memo(({ show, data, onShowHide, onRefresh }) => {
+const CommentControl = memo(({ show, data, onShowHide, onRefresh }) => {
   return (
     <div className="d-flex" style={{ marginTop: "15px", textAlign: "center" }} >
       <label className="d-flex mr-auto">Comments{` [${data.length}]`}</label>
@@ -64,9 +93,10 @@ const CommentButton = memo(({ show, data, onShowHide, onRefresh }) => {
   );
 });
 
-const CommentForm = memo(({ onChange, onSubmit }) => {
+const CommentForm = ({ onChange, onSubmit }) => {
   return (
     <Form
+      noValidate
       style={{ margin: "0px 15px 0px 15px", position: "float", marginTop: "10px" }}>
       <Row className="d-flex" as={Form.Group}>
         <InputGroup>
@@ -75,12 +105,13 @@ const CommentForm = memo(({ onChange, onSubmit }) => {
             as="textarea"
             rows={1}
             onChange={onChange}
-            placeholder="Add Comment..."
+            placeholder="Add Comment Here"
             style={{ margin: "0px 0px 0px 0px", padding: "10px 0px 10px 10px", border: "0px", resize: "none", backgroundColor: "white", borderRadius: "5px  0px 0px 5px" }}
           />
           <InputGroup.Append>
             <Button
               size="sm"
+              type="submit"
               variant="light"
               onClick={onSubmit}
               style={{ width: "3.5rem" }}
@@ -92,41 +123,7 @@ const CommentForm = memo(({ onChange, onSubmit }) => {
       </Row>
     </Form>
   );
-});
-
-const CommentComponent = memo(({ edit, postId, data, show, onChange, onSubmit, onShowHide, onRefresh }) => {
-
-  //const [show, setShow] = useState(false);
-  const hasComments = !isEmpty(data);
-
-  //const handleChange = (name, value, validated) => formData[name] = value;
-  //const handleSubmit = async () => await [createComment(formData), await getComments({ postId })];
-  //const handleShowHide = () => setShow(!show);
-  //const handleRefresh = async () => await getComments({ postId });
-
-  return (
-    <Fragment>
-      {hasComments && (
-        <CommentButton
-          data={data}
-          show={show}
-          onShowHide={onShowHide}
-          onRefresh={onRefresh}
-        />
-      )}
-      {hasComments && show && (
-        <CommentList data={data} />
-      )}
-      {!edit && (
-        <CommentForm
-          postId={postId}
-          onChange={onChange}
-          onSubmit={onSubmit}
-        />
-      )}
-    </Fragment>
-  );
-});
+};
 
 
 const mapStateToProps = (state) => {
