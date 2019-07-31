@@ -1,4 +1,4 @@
-import React, { memo, useState, useEffect, Fragment, forceUpdate } from 'react';
+import React, { memo, useState, useEffect, Fragment } from 'react';
 import { Form, Col, Row, Button, ButtonGroup, InputGroup } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import { RefreshIcon, ListIcon, DateIcon, PersonIcon, SendIcon } from '../icons'
@@ -9,6 +9,7 @@ import * as actions from '../../actions';
 const CommentComponent = memo(({ data, postId, onChange, onCreate, onRefresh }) => {
   const [show, setShow] = useState(false);
   const handleShowHideComment = () => setShow(!show);
+  const onCreateComment = () => [setShow(true), onCreate()]
   useEffect(() => console.log("showing", show, "data empty", isEmpty(data)));
   return (
     <Fragment>
@@ -30,7 +31,7 @@ const CommentComponent = memo(({ data, postId, onChange, onCreate, onRefresh }) 
         show={show}
         postId={postId}
         onChange={onChange}
-        onSubmit={onCreate}
+        onSubmit={onCreateComment}
       />
     </Fragment>
   );
@@ -61,9 +62,9 @@ const Comment = memo(({ data, index }) => {
 
 const CommentList = memo(({ data, show }) => {
   return (
-    <Fragment>
+    <div>
       {show && Object.values(data).map((item, index) => <Comment data={item} index={index} key={`comm-${index}`} />)}
-    </Fragment>
+    </div>
   );
 });
 
@@ -96,7 +97,6 @@ const CommentControl = memo(({ show, data, onShowHide, onRefresh }) => {
 const CommentForm = ({ onChange, onSubmit }) => {
   return (
     <Form
-      noValidate
       style={{ margin: "0px 15px 0px 15px", position: "float", marginTop: "10px" }}>
       <Row className="d-flex" as={Form.Group}>
         <InputGroup>
@@ -111,7 +111,6 @@ const CommentForm = ({ onChange, onSubmit }) => {
           <InputGroup.Append>
             <Button
               size="sm"
-              type="submit"
               variant="light"
               onClick={onSubmit}
               style={{ width: "3.5rem" }}
