@@ -1,8 +1,7 @@
 import React, { memo, useEffect, useState, Fragment } from 'react';
-import { Table, Badge } from 'react-bootstrap';
+import {  Badge } from 'react-bootstrap';
 import { isWithinDays, isEmpty, dateTime } from '../../helpers';
-import { flexbox } from '@material-ui/system';
-import styles from './Board.css';
+import { PersonIcon, DateIcon } from '../icons';
 
 const TableComponent = memo(({ pageState, data, onClick }) => {
 
@@ -13,7 +12,7 @@ const TableComponent = memo(({ pageState, data, onClick }) => {
   useEffect(() => setRows(Object.values(data).slice(start, end)), [data, page]);
 
   return (
-    <Fragment className="" size="sm" variant="light" style={{ display: "flex", flexWrap: "wrap", margin: " 0 0 3em 0", padding: 0 }}>
+    <Fragment>
       <TableHeaderComponent />
       <TableBodyComponent data={rows} onClick={onClick} />
     </Fragment>
@@ -33,17 +32,89 @@ const TableRowComponent = memo(({ item, onClick }) => {
   let { date, time } = dateTime.shortDate(created);
 
   return (
-    <div className="table-row" key={index} onClick={() => onClick(item)} >
-      <div className="text index">{index}</div>
-      <div className="text title">
-        <span>{title}</span>
-        {!isEmpty(comments) && <span>{`[${comments.length}]`}</span>}
-        {isWithinDays(created, 5) && <Badge variant="danger">N</Badge>}
-      </div >
-      <div className="text author">{authorName}</div>
-      <div className="text date">
-        <span>{date}</span>
-        <span>{time}</span>
+    <div key={index} onClick={() => onClick(item)} 
+      className="hover board-row-wrapper"
+     /*  style={{
+        display: "flex", flexDirection: "row", flexWrap: "wrap",
+        backgroundColor: "white", borderRadius: "5px", padding: "8px", marginBottom: "3px",
+      }} */
+    >
+      <div className="board-row-inner-wrapper"
+       /*  style={{
+          flex: "2", minWidth: "280px",
+          display: "flex", flexDirection: "row",
+        }} */
+      >
+        <div className="board-row-index"
+          /* style={{
+            flex: "1",
+            fontSize: "15px", display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "center"
+          }} */
+        >{index}</div>
+        <div className="board-row-title"
+         /*  style={{
+            flex: "9",
+            display: "flex", flexDirection: "row", alignItems: "center"
+          }} */
+        >
+          <span
+            style={{ fontSize: "16px" }}
+          >{title}&nbsp;
+          </span>
+          {!isEmpty(comments) && (
+            <span className="row-comment"
+              style={{
+                fontSize: "15px",
+                display: "flex", flexDirection: "row", alignItems: "center"
+              }}
+            >{`[${comments.length}] `}
+            </span>
+          )}
+          {isWithinDays(created, 5) && (
+            <Badge
+              variant="danger"
+              style={{
+                fontSize: "12px", marginLeft: "5px",
+                display: "flex", flexDirection: "row", alignItems: "center"
+              }}
+            >N
+              </Badge>
+          )}
+        </div >
+      </div>
+
+      <div className="board-row-inner-wrapper2"
+        /* style={{
+          flex: "1",
+          display: "flex", flexDirection: "row",
+          fontSize: "15px", alignItems: "center"
+        }} */
+      >
+        <div className="board-row-authorname"
+          /* style={{
+            flex: "2",
+            display: "flex", flexDirection: "row", alignItems: "center", justifyContent: "center", whiteSpace: "nowrap"
+          }} */
+        >
+          <PersonIcon style={{ fontSize: "16px" }} />
+          {authorName} &ensp;
+              </div>
+        <div className="board-row-datetime"
+      /*    style={{
+            flex: "3",
+            minWidth: "160px"
+          }}  */
+        >
+          <span
+            style={{
+              display: "flex", flexDirection: "row", alignItems: "center", justifyContent: "center", whiteSpace: "nowrap"
+            }}
+          >
+            <DateIcon style={{ fontSize: "15px" }} />
+            {date}
+            {time}
+          </span>
+        </div>
       </div>
     </div>
   );
@@ -51,12 +122,62 @@ const TableRowComponent = memo(({ item, onClick }) => {
 
 const TableHeaderComponent = memo(() => {
   return (
-      <div className="table-row header">
-        <div className="text index">#</div>
-        <div className="text title">Title</div>
-        <div className="text author">Author</div>
-        <div className="text date">Date</div>
+    <div
+      style={{
+        display: "flex", flexDirection: "row", flexWrap: "wrap",
+        backgroundColor: "white", borderRadius: "5px", padding: "10px", marginBottom: "5px",
+      }}
+    >
+      <div
+        style={{
+          flex: "2", minWidth: "280px",
+          display: "flex", flexDirection: "row",
+        }}
+      >
+        <div
+          style={{
+            flex: "1",
+            fontSize: "17px", display: "flex", justifyContent: "center", alignItems: "center"
+          }}
+        > #
+        </div>
+        <div
+          style={{
+            flex: "9",
+            fontSize: "17px", display: "flex", justifyContent: "center",alignItems: "center"
+          }}
+        > Title
+        </div >
       </div>
+
+      <div
+        style={{
+          flex: "1",
+          display: "flex", flexDirection: "row", fontSize: "17px", alignItems: "center"
+        }}
+      >
+        <div
+          style={{
+            flex: "2",
+            display: "flex", alignItems: "center", justifyContent: "center", whiteSpace: "nowrap"
+          }}
+        > Author
+        </div>
+        <div
+          style={{
+            flex: "3",
+            minWidth: "160px"
+          }}
+        >
+          <span
+            style={{
+              display: "flex", alignItems: "center", justifyContent: "center", whiteSpace: "nowrap"
+            }}
+          > Date
+          </span>
+        </div>
+      </div>
+    </div>
   );
 });
 

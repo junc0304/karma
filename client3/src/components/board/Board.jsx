@@ -2,7 +2,7 @@ import React, { useState, useEffect, useReducer, memo } from 'react';
 import { Jumbotron } from 'react-bootstrap';
 
 import { connect } from 'react-redux';
-import * as actions from '../actions';
+import * as actions from '../../actions';
 
 import TableComponent from './Table.jsx';
 import FormComponent from './Form2.jsx';
@@ -10,10 +10,9 @@ import PaginationComponent from './Pagination.jsx';
 import CreateButton from './Button';
 
 import { pageReducer } from './PageReducer';
-import { boardState, isEmpty } from '../helpers';
-import { BOARD_TYPE } from '../config';
-import './Board.css'
-
+import { boardState, isEmpty } from '../../helpers';
+import { BOARD_TYPE, JUMBOTRON_BG_COMMON } from '../../config';
+import './Board.css';
 
 const Board = memo(({
   //from parent
@@ -42,7 +41,7 @@ const Board = memo(({
 
   return (
 
-    <Jumbotron style={{ wordWrap: "break-word", padding: "15px 15px", backgroundColor: "rgba(255,255,255,0.8)" }}>
+    <Jumbotron style={{ wordWrap: "break-word", padding: "15px 15px", backgroundColor: JUMBOTRON_BG_COMMON }}>
       <h3>{type}</h3>
       <CreateButton
         onClick={handleOpenEmptyForm}
@@ -54,6 +53,7 @@ const Board = memo(({
         pageState={pageState}
         onClick={handleOpenForm}
       />
+      <hr className="my-3" />
       <FormComponent
         type={type}
         data={row.data}

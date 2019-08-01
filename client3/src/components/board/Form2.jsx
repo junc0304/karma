@@ -4,6 +4,7 @@ import { Jumbotron, Modal } from 'react-bootstrap';
 import { isEmpty, dateTime } from '../../helpers';
 import CommentComponent from './Comment';
 import PostComponent from './Post';
+import './Board.css';
 
 
 const BoardForm = memo(({ data, type, show, onClose, access = false }) => {

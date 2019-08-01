@@ -2,17 +2,13 @@ import { GET_COMMENT, CREATE_COMMENT, UPDATE_COMMENT, DELETE_COMMENT, COMMENT_ER
 
 const initialState = {
   postId: '',
-  data: [],         //comment data
-  errorMessage: ''  //error message
+  data: [],         
+  errorMessage: ''  
 }
 
 const commentReducer = (state = initialState, action) => {
-  console.log(action.type)
   switch (action.type) {
-
-    //board get actions
     case GET_COMMENT:
-      console.log(action.payload)
       return { ...state, postId: action.payload.postId , data: action.payload.comment, errorMessage: '' };
     case CREATE_COMMENT:
       return { ...state, errorMessage: '' };
@@ -21,7 +17,6 @@ const commentReducer = (state = initialState, action) => {
     case DELETE_COMMENT:
       return { ...state, errorMessage: '' };
     case RESET_COMMENT:
-      console.log("reset comment")
       return { ...state, postId:'', data: [] };
     case COMMENT_ERROR:
       return { ...state, errorMessage: '' }

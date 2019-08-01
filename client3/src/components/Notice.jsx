@@ -8,7 +8,7 @@ import PaginationComponent from './board/Pagination.jsx';
 import { pageReducer } from './board/PageReducer';
 import CreateButton  from './board/Button';
 import { boardState, isEmpty } from '../helpers';
-import { BOARD_TYPE } from '../config';
+import { BOARD_TYPE , JUMBOTRON_BG_COMMON } from '../config';
 
 const Notice = memo(({
   //from store
@@ -36,7 +36,7 @@ const Notice = memo(({
 
   return (
 
-    <Jumbotron style={{ wordWrap: "break-word", padding: "15px 15px", backgroundColor: "rgba(255,255,255,0.8)" }}>
+    <Jumbotron style={{ wordWrap: "break-word", padding: "15px 15px", backgroundColor: JUMBOTRON_BG_COMMON }}>
       <h3>{type}</h3>
       <CreateButton
         onClick={handleOpenEmptyForm}
@@ -56,6 +56,7 @@ const Notice = memo(({
         editable={isAllowed}
         rowId={row.data.postId}
       />
+      <hr className="my-3" />
       <PaginationComponent
         data={pageState}
         dispatch={dispatch}

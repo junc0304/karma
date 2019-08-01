@@ -5,7 +5,6 @@ import _ from 'lodash';
 const CustomInput = ({edit = true, validation = (v) => null, onChange, defaultValue, reset, password ,...props }) => {
   const [input, setInput] = useState({[props.name]: ['', '']});
   const formStyle = props.style || ({ backgroundColor: "white", borderRadius: "5px" });
-  console.log("custom input",defaultValue, "default")
 
   if(reset)
     setInput({[props.name]: ['', '']});

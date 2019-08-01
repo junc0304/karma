@@ -145,7 +145,6 @@ const CommentForm = memo(({ onChange, onSubmit }) => {
 
 
 const mapStateToProps = (state) => {
-  console.log(state);
   return {
     data: state.comment.data,
     postId: state.comment.postId,

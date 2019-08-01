@@ -59,7 +59,7 @@ export const dateTime = {
     let dateTime = new Date(input);
 
     return { date: new Intl.DateTimeFormat('en-US', { month: "short", day: "2-digit", year: "numeric" }).format(dateTime),
-    time: new Intl.DateTimeFormat('en-US', { hour:"numeric", minute:"numeric", second:"numeric",  hour12: false}).format(dateTime) }
+    time: new Intl.DateTimeFormat('en-US', { hour:"numeric", minute:"numeric", hour12: true}).format(dateTime) }
   },
   arrYears: (years) => {
     let arrYear = [];

@@ -2,7 +2,7 @@ import React, { useState, useRef } from 'react';
 import { connect } from 'react-redux';
 import { Jumbotron, Form, Alert, Button, ButtonGroup } from 'react-bootstrap';
 import * as actions from '../actions';
-import { CITIES_IN_BC } from '../config'
+import { CITIES_IN_BC, JUMBOTRON_BG_COMMON } from '../config'
 import CustomInput from './shared/CustomInput';
 import { validate } from '../helpers'
 
@@ -51,7 +51,7 @@ const SignUp = props => {
     
 
     return (
-      <Jumbotron>
+      <Jumbotron style={{ backgroundColor: JUMBOTRON_BG_COMMON }}>
         <h1 className="display-3">
           Sign Up
         </h1>

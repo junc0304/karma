@@ -26,7 +26,6 @@ const SignIn = ({ isAuthenticated, history, ...props }) => {
     const handleChange = (name, value, validated) => {
       formData[name] = value;
       valid[name] = validated;
-      console.log(name, validated)
     }
 
     const handleSubmit = async (event) => {
