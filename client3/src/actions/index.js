@@ -478,7 +478,7 @@ export const deleteComment = (data) => {
   };
 }
 
-export const resetComment = () => { 
+export const resetComments = () => { 
   console.log("comment RESET");
   return async dispatch => {
     try {

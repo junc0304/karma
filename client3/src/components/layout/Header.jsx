@@ -122,7 +122,6 @@ const Header = memo(({signOut, isAuth, history}) => {
 });
 
 const mapStateToProps = (state) => {
-  console.log(state)
   return {
     isAuth: state.auth.isAuthenticated
   };

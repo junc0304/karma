@@ -1,14 +1,19 @@
 import React, { useState, useEffect, useReducer, memo } from 'react';
 import { Jumbotron } from 'react-bootstrap';
+
 import { connect } from 'react-redux';
 import * as actions from '../actions';
+
 import TableComponent from './Table.jsx';
 import FormComponent from './Form2.jsx';
 import PaginationComponent from './Pagination.jsx';
-import { pageReducer } from './PageReducer';
 import CreateButton from './Button';
+
+import { pageReducer } from './PageReducer';
 import { boardState, isEmpty } from '../helpers';
 import { BOARD_TYPE } from '../config';
+import './Board.css'
+
 
 const Board = memo(({
   //from parent
@@ -16,7 +21,7 @@ const Board = memo(({
   //from store
   data, user,
   //from action
-  getPosts, getComments
+  getPosts, getComments, resetComments
 }) => {
   let currentUser = user.toUpperCase();
   let boardType = BOARD_TYPE[type.toUpperCase()];
@@ -32,8 +37,8 @@ const Board = memo(({
   const [pageState, dispatch] = useReducer(pageReducer, initialState);
 
   const handleOpenForm = async (data) => [await getComments({ postId: data.postId }), setRow({ data, show: true })];
-  const handleOpenEmptyForm = () => setRow({ data: {}, show: true });
-  const handleCloseForm = () => setRow({ data: {}, show: false });
+  const handleOpenEmptyForm = async () => [await resetComments(), setRow({ data: {}, show: true })];
+  const handleCloseForm = async () => [await resetComments(), setRow({ data: {}, show: false })];
 
   return (
 

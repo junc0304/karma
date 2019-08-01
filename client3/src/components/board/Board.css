@@ -1,0 +1,70 @@
+.text {
+  width: 180px;
+}
+
+.num {
+  width: 80px;
+}
+
+.table-row {
+  display: flex;
+  display: -webkit-flex;
+  flex-direction: row;
+  -webkit-flex-direction: row;
+  flex-grow: 0;
+  -webkit-flex-grow: 0;
+  flex-wrap: wrap;
+  -webkit-flex-wrap: wrap;
+  width: 100%;
+  padding-left: 15px;
+  padding-right: 15px;
+}
+
+.table-row>.text {
+  flex-grow: 1;
+  -webkit-flex-grow: 1;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  padding-right: 20px;
+}
+
+.table-row>.text.index {
+  min-width: 13%;
+  max-width: 13%;
+}
+
+.table-row>.text.title {
+  min-width: 60%;
+  max-width: 85%;
+}
+
+.table-row>.text.author {
+  min-width: 0%;
+  max-width: 20%;
+}
+
+.table-row>.text.date {
+  min-width: 0%;
+  max-width: 20%;
+}
+
+/*
+ * General good-look styles, not mandatory.
+ */
+
+body {
+  font-size: 20px;
+}
+
+.table-row {
+  border-bottom: 2px solid #e0e0e0;
+  border-collapse: collapse;
+  padding-top: 5px;
+}
+
+.table-row.header {
+  font-weight: bold;
+  padding-top: 8px;
+  padding-bottom: 8px;
+}

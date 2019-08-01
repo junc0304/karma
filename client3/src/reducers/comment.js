@@ -7,11 +7,13 @@ const initialState = {
 }
 
 const commentReducer = (state = initialState, action) => {
+  console.log(action.type)
   switch (action.type) {
+
     //board get actions
     case GET_COMMENT:
       console.log(action.payload)
-      return { ...state, postId: action.payload.postId ,data: action.payload.comment, errorMessage: '' };
+      return { ...state, postId: action.payload.postId , data: action.payload.comment, errorMessage: '' };
     case CREATE_COMMENT:
       return { ...state, errorMessage: '' };
     case UPDATE_COMMENT:
@@ -19,7 +21,8 @@ const commentReducer = (state = initialState, action) => {
     case DELETE_COMMENT:
       return { ...state, errorMessage: '' };
     case RESET_COMMENT:
-      return { ...state, type: '', data: {}};
+      console.log("reset comment")
+      return { ...state, postId:'', data: [] };
     case COMMENT_ERROR:
       return { ...state, errorMessage: '' }
     default:

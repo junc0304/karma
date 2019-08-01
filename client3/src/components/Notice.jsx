@@ -14,7 +14,7 @@ const Notice = memo(({
   //from store
   data, user,
   //from action
-  getPosts, getComments
+  getPosts, getComments, resetComments
 }) => {
 
   let type = BOARD_TYPE.NOTICE.NAME;
@@ -31,8 +31,8 @@ const Notice = memo(({
   const [pageState, dispatch] = useReducer(pageReducer, initialState);
 
   const handleOpenForm = async (data) => [await getComments({ postId: data.postId }), setRow({ data, show: true })];
-  const handleOpenEmptyForm = () => setRow({ data: {}, show: true });
-  const handleCloseForm = () => setRow({ data: {}, show: false });
+  const handleOpenEmptyForm = () => [resetComments() ,setRow({ data: {}, show: true })];
+  const handleCloseForm = () => [resetComments(), setRow({ data: {}, show: false })];
 
   return (
 
@@ -67,7 +67,6 @@ return <View />
 });
 
 const mapStateToProps = (state) => {
-  console.log(state)
   return {
     user: state.auth.user,
     data: state.post.data,
