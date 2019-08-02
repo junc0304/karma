@@ -27,7 +27,7 @@ postSchema.pre('save', async function (next) {
   }
 });
 
-postSchema.pre('findOneAndUpdate', async function (next) {
+postSchema.pre('updateOne', async function (next) {
   try {
     this.updated = Date.now();
     next();

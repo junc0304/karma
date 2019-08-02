@@ -14,6 +14,10 @@ const userDataHandler = require('./classes/UserDataHandler/UserDataHandler.js');
 const pageController = require('./controllers/pageController.js');
 const pageDataHandler = require('./classes/PageDataHandler/pageDataHandler.js');
 
+const historyController = require('./controllers/historyController.js');
+const historyDataHandler = require('./classes/HistoryDataHandler/historyDataHandler.js');
+
+
 const container = createContainer({injectionMode: InjectionMode.CLASSIC});
 
 container.register({
@@ -22,13 +26,16 @@ container.register({
   userDataHandler: asClass(userDataHandler).singleton(),
 
   commentController: asClass(commentController),
-  commentDataHandler: asClass(commentDataHandler),
+  commentDataHandler: asClass(commentDataHandler).singleton(),
   
   postController: asClass(postController),
   postDataHandler: asClass(postDataHandler).singleton(),
 
   pageController: asClass(pageController),
   pageDataHandler: asClass(pageDataHandler).singleton(),
+
+  historyController: asClass(historyController),
+  historyDataHandler: asClass(historyDataHandler).singleton(),
 })
 
 global.container = container;

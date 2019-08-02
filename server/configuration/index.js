@@ -12,9 +12,9 @@ module.exports = {
     BOARD_TYPE: ['NOTICE', 'MEETING', 'EVENT', 'DISCUSSION'],
     PAGE_TYPE: ['HOME', 'SUMMARY', 'HISTORY', 'MEMBERSHIP'],
     USER_ROLES: {
-      OWNER:'owner',
-      ADMIN:'admin',
-      USER: 'user',
+      OWNER:'OWNER',
+      ADMIN:'ADMIN',
+      USER: 'USER',
     },
     COMMENT_STATUS: ['ACTIVE', 'INACTIVE', 'HIDDEN'],
 

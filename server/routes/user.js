@@ -6,23 +6,24 @@ const HttpResponseException = require('../classes/HttpResponseException/httpResp
 const { validateBody, schemas } = require('../helpers/validateInput');
 
 router.route('/')
-  .post( async (req, res, next) => {
+  .post(passportJWT, async (req, res, next) => {
     var userController = req.container.resolve('userController');
     try {
-      res.status(200).json( await userController.getUsers());
+      console.log("get users");
+      res.status(200).json(await userController.getUsers());
     } catch (err) {
-      res.status(err.status).json(err);
+      res.status(400).json({ error: "could not get users" });
     }
   });
 
 router.route('/get')
-  .post( validateBody(schemas.getUser.getOne), passportJWT, async (req, res, next) => {
+  .post(validateBody(schemas.getUser.getOne), passportJWT, async (req, res, next) => {
     var userController = req.container.resolve('userController');
     try {
-      console.log(user);
-      res.status(200).json( await userController.getUserById(user.body));
+      console.log("get users");
+      res.status(200).json(await userController.getUserById(user.body));
     } catch (err) {
-      res.status(err.status).json(err);
+      res.status(400).json({ error: "could not get the user" });
     }
   });
 
@@ -30,9 +31,10 @@ router.route('/create')
   .post(validateBody(schemas.createUser), passportJWT, async (req, res, next) => {
     var userController = req.container.resolve('userController');
     try {
-      res.status(200).json( await userController.createUser(req.body));
+      console.log("create a user");
+      res.status(200).json(await userController.createUser(req.body));
     } catch (err) {
-      res.status(err.status).json(err);    
+      res.status(400).json({ error: "could not create the user" });
     }
   });
 
@@ -40,9 +42,10 @@ router.route('/update')
   .post(validateBody(schemas.updateUser), passportJWT, async (req, res, next) => {
     var userController = req.container.resolve('userController');
     try {
+      console.log("update a users");
       res.status(200).json(await userController.updateUser(req.body));
     } catch (err) {
-      res.status(err.status).json(err);    
+      res.status(400).json({ error: "could not update the user" });
     }
   });
 
@@ -50,9 +53,10 @@ router.route('/delete')
   .post(validateBody(schemas.deleteUser), passportJWT, async (req, res, next) => {
     var userController = req.container.resolve('userController');
     try {
+      console.log("delete user");
       res.status(200).json(await userController.deleteUser(req.body));
     } catch (err) {
-      res.status(err.status).json(err);    
+      res.status(400).json({ error: "could not delete the user" });
     }
   });
 

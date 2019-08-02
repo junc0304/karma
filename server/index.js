@@ -10,11 +10,16 @@ const postRouter = require('./routes/post');
 const commentRouter = require('./routes/comment');
 const authRouter = require('./routes/auth');
 const pageRouter = require('./routes/page');
+const historyRouter = require('./routes/history');
 const {DATABASE_URL, SERVER_PORT} = require('./configuration');
 
 const mongoose = require('mongoose');
 mongoose.Promise = global.Promise;
-mongoose.connect(DATABASE_URL, { useNewUrlParser: true, useCreateIndex : true ,useFindAndModify: false });
+mongoose.connect(DATABASE_URL, { 
+  useNewUrlParser: true, 
+  useCreateIndex : true ,
+  useFindAndModify: false 
+});
 
 app.use(cookieParser());
 app.use(cors({
@@ -28,17 +33,12 @@ app.use((req, res, next) => {
   next();
 });
 
-
 app.use('/user', userRouter);
 app.use('/post', postRouter);
 app.use('/comment', commentRouter);
+app.use('/history', historyRouter)
 app.use('/page', pageRouter);
 app.use('/auth', authRouter);
-
-app.use((error, req, res, next) =>{
-
-  res.json({ message: error.message });
-})
 
 const port = process.env.PORT || SERVER_PORT;
 app.listen(port, () => {

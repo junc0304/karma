@@ -4,15 +4,12 @@ const Config = require('../configuration');
 module.exports = {
   validateBody: (schema) => {
     return (req, res, next) => {
-      console.log("started");
-
-      const result = Joi.validate(req.body, schema, {abortEarly: false});
-      result.then().catch(error => {
-        const errorMessage = error.details.map(err => err.message);
-        console.log(errorMessage)
-        return res.status(400).json({ error: errorMessage });
-      })
-
+      const result = Joi.validate(req.body, schema, { 
+        abortEarly: false 
+      });
+      result.catch(error => {
+        return res.status(400).json({ error: "input validation failed" });
+      });
       if (!req.value) {
         req.value = {};
       }
@@ -58,7 +55,7 @@ module.exports = {
 
     updatePost: Joi.object().keys({
       postId: Joi.string().required(),
-      title: Joi.string().required(), 
+      title: Joi.string().required(),
       content: Joi.string().required()
     }),
 
@@ -111,7 +108,7 @@ module.exports = {
     }),
 
     createComment: Joi.object().keys({
-      postId: Joi.string().required(),      
+      postId: Joi.string().required(),
       content: Joi.string().required(),
     }),
 

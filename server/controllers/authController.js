@@ -24,7 +24,7 @@ class AuthController {
   async signUp(body) {
     let result, user;
     try {
-      if ( await this.userDataHandler.foundEmail(body.email) ) {
+      if (await this.userDataHandler.foundEmail(body.email)) {
         return { error: "email already exists" }
       }
       await this.userDataHandler.createUser(body);
@@ -41,7 +41,7 @@ class AuthController {
     let result;
     try {
       let { userId, name, email, role } = await this.userDataHandler.getUserByEmail(body.email);
-      result = { user: { userId, name, email, role }, token: signToken(user) } 
+      result = { user: { userId, name, email, role }, token: signToken(user) }
     }
     catch (err) {
       throw new HttpExceptionHandler(400, err);

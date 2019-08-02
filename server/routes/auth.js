@@ -13,13 +13,13 @@ router.route('/signup')
   .post(validateBody(schemas.signUp), async (req, res, next) => {
     const authController = req.container.resolve('authController');
     try {
-      console.log("user signup request")
-      let {user, token}= await authController.signUp(req.body);
+      console.log("sign up");
+      let { user, token } = await authController.signUp(req.body);
       res.cookie(COOKIE_TOKEN, token, { httpOnly: true })
       res.status(200).json(user);
     }
     catch (err) {
-      res.status(err.status).json(err);
+      res.status(400).json({error: "could not sign up"});
     }
   });
 
@@ -27,26 +27,27 @@ router.route('/signin')
   .post(validateBody(schemas.signIn), passportLocal, async (req, res, next) => {
     const authController = req.container.resolve('authController');
     try {
-      console.log("user login request")
+      console.log("sign in");
       let { user, token } = await authController.signIn(req.body, req.user);
+      console.log(COOKIE_TOKEN, token, user)
       res.cookie(COOKIE_TOKEN, token, { httpOnly: true });
       res.status(200).json(user);
     }
     catch (err) {
       console.log(err)
-      res.status(err.status).json({Error: "Sign In failed"});
+      res.status(400).json({ Error: "could not sign in" });
     }
   });
 
 router.route('/signout')
-  .post(passportJWT, async (req, res, next) => {
+  .post(async (req, res, next) => {
     try {
-      console.log("sign out request")
+      console.log("sign out");
       res.clearCookie(COOKIE_TOKEN);
-      res.status(200).json({success: true});
+      res.status(200).json({ success: true });
     } catch (err) {
-      res.status(err.status).json(err);
-    }    
+      res.status(400).json({error: "could not sign out"});
+    }
   });
 
 module.exports = router;

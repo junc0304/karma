@@ -22,11 +22,10 @@ class CommentController {
 
   async createComment(user, body) {
     try {
-      console.log( user, body )
       let { postId, content } = body;
       let { userId, name } = user;
-      await this.commentDataHandler.createComment({ authorId: userId, authorName: name, postId: postId, content: content });
-      let { commentId } = await this.commentDataHandler.searchComment({authorId: userId, authorName: name, postId: postId, content: content });
+      await this.commentDataHandler.createComment({ authorId: userId, authorName: name, postId, content });
+      let { commentId } = await this.commentDataHandler.searchComment({authorId: userId, authorName: name, postId, content });
       await this.postDataHandler.addCommentToPost(postId, commentId);
     } catch (err) {
       console.log(err)
