@@ -9,7 +9,9 @@ const TableComponent = memo(({ pageState, data, onClick }) => {
   const start = (page.current - 1) * pageSize;
   const end = start + pageSize;
   const [rows, setRows] = useState([]);
-  useEffect(() => setRows(Object.values(data).slice(start, end)), [data, page]);
+
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  useEffect(() => setRows(Object.values(data).slice(start, end)), [data, page, start, end]);
 
   return (
     <Fragment>
@@ -58,7 +60,7 @@ const TableRowComponent = memo(({ item, onClick }) => {
           }} */
         >
           <span
-            style={{ fontSize: "16px" }}
+            style={{ fontSize: "17px" }}
           >{title}&nbsp;
           </span>
           {!isEmpty(comments) && (

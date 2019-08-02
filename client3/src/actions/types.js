@@ -53,3 +53,14 @@ export const UPDATE_COMMENT = "UPDATE_COMMENT";
 export const DELETE_COMMENT = "DELETE_COMMENT";
 export const RESET_COMMENT = "RESET_COMMENT";
 export const COMMENT_ERROR = "COMMENT_ERROR";
+
+export const GET_HEADER_DATA = "GET_HEADER_DATA";
+export const HEADER_ERROR = "HEADER_ERROR";
+
+//history
+export const GET_HISTORY = "GET_HISTORY";
+export const CREATE_HISTORY = "CREATE_HISTORY";
+export const UPDATE_HISTORY = "UPDATE_HISTORY";
+export const DELETE_HISTORY = "DELETE_HISTORY";
+export const RESET_HISTORY = "RESET_HISTORY";
+export const HISTORY_ERROR = "HISTORY_ERROR";

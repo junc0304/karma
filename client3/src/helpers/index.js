@@ -1,5 +1,6 @@
 import { USER_TYPE, EMAIL_REGEX, PASSWORD_REGEX, POSTAL_CODE_REGEX, BOARD_PROPERTY } from '../config';
 import { convertToRaw, convertFromRaw, EditorState } from 'draft-js';
+import { isArray } from 'util';
 
 const capitalizeFirst = (string) => {
   return (string.charAt(0).toUpperCase() + string.slice(1));
@@ -8,8 +9,8 @@ const capitalizeFirst = (string) => {
 // User validation
 export const auth = {
   isAdmin: (role) => {
-    let roleInUpperCase = role.toUpperCase();
-    return (roleInUpperCase === USER_TYPE.ADMIN || roleInUpperCase === USER_TYPE.OWNER);
+    if(!role) return false;
+    return (role === USER_TYPE.ADMIN || role === USER_TYPE.OWNER);
   }
 }
 
@@ -42,15 +43,14 @@ export const validate = {
 
 const dayInMilliseconds = 24 * 60 * 60 * 1000;
 export const isWithinDays = (targetDate, days) => {
-  let date = new Date(targetDate);
-  let today = new Date();
-
-  return today.getTime() - date.getTime() < days * dayInMilliseconds
+  if(new Date().getTime() - new Date(targetDate).getTime() < days * dayInMilliseconds) 
+    return true;
+  return false;
 }
 
 export const isEmpty = (input) => {
   if (input == null) return true;
-  if (typeof input === 'array' || typeof input === 'string') return input.length === 0;
+  if (isArray(input) || typeof (input) === 'string') return input.length === 0;
   return Object.keys(input).length === 0
 };
 
@@ -58,8 +58,10 @@ export const dateTime = {
   shortDate: (input) => {
     let dateTime = new Date(input);
 
-    return { date: new Intl.DateTimeFormat('en-US', { month: "short", day: "2-digit", year: "numeric" }).format(dateTime),
-    time: new Intl.DateTimeFormat('en-US', { hour:"numeric", minute:"numeric", hour12: true}).format(dateTime) }
+    return {
+      date: new Intl.DateTimeFormat('en-US', { month: "short", day: "2-digit", year: "numeric" }).format(dateTime),
+      time: new Intl.DateTimeFormat('en-US', { hour: "numeric", minute: "numeric", hour12: true }).format(dateTime)
+    }
   },
   arrYears: (years) => {
     let arrYear = [];
@@ -75,7 +77,6 @@ export const dateTime = {
     let newDate = new Date(time);
     let hour = newDate.getHours();
     let min = newDate.getMinutes();
-    let show = new Date().getDate() - newDate.getDate() < 1;
     return `${newDate.getFullYear()}-${newDate.getMonth() + 1}-${newDate.getDate()} [${hour < 10 ? `0${hour}` : hour}: ${min < 10 ? `0${min}` : min}]`
   },
   commentDate: (date) => {
@@ -93,7 +94,7 @@ export const boardState = {
     const lastPageSet = Math.max(Math.ceil(lastPage / BOARD_PROPERTY.PAGINATION_SIZE), 1);
     return {
       page: { start: 1, current: 1, end: Math.min(BOARD_PROPERTY.PAGINATION_SIZE, lastPage) }, pageSet: 1,
-      pageSize: BOARD_PROPERTY.PAGE_SIZE, pageSetSize: BOARD_PROPERTY.PAGINATION_SIZE, lastPage, lastPageSet
-    };
+      pageSize: BOARD_PROPERTY.PAGE_SIZE, pageSetSize: BOARD_PROPERTY.PAGINATION_SIZE, lastPage: lastPage, lastPageSet: lastPageSet
+    }
   }
 }

@@ -2,7 +2,7 @@ import React, { useEffect, memo, useState } from 'react';
 import { Jumbotron } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import TableComponent from './member/Table.jsx';
-import ViewComponent from './member/View.jsx';
+import FormComponent from './member/Form.jsx';
 import * as actions from '../actions';
 
 const Member = memo(({member, getMembers}) => {
@@ -32,7 +32,7 @@ const Member = memo(({member, getMembers}) => {
         <h1 className="display-4">Members</h1>
         <hr className="my-3" />
         <TableComponent data={data} onClick={onClickRow}/>
-        <ViewComponent data={modalData} setShow={setShowModal} show={showModal} />
+        <FormComponent data={modalData} setShow={setShowModal} show={showModal} />
     </Jumbotron>
   );
 });

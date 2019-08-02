@@ -1,5 +1,3 @@
-import React, {createContext} from 'react';
-
 import { BOARD_PROPERTY } from '../../config';
 
 const { PAGINATION_SIZE, PAGE_SIZE } = BOARD_PROPERTY;
@@ -21,7 +19,7 @@ export const pageReducer = (state = initialBoardState, action) => {
       if (current === lastPage) {
         return state;
       }
-      if (current % pageSetSize === 0){
+      if (current % pageSetSize === 0) {
         return {
           ...state,
           page: {
@@ -46,10 +44,10 @@ export const pageReducer = (state = initialBoardState, action) => {
       if (current === 1) {
         return state
       }
-      if (current % pageSetSize === 1){
+      if (current % pageSetSize === 1) {
         return {
           ...state,
-          page: { 
+          page: {
             ...page,
             start: Math.max(start - pageSetSize, 1),
             current: Math.max(current - 1, 1),
@@ -58,7 +56,7 @@ export const pageReducer = (state = initialBoardState, action) => {
           pageSet: Math.max(pageSet - 1, 1)
         }
       }
-      return { 
+      return {
         ...state,
         page: {
           ...page,
@@ -124,9 +122,9 @@ export const pageReducer = (state = initialBoardState, action) => {
       }
     }
     case 'goToPage': {
-      let targetPage = action.value; 
+      let targetPage = action.value;
       console.log(targetPage)
-      let pageSet = Math.ceil(targetPage/pageSetSize);
+      let pageSet = Math.ceil(targetPage / pageSetSize);
       console.log(pageSet)
       return {
         ...state,
@@ -143,5 +141,3 @@ export const pageReducer = (state = initialBoardState, action) => {
       return state;
   }
 }
-
-export const BoardContext = createContext();

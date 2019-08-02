@@ -1,12 +1,14 @@
 import React, { useRef, useState, useEffect, memo } from 'react';
 import { Editor, RichUtils } from 'draft-js';
+import { FontIcon, ItalicTextIcon, BoldTextIcon, UnderlineTextIcon, OrderedListIcon, UnorderedListIcon } from '../icons';
 import _ from 'lodash';
+import { convertText } from '../../helpers';
 
 const maxDepth = 4;
 
 const RichTextEditor = memo(({ edit, defaultValue, onChange /* editorState, onChangeEditorState  */ }) => {
   const [className, setClassName] = useState('RichEditor-editor');
-  const [editorState, setEditorState] = useState(defaultValue);
+  const [editorState, setEditorState] = useState(convertText.toEditorState(defaultValue));
 
   useEffect(() => {
     var contentState = editorState.getCurrentContent();
@@ -15,12 +17,12 @@ const RichTextEditor = memo(({ edit, defaultValue, onChange /* editorState, onCh
         setClassName(className + ' RichEditor-hidePlaceholder');
       }
     }
-  }, [editorState]);
- 
+  }, [editorState, className]);
 
   const editor = useRef();
-  const debouncedOnChange = _.debounce((editorState) => onChange(editorState), 100);
+  const debouncedOnChange = _.debounce((editorState) => onChange(convertText.toRaw(editorState)), 100);
   const debouncedStateChange = _.debounce((editorState) => setEditorState(editorState), 30);
+
   const onChangeEditorState = (editorState) => {
     debouncedStateChange(editorState);
     debouncedOnChange(editorState);
@@ -91,16 +93,15 @@ const getBlockStyle = (block) => {
   }
 }
 
-const StyleButton = memo(({ style, active, label, onToggle, buttonStyle, textStyle }) => {
-  useEffect(() => {
-    setClassName(className + ' RichEditor-activeButton');
-  }, [active]);
+const StyleButton = memo(({ style, active, label, onToggle }) => {
+  const [className, setClassName] = useState('RichEditor-styleButton');
+  useEffect(() => setClassName(className + ' RichEditor-activeButton'), [active, className]);
 
   const onMouseDown = (event) => {
     event.preventDefault();
     onToggle(style);
   }
-  const [className, setClassName] = useState('RichEditor-styleButton');
+
   return (
     <span
       size="sm"
@@ -108,7 +109,6 @@ const StyleButton = memo(({ style, active, label, onToggle, buttonStyle, textSty
       className={className}
       onMouseDown={onMouseDown}
       style={{
-        ...buttonStyle,
         color: "#999",
         minHeight: "15px",
         minWidth: "15px",
@@ -122,14 +122,14 @@ const StyleButton = memo(({ style, active, label, onToggle, buttonStyle, textSty
 });
 
 const BLOCK_TYPES = [
-  { label: 'H1', style: 'header-one', buttonStyle: { fontSize: "15px" } },
-  { label: 'H2', style: 'header-two', buttonStyle: { fontSize: "15px" } },
-  { label: 'H3', style: 'header-three', buttonStyle: { fontSize: "15px" } },
-  { label: 'H4', style: 'header-four', buttonStyle: { fontSize: "15px" } },
-  { label: 'H5', style: 'header-five', buttonStyle: { fontSize: "15px" } },
-  { label: 'H6', style: 'header-six', buttonStyle: { fontSize: "15px" } },
-  { label: "•", style: 'unordered-list-item', buttonStyle: { fontSize: "15px" } },
-  { label: '#', style: 'ordered-list-item', buttonStyle: { fontSize: "15px" } }
+  { label: <FontIcon style={{ fontSize: "2em" }} />, style: 'header-one' },
+  { label: <FontIcon style={{ fontSize: "1.7em" }} />, style: 'header-two' },
+  { label: <FontIcon style={{ fontSize: "1.5em" }} />, style: 'header-three' },
+  { label: <FontIcon style={{ fontSize: "1.2em" }} />, style: 'header-four' },
+  { label: <FontIcon style={{ fontSize: "1.0em" }} />, style: 'header-five' },
+  { label: <FontIcon style={{ fontSize: "0.9em" }} />, style: 'header-six' },
+  { label: <UnorderedListIcon style={{ fontSize: "1.7em" }} />, style: 'unordered-list-item' },
+  { label: <OrderedListIcon style={{ fontSize: "1.7em" }} />, style: 'ordered-list-item' }
 ];
 const BlockStyleControls = memo(({ editorState, onToggle }) => {
   const selection = editorState.getSelection();
@@ -148,20 +148,19 @@ const BlockStyleControls = memo(({ editorState, onToggle }) => {
       }} >
       {BLOCK_TYPES.map((type) =>
         <StyleButton
-          key={type.label}
+          key={type.style}
           active={type.style === blockType}
           label={type.label}
           onToggle={onToggle}
-          style={type.style}
-          buttonStyle={type.buttonStyle} />)}
+          style={type.style} />)}
     </div>
   );
 });
 
 var INLINE_STYLES = [
-  { label: 'B', style: 'BOLD', buttonStyle: { fontWeight: "bold" } },
-  { label: 'I', style: 'ITALIC', buttonStyle: { fontStyle: "italic" } },
-  { label: 'U', style: 'UNDERLINE', buttonStyle: { textDecoration: "underline" } },
+  { label: <BoldTextIcon style={{ fontSize: "1.7em" }} />, style: 'BOLD', buttonStyle: { fontWeight: "bold" } },
+  { label: <ItalicTextIcon style={{ fontSize: "1.7em" }} />, style: 'ITALIC', buttonStyle: { fontStyle: "italic" } },
+  { label: <UnderlineTextIcon style={{ fontSize: "1.7em" }} />, style: 'UNDERLINE', buttonStyle: { textDecoration: "underline" } },
 ];
 const InlineStyleControls = memo(({ editorState, onToggle }) => {
   var currentStyle = editorState.getCurrentInlineStyle();
@@ -176,11 +175,10 @@ const InlineStyleControls = memo(({ editorState, onToggle }) => {
       }} >
       {INLINE_STYLES.map((type) =>
         <StyleButton
-          key={type.label}
+          key={type.style}
           active={currentStyle.has(type.style)}
           label={type.label}
           onToggle={onToggle}
-          buttonStyle={type.buttonStyle}
           style={type.style} />)}
     </div>
   );

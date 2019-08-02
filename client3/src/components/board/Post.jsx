@@ -1,23 +1,25 @@
-'use strict';
 import React, { memo, Fragment } from 'react';
 import { Modal, Form, Row, Col, Button, ButtonGroup } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import { isEmpty, dateTime } from '../../helpers';
+import { BOARD_USERS } from '../../config';
 import CustomInput from '../shared/CustomInput';
 import * as actions from '../../actions';
 import { DeleteIcon, EditIcon, CancelIcon } from '../icons';
 
 const PostComponent = ({
-  data, edit, type, onChangeEdit, onClose,
+  data, user, isAdmin, edit, type, onChangeEdit, onClose,
   createPost, getPosts, updatePost, deletePost
 }) => {
 
-  let { postId, title, content, authorName, created } = data;
+  let { postId, authorId, title, content, authorName, created } = data;
+  let { userId, role } = user;
   let postForm = {};
-  let dataExist = isEmpty(data);
+  let dataExist = !isEmpty(data);
   const updating = edit && !isEmpty(data);
   const creating = edit && isEmpty(data);
   const viewing = !edit;
+  const userAccess = authorId === userId || BOARD_USERS[type].includes(role) || isAdmin;
 
   const handleChangePost = (name, value, validated) => postForm[name] = value;
   const handleCreatePost = async () => [await createPost({ ...postForm, type }), await getPosts(type)];
@@ -35,7 +37,7 @@ const PostComponent = ({
           onUpdate={handleUpdatePost}
           onDelete={handlePostDelete}
           edit={edit}
-          show={(updating || viewing) && !creating}
+          show={(updating || viewing) && !creating && userAccess }
           onClose={onClose}
         />
       </Modal.Header>
@@ -178,6 +180,7 @@ const FormButtons = memo(({ onUpdate, onCreate, onCancel, edit, noData }) => {
 
 const mapStateToProps = (state) => {
   return {
+    isAdmin: state.auth.isAdmin,
     user: state.auth.user,
     comment: state.comment
   };

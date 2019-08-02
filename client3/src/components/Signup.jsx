@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import { Jumbotron, Form, Alert, Button, ButtonGroup } from 'react-bootstrap';
 import * as actions from '../actions';

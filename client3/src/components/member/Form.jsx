@@ -1,11 +1,8 @@
-import React, { useState, memo } from 'react';
+import React, { memo } from 'react';
 import { Modal, Row, Col, Jumbotron, Button } from 'react-bootstrap';
 
 const ViewComponent = ({ data, show, setShow }) => {
-  const { name, email, depotName, address, unit, city, phone, province, postalCode, role, created, updated, comment, location, owner, contact } = data;
-  const handleShow = () => {
-    setShow(true);
-  }
+  const { name, email, depotName, address, unit, city, phone, province, postalCode, role, created, comment } = data;
 
   const handleClose = () => {
     setShow(false);

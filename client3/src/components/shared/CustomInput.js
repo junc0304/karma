@@ -2,26 +2,24 @@ import React, { memo, useState, Fragment, useEffect } from 'react';
 import { Form } from 'react-bootstrap';
 import _ from 'lodash';
 
-const CustomInput = ({edit = true, validation = (v) => null, onChange, defaultValue, reset, password ,...props }) => {
-  const [input, setInput] = useState({[props.name]: ['', '']});
+const CustomInput = memo(({ edit = true, validation = (v) => null, onChange, defaultValue, reset, password, ...props }) => {
+  const [input, setInput] = useState({ [props.name]: ['', ''] });
   const formStyle = props.style || ({ backgroundColor: "white", borderRadius: "5px" });
 
-  if(reset)
-    setInput({[props.name]: ['', '']});
+  useEffect(() => {
+    if (defaultValue)
+      setInput({ ...input, [props.name]: [defaultValue, input[props.name][1]] });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
-  useEffect(()=> {
-    if(defaultValue)
-      setInput({ ...input, [props.name]: [defaultValue, input[props.name][1]]});
-  }, [edit, defaultValue]);
-
-  const debouncedOnChange = _.debounce((name, value, valid) => onChange(name, value, valid) , 200);
+  const debouncedOnChange = _.debounce((name, value, valid) => onChange(name, value, valid), 200);
   const handleChange = (event) => {
     let { name, value } = event.target;
-    let validated = !password 
-                      ? validation(name, value)
-                      : validation(password, value);
+    let validated = !password
+      ? validation(name, value)
+      : validation(password, value);
     setInput({ ...input, [name]: [value, validated] });
-    debouncedOnChange(name, value, validated == null );
+    debouncedOnChange(name, value, validated == null);
   }
   return (
     <Fragment>
@@ -40,7 +38,7 @@ const CustomInput = ({edit = true, validation = (v) => null, onChange, defaultVa
         {input[props.name][1]}
       </Form.Control.Feedback>
     </Fragment>
-  )
-}
+  );
+});
 
 export default CustomInput;

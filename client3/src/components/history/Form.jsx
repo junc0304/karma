@@ -1,12 +1,16 @@
-'use strict';
-import React, { memo, useState, useEffect, Fragment, useContext, StrictMode } from 'react';
-import {Jumbotron, Modal, Form, ButtonGroup, Button, Row, Col } from 'react-bootstrap';
+import React, { memo, useState, useEffect, Fragment, useContext } from 'react';
+import { Jumbotron, Modal, Form, ButtonGroup, Button, Row, Col } from 'react-bootstrap';
 import { HistoryContext } from './HistoryContext.jsx';
+import { connect } from 'react-redux';
+import * as actions from '../../actions';
+
 import { DeleteIcon, EditIcon, CancelIcon } from '../icons';
 import { isEmpty, dateTime } from '../../helpers/index.js';
 import CustomInput from '../shared/CustomInput'
 
-const HistoryForm = memo(({ data, show, onClose, createHistory, updateHistory, deleteHistory }) => {
+const HistoryForm = memo(({
+  data, show, isAdmin,
+  onClose, createHistory, updateHistory, deleteHistory }) => {
 
   let formData = {};
 
@@ -14,15 +18,18 @@ const HistoryForm = memo(({ data, show, onClose, createHistory, updateHistory, d
   const FormView = () => {
 
     const [edit, setEdit] = useState(false);
-    useEffect(() => setEdit(isEmpty(data)), [data]);
+    useEffect(() => setEdit(isEmpty(data)), []);
 
     const hasData = !isEmpty(data);
     const onUpdate = edit && !isEmpty(data);
     const onCreate = edit && isEmpty(data);
     const onView = !edit;
 
-    const handleChange = (name, value, validated) => formData[name] = value;
-    const handleCreate = async () => await createHistory(formData);
+    const handleChange = (name, value, validated) => {
+      console.log(formData)
+      formData[name] = value;
+    }
+    const handleCreate = async () => [await createHistory(formData), await actions.getHistory()];
     const handleUpdate = async () => await updateHistory(formData);
     const handleDelete = async () => await deleteHistory(formData);
     const handleEditChange = () => setEdit(!edit);
@@ -37,6 +44,7 @@ const HistoryForm = memo(({ data, show, onClose, createHistory, updateHistory, d
               {onCreate && <h3>History Create</h3>}
               <MenuButtons
                 edit={edit}
+                isAdmin={isAdmin}
                 hasData={hasData}
                 onClose={onClose}
                 onDelete={handleDelete}
@@ -136,12 +144,11 @@ const HistoryForm = memo(({ data, show, onClose, createHistory, updateHistory, d
   return <FormView />
 });
 
-const MenuButtons = memo(({ onClose, onDelete, onChangeEdit, hasData, edit }) => {
-  const { isAdmin } = useContext(HistoryContext);
+const MenuButtons = memo(({ onClose, onDelete, onChangeEdit, hasData, edit, isAdmin }) => {
   return (
     <div className="d-flex">
       <ButtonGroup className=" d-flex ml-auto">
-        {isAdmin && hasData && edit &&  (
+        {isAdmin && hasData && edit && (
           <Button
             as={Button}
             size="sm"
@@ -176,7 +183,7 @@ const MenuButtons = memo(({ onClose, onDelete, onChangeEdit, hasData, edit }) =>
   );
 });
 
-const FormButtons = memo(({ onUpdate, onSave, onCancel, edit, hasData }) => {
+const FormButtons = memo(({ onUpdate, onCreate, onCancel, edit, hasData }) => {
   const { isAdmin } = useContext(HistoryContext);
   return (
     <Form.Group className="d-flex">
@@ -192,7 +199,7 @@ const FormButtons = memo(({ onUpdate, onSave, onCancel, edit, hasData }) => {
           ) : (
               <Button
                 variant="light"
-                onClick={onSave}
+                onClick={onCreate}
                 style={{ hight: "1rem", width: "5rem", marginRight: "5px" }} >
                 Create
             </Button>
@@ -229,4 +236,10 @@ const MonthOptions = () => {
   );
 }
 
-export default HistoryForm;
+const mapStateToProps = (state) => {
+  return {
+    user: state.auth.user
+  };
+}
+
+export default connect(mapStateToProps, actions)(HistoryForm);

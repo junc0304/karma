@@ -8,24 +8,18 @@ import * as actions from '../../actions';
 import RichTextEditor from './RichText.jsx';
 import { JUMBOTRON_BG_COMMON } from '../../config';
 import { EditIcon } from '../icons';
-import { isUserAdmin, convertText } from '../../helpers';
 
-const Page = memo((props) => {
+const Page = memo(({ getPage, updatePage, createPage, type, data, isAdmin }) => {
+  let { title, content } = data;
+  let formData = { type, title, content };
 
-  let { type, getPage } = props;
-  let formData = { type };
   const [edit, setEdit] = useState(false);
-
   useEffect(() => { 
     (async () => await getPage(type))(); 
-  }, [type]);
+  }, [getPage, type]);
 
-  const PageView = ({ getPage, updatePage, createPage, type, data }) => {
+  const PageView = () => {
     let { title, content } = data;
-
-    useEffect(() => { 
-      formData = { ...formData, title, content }; 
-    }, [data]);
 
     const handleSubmit = async (event) => {
       event.preventDefault();
@@ -36,8 +30,8 @@ const Page = memo((props) => {
       setEdit(false)
     }
 
-    const handleTitleChange = (name, value, valid) => formData[name] = value;
-    const handleContentChange = (value) => formData.content = convertText.toRaw(value);
+    const handleTitleChange = (name, value) => formData[name] = value;
+    const handleContentChange = (value) => formData.content = value;
     const handleEditModeChange = () => setEdit(!edit);
     const handleEditModeEnd = () => setEdit(false);
 
@@ -54,12 +48,12 @@ const Page = memo((props) => {
               onChange={handleTitleChange}
               style={{ fontSize: "inherit", verticalAlign: "middle", border: edit ? "1px solid #ddd" : "0px solid #ddd", backgroundColor: edit ? "rgba(255, 255, 255, 0.8)" : "inherit" }}
             />
-            {<EditButton onClick={handleEditModeChange} />}
+            {isAdmin && <EditButton onClick={handleEditModeChange} />}
           </h1>
           <hr className="my-4" />
           <RichTextEditor
             edit={edit}
-            defaultValue={convertText.toEditorState(data.content)}
+            defaultValue={data.content}
             onChange={handleContentChange}
           />
           {edit && <SaveCancelButton onClick={handleEditModeEnd} />}
@@ -67,7 +61,7 @@ const Page = memo((props) => {
       </Jumbotron>
     );
   }
-  return <PageView {...props} />
+  return <PageView />
 });
 
 const EditButton = memo(({ onClick }) => {
@@ -110,6 +104,7 @@ const SaveCancelButton = memo(({ onClick }) => {
 const mapStateToProps = (state) => {
   console.log('state', state);
   return {
+    isAdmin: state.auth.isAdmin,
     user: state.auth.user,
     data: state.page.data,
     errorMessage: state.errorMessage

@@ -15,7 +15,7 @@ export const SettingsIcon = (props) => {
 export const UpdateIcon = (props) => {
   return (
     <SvgIcon {...props}>
-      <svg xmlns="http://www.w3.org/2000/svg" xmlns xlink="http://www.w3.org/1999/xlink" width="24" height="24" viewBox="0 0 24 24">
+      <svg xmlns="http://www.w3.org/2000/svg" xlink="http://www.w3.org/1999/xlink" width="24" height="24" viewBox="0 0 24 24">
         <defs>
           <path id="a" d="M0 0h24v24H0V0z" />
         </defs>
@@ -165,6 +165,64 @@ export const BookIcon = (props) => {
   return (
     <SvgIcon {...props}>
       <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M0 0h24v24H0z" fill="none" /><path d="M4 6H2v14c0 1.1.9 2 2 2h14v-2H4V6zm16-4H8c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-1 9H9V9h10v2zm-4 4H9v-2h6v2zm4-8H9V5h10v2z" /></svg>
+    </SvgIcon>
+  )
+}
+
+export const FontSizeIcon = (props) => {
+  return (
+    <SvgIcon {...props}>
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+        <path clip-path="url(#b)" d="M2.5 4v3h5v12h3V7h5V4h-13zm19 5h-9v3h3v7h3v-7h3V9z" />
+      </svg>
+    </SvgIcon>
+  )
+}
+
+export const UnorderedListIcon = (props) => {
+  return (
+    <SvgIcon {...props}>
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M3 13h2v-2H3v2zm0 4h2v-2H3v2zm0-8h2V7H3v2zm4 4h14v-2H7v2zm0 4h14v-2H7v2zM7 7v2h14V7H7z" /><path d="M0 0h24v24H0z" fill="none" /></svg>
+    </SvgIcon>
+  )
+}
+
+export const OrderedListIcon = (props) => {
+  return (
+    <SvgIcon {...props}>
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M2 17h2v.5H3v1h1v.5H2v1h3v-4H2v1zm1-9h1V4H2v1h1v3zm-1 3h1.8L2 13.1v.9h3v-1H3.2L5 10.9V10H2v1zm5-6v2h14V5H7zm0 14h14v-2H7v2zm0-6h14v-2H7v2z" /><path d="M0 0h24v24H0z" fill="none" /></svg>
+    </SvgIcon>
+  )
+}
+
+export const BoldTextIcon = (props) => {
+  return (
+    <SvgIcon {...props}>
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M15.6 10.79c.97-.67 1.65-1.77 1.65-2.79 0-2.26-1.75-4-4-4H7v14h7.04c2.09 0 3.71-1.7 3.71-3.79 0-1.52-.86-2.82-2.15-3.42zM10 6.5h3c.83 0 1.5.67 1.5 1.5s-.67 1.5-1.5 1.5h-3v-3zm3.5 9H10v-3h3.5c.83 0 1.5.67 1.5 1.5s-.67 1.5-1.5 1.5z" /><path d="M0 0h24v24H0z" fill="none" /></svg>
+    </SvgIcon>
+  )
+}
+
+export const ItalicTextIcon = (props) => {
+  return (
+    <SvgIcon {...props}>
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M0 0h24v24H0z" fill="none"/><path d="M10 4v3h2.21l-3.42 8H6v3h8v-3h-2.21l3.42-8H18V4z"/></svg>
+    </SvgIcon>
+  )
+}
+
+export const FontIcon = (props) => {
+  return (
+    <SvgIcon {...props}>
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M5 4v3h5.5v12h3V7H19V4z"/><path fill="none" d="M0 0h24v24H0V0z"/></svg>
+    </SvgIcon>
+  )
+}
+
+export const UnderlineTextIcon = (props) => {
+  return (
+    <SvgIcon {...props}>
+     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M0 0h24v24H0z" fill="none"/><path d="M12 17c3.31 0 6-2.69 6-6V3h-2.5v8c0 1.93-1.57 3.5-3.5 3.5S8.5 12.93 8.5 11V3H6v8c0 3.31 2.69 6 6 6zm-7 2v2h14v-2H5z"/></svg>
     </SvgIcon>
   )
 }

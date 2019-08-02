@@ -43,4 +43,4 @@ const PaginationComponent = ({ dispatch, data }) => {
   )
 }
 
-export default PaginationComponent;
+export default (PaginationComponent);
