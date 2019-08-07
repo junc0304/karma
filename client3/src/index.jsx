@@ -24,7 +24,7 @@ import Discussion from './components/Discussion.jsx';
 import Notice from './components/Notice.jsx';
 import SignIn from './components/Signin.jsx';
 import SignUp from './components/Signup.jsx';
-
+import Profile from './components/Profile.jsx';
 import reducers from './reducers';
 
 axios.defaults.withCredentials = true;
@@ -41,13 +41,14 @@ ReactDOM.render(
         <Route exact path="/member" component={CheckAuth(Member)} />
         <Route exact path="/meeting" component={CheckAuth(Meeting)} />
         <Route exact path="/event" component={CheckAuth(Event)} />
-        <Route exact path="/notice" component={Notice} />
+        <Route exact path="/notice" component={CheckAuth(Notice)} />
         <Route exact path="/Discussion" component={CheckAuth(Discussion)} />
         <Route exact path="/signin" component={SignIn} />
         <Route exact path="/signup" component={SignUp} />
         <Route exact path="/" component={SignIn} />
+        <Route exact path="/profile" component={CheckAuth(Profile)} />
       </App>
     </BrowserRouter>
   </Provider>
-  , document.querySelector('#root'));//getElementById('root'));
+  , document.querySelector('#root'));
 serviceWorker.register();

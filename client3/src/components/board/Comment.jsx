@@ -6,11 +6,11 @@ import { dateTime, isEmpty } from '../../helpers';
 import * as actions from '../../actions';
 import _ from 'lodash';
 
-const CommentComponent = memo((props) => {
-
+const CommentComponent = memo(({ 
+  data, postId, //from store
+  createComment, getComments //from action
+}) => {
   const [show, setShow] = useState(false);
-
-  let { data, postId, createComment, getComments } = props;
   let commentForm = {};
 
   const handleShowHideComment = () => setShow(!show);
@@ -66,10 +66,9 @@ const Comment = memo(({ data }) => {
   );
 });
 
-
 const CommentList = memo(({ data, show }) => {
   return (
-    <div>
+    <div stye={{ transition: "0.8s"}}>
       {show && Object.values(data).map((item, index) => <Comment data={item} index={index} key={`comm-${index}`} />)}
     </div>
   );
@@ -147,7 +146,6 @@ const CommentForm = memo(({ onChange, onSubmit }) => {
   );
 });
 
-
 const mapStateToProps = (state) => {
   return {
     data: state.comment.data,
@@ -156,4 +154,4 @@ const mapStateToProps = (state) => {
   }
 }
 
-export default connect(mapStateToProps, actions)(CommentComponent, CommentForm);
+export default connect(mapStateToProps, actions)(CommentComponent);

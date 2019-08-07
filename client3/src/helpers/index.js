@@ -60,7 +60,7 @@ export const dateTime = {
 
     return {
       date: new Intl.DateTimeFormat('en-US', { month: "short", day: "2-digit", year: "numeric" }).format(dateTime),
-      time: new Intl.DateTimeFormat('en-US', { hour: "numeric", minute: "numeric", hour12: true }).format(dateTime)
+      time: new Intl.DateTimeFormat('en-US', { hour: "numeric", minute: "numeric", hour12: false }).format(dateTime)
     }
   },
   arrYears: (years) => {

@@ -21,7 +21,7 @@ const TableHeader = memo(function(){
   )
 });
 
-const TableBody = memo(function({data, onClick}) {
+const TableBody = memo(function({data = [], onClick}) {
   return (
     <tbody style={{ textAlign:"center"}}>
     { data.map((item, index) =>

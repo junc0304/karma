@@ -9,7 +9,6 @@ router.route('/all')
     try {
       console.log("get histories");
       let post = await historyController.getHistory(req.body);
-      console.log(post)
       res.status(200).json(post);
     } catch (err) {
       res.status(400).json({ error: "could not get the post" });
@@ -24,7 +23,6 @@ router.route('/create')
       await historyController.createHistory(req.body);
       res.status(200).send({ success: true });
     } catch (err) {
-      //console.log(err)
       res.status(400).json({ error: "could not create the post" });
     }
   });

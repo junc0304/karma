@@ -5,42 +5,48 @@ import TableComponent from './member/Table.jsx';
 import FormComponent from './member/Form.jsx';
 import * as actions from '../actions';
 
-const Member = memo(({member, getMembers}) => {
-
-  const [data, setData] = useState([]);
-  const [showModal, setShowModal] = useState(false);
-  const [modalData, setModalData] = useState([]);
+const Member = memo(({ data, getMembers }) => {
+  const [row, setRow] = useState({ show: false, data: [] });
   //action => store
   useEffect(() => {
-    const fetchData = async () => {
-      await getMembers();
-    }
+    const fetchData = async () => await getMembers();
     fetchData();
   }, [getMembers]);
 
-  const onClickRow = (item) => {
-    setModalData(item);
-    setShowModal(true);
-  }
-
-  useEffect(()=> {
-    setData(Object.values(member.data))
-  }, [member])
+  const onClickRow = (item) => setRow({ show: true, data: item });
+  const onCloseRow = () => setRow({ show: false, data: [] });
 
   return (
-    <Jumbotron style={{ wordWrap: "break-word", padding: "15px 15px", backgroundColor:"rgba(255,255,255,0.8)" }}>
-        <h1 className="display-4">Members</h1>
-        <hr className="my-3" />
-        <TableComponent data={data} onClick={onClickRow}/>
-        <FormComponent data={modalData} setShow={setShowModal} show={showModal} />
+    <Jumbotron 
+    className="jumbotron-main"
+      style={{ 
+        wordWrap: "break-word", 
+        padding: "15px 15px", 
+        backgroundColor: "rgba(255,255,255,0.8)" 
+      }}
+    >
+        <div className="jumbotron-inner-frame" >
+      <h1 
+        style={{fontSize:"3rem"}}
+      >Members</h1>
+      <hr className="my-2" />
+      <TableComponent 
+        data={data} 
+        onClick={onClickRow} 
+      />
+      <FormComponent 
+        data={row.data} 
+        show={row.show} 
+        onClose={onCloseRow} 
+      />
+      </div>
     </Jumbotron>
   );
 });
 
 const mapStateToProps = (state) => {
   return {
-    user: state.user,
-    member: state.member,
+    data: state.member.data,
     errorMessage: state.errorMessage
   };
 }

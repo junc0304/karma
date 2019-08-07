@@ -4,7 +4,9 @@ import karmaLogo from '../images/karma_logo.jpg';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import * as actions from '../../actions';
+import { SettingsIcon } from '../icons';
 
+import './Header.css';
 
 const Header = memo(({ signOut, isAuth, history, headerData, getHeaderData }) => {
 
@@ -12,11 +14,11 @@ const Header = memo(({ signOut, isAuth, history, headerData, getHeaderData }) =>
     const getHeader = async () => {
       await getHeaderData(5);
     }
-    getHeader();
+    isAuth && getHeader();
   }, [isAuth, getHeaderData]);
 
   return (
-    <Navbar collapseOnSelect expand="sm" bg="light" variant="light" >
+    <Navbar collapseOnSelect expand="sm" bg="light" variant="light" fixed="top" >
       <Navbar.Brand as={Link} to="home" >
         <Image className="d-inline-block align-center"
           src={karmaLogo}
@@ -49,6 +51,10 @@ const AuthMenu = memo(({ signOut, isAuth }) => {
         <Nav className="ml-auto">
           <Nav.Link className="nav-link" as={Link} to="/signin" onClick={onClickSignOut}>
             Sign Out</Nav.Link>
+          <Nav.Link className="nav-link" as={Link}  to="/profile">
+            Setting
+          {/* <SettingsIcon style={{alignItem:"center", fontSize:"30px"}} /> */}
+          </Nav.Link>
         </Nav> :
         <Nav className="ml-auto">
           <Nav.Link className="nav-link" as={Link} to="/signin">
@@ -59,7 +65,6 @@ const AuthMenu = memo(({ signOut, isAuth }) => {
     </Fragment>
   );
 });
-
 
 const AboutMenu = () => {
   return (
@@ -138,7 +143,6 @@ const LinksMenu = () => {
     </NavDropdown>
   );
 }
-
 
 const mapStateToProps = (state) => {
   return {

@@ -1,6 +1,5 @@
 import React, { memo, useState, useEffect } from 'react';
 import { Form, Button, ButtonGroup, Jumbotron } from 'react-bootstrap';
-import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
 import CustomInput from '../shared/CustomInput';
@@ -9,59 +8,59 @@ import RichTextEditor from './RichText.jsx';
 import { JUMBOTRON_BG_COMMON } from '../../config';
 import { EditIcon } from '../icons';
 
-const Page = memo(({ getPage, updatePage, createPage, type, data, isAdmin }) => {
+const Page = memo(({
+  type, data, isAdmin,
+  getPage, updatePage, createPage //action
+}) => {
   let { title, content } = data;
-  let formData = { type, title, content };
-
+  let formData = { title, content };
   const [edit, setEdit] = useState(false);
-  useEffect(() => { 
-    (async () => await getPage(type))(); 
-  }, [getPage, type]);
-
-  const PageView = () => {
-    let { title, content } = data;
-
-    const handleSubmit = async (event) => {
-      event.preventDefault();
-      (title || content)
-        ? await updatePage({ ...formData, type })
-        : await createPage({ ...formData, type });
-      await getPage(type);
-      setEdit(false)
-    }
-
-    const handleTitleChange = (name, value) => formData[name] = value;
-    const handleContentChange = (value) => formData.content = value;
-    const handleEditModeChange = () => setEdit(!edit);
-    const handleEditModeEnd = () => setEdit(false);
-
-    return (
-      <Jumbotron fluid style={{ wordWrap: "break-word", padding: "15px 15px", backgroundColor: JUMBOTRON_BG_COMMON }}>
-        <Form onSubmit={handleSubmit}>
-          <h1 className="display-4">
-            <CustomInput
-              name="title"
-              type="text"
-              size="lg"
-              defaultValue={data.title}
-              edit={edit}
-              onChange={handleTitleChange}
-              style={{ fontSize: "inherit", verticalAlign: "middle", border: edit ? "1px solid #ddd" : "0px solid #ddd", backgroundColor: edit ? "rgba(255, 255, 255, 0.8)" : "inherit" }}
-            />
-            {isAdmin && <EditButton onClick={handleEditModeChange} />}
-          </h1>
-          <hr className="my-4" />
-          <RichTextEditor
-            edit={edit}
-            defaultValue={data.content}
-            onChange={handleContentChange}
-          />
-          {edit && <SaveCancelButton onClick={handleEditModeEnd} />}
-        </Form>
-      </Jumbotron>
-    );
+  useEffect(() => {
+    const fetchData = async () => await getPage(type);
+    fetchData();
+  }, []);
+  const handleTitleChange = (name, value) => formData[name] = value;
+  const handleContentChange = (value) => formData.content = value;
+  const handleEditModeChange = () => setEdit(!edit);
+  const handleEditModeEnd = () => setEdit(false);
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    (title || content)
+      ? await updatePage({ ...formData, type })
+      : await createPage({ ...formData, type });
+    await getPage(type);
+    setEdit(false)
   }
-  return <PageView />
+
+  return (
+    <Jumbotron  className="jumbotron-main" style={{ wordWrap: "break-word", padding: "15px 15px", backgroundColor: JUMBOTRON_BG_COMMON }}>
+       <div className="jumbotron-inner-frame" >
+      <Form onSubmit={handleSubmit}>
+        <h1>
+          <CustomInput
+            name="title"
+            type="text"
+            size="lg"
+            defaultValue={title}
+            edit={edit}
+            onChange={handleTitleChange}
+            style={{ fontSize: "3rem", color:"black", verticalAlign: "middle", border: edit ? "1px solid #ddd" : "0px solid #ddd", backgroundColor: edit ? "rgba(255, 255, 255, 0.8)" : "inherit" }}
+          />
+          {isAdmin && <EditButton onClick={handleEditModeChange} />}
+        </h1>
+        <hr className="my-2" />
+        <RichTextEditor
+          edit={edit}
+          defaultValue={content}
+          onChange={handleContentChange}
+        />
+        {edit && <SaveCancelButton onClick={handleEditModeEnd} />}
+      </Form>
+      </div>
+    </Jumbotron>
+  );
+
+
 });
 
 const EditButton = memo(({ onClick }) => {
@@ -82,7 +81,6 @@ const EditButton = memo(({ onClick }) => {
 });
 
 const SaveCancelButton = memo(({ onClick }) => {
-  const handleCancelEdit = () => onClick();
   return (
     <Form.Group className="d-flex">
       <ButtonGroup className="ml-auto" style={{ marginTop: "15px" }}>
@@ -94,7 +92,7 @@ const SaveCancelButton = memo(({ onClick }) => {
         <Button
           variant="light"
           style={{ width: "5rem" }}
-          onClick={handleCancelEdit} >
+          onClick={onClick} >
           Cancel</Button>
       </ButtonGroup>
     </Form.Group>
@@ -102,31 +100,11 @@ const SaveCancelButton = memo(({ onClick }) => {
 });
 
 const mapStateToProps = (state) => {
-  console.log('state', state);
   return {
     isAdmin: state.auth.isAdmin,
-    user: state.auth.user,
     data: state.page.data,
     errorMessage: state.errorMessage
   };
 }
-
-Page.propTypes = {
-  getPage: PropTypes.func,
-  updatePage: PropTypes.func,
-  createPage: PropTypes.func,
-
-  type: PropTypes.string,
-  role: PropTypes.string,
-  title: PropTypes.string,
-  content: PropTypes.string
-};
-
-Page.defaultProps = {
-  type: "",
-  role: "",
-  data: { title: "", content: "" }
-}
-
 
 export default connect(mapStateToProps, actions)(Page);

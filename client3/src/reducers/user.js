@@ -1,25 +1,23 @@
-import { USER_GET, USER_UPDATE, USER_DELETE, USER_ERROR } from '../actions/types';
+import { GET_USER, UPDATE_USER, RESET_USER, USER_ERROR } from '../actions/types';
 
 const initialState = {
-  userId: '',
-  userName: '',
-  userRole: '',
+  data: {},
   errorMessage: ''
 }
 
 const userReducer = (state = initialState, action) => {
   switch (action.type) {
-    case USER_GET:
-      return { ...state, userId: action.payload.id , userName: action.payload.name, userRole:action.payload.role, errorMessage: '' };
-    case USER_UPDATE:
+    case GET_USER:
+      return { ...state, data: action.payload.user, errorMessage: '' };
+    case UPDATE_USER:
       return { ...state, errorMessage: '' };
-    case USER_DELETE:
-      return { ...state, errorMessage: '' };
+    case RESET_USER:
+      return { data: {}, errorMessage: ''};
     case USER_ERROR:
-        return { ...state, errorMessage: payload.error };
+      return { ...state, errorMessage: action.payload };
     default:
       return state;
   }
 }
 
-export default authReducer;
+export default userReducer;

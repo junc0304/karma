@@ -69,11 +69,11 @@ export const PROVINCE_AND_CITIES_IN_CANADA = {
 
 
 export const PROVINCES_IN_CANADA = [
-  'Alberta', 'British Columbia', 'Manitoba',
-  'New Brunswick', 'Newfoundland and Labrador',
-  'Northwest Territories', 'Nova Scotia',
-  'Nunavut', 'Ontario', 'Prince Edward Island',
-  'Quebec', 'Saskatchewan', 'Yukon Territory'];
+  'AB', 'BC', 'MB',
+  'NB', 'NL',
+  'NT', 'NS',
+  'NV', 'ON', 'PE',
+  'QC', 'SK', 'YT'];
 
 
 export const JUMBOTRON_BG_COMMON = "rgba(255,255,255,0.75)"

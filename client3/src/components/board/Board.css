@@ -1,6 +1,7 @@
 .hover:hover {
   margin: 0px -5px 3px -5px;
-  opacity: 0.7;
+  background-color: rgba(0,0,0,0.5);
+  font-weight: bold;
 }
 
 .modal-content {
@@ -17,6 +18,7 @@
 }
 
 .board-row-wrapper {
+  transition: 0.5s;
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
@@ -27,6 +29,7 @@
 }
 
 .board-row-inner-wrapper {
+  
   flex: 2;
   min-width: 280px;
   display: flex;
@@ -49,7 +52,6 @@
   align-items: center
 }
 
-.board-row-title>span {}
 
 .board-row-inner-wrapper2 {
   flex: 1;
@@ -71,4 +73,8 @@
 .board-row-datetime {
   flex: 3;
   min-width: 160px;
+}
+
+.jumbotron-post-view {
+  background: rgba(240, 240, 240, 0.85);
 }

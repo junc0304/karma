@@ -108,6 +108,16 @@ class PostDataHandler {
     }
   }
 
+  async updatePostUserName(userId, name) {
+    try {
+      await Post.updateMany({ authorId:userId }, { $set: { authorName: name } });
+    }
+    catch (err) {
+      console.log(err)
+      throw new Error(err);
+    }
+  }
+
   async deletePost(postId) {
     try {
       await Post.deleteOne({ postId });

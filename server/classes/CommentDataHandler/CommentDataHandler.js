@@ -46,6 +46,16 @@ class CommentDataHandler {
     }
   }
 
+  async updateCommentUserName(userId, name) {
+    try {
+      await Comment.updateMany({ authorId: userId }, { $set: { authorName: name} });
+    }
+    catch (err) {
+      console.log(err)
+      throw new Error(err);
+    }
+  }
+
   async deleteComment(commentId) {
     try {
       await Comment.deleteOne({ commentId });

@@ -5,7 +5,7 @@ import BoardComponent from './board/Board';
 import { BOARD_TYPE, BOARD_USERS } from '../config';
 
 const Event = ({getPosts, user}) => {
-    let type = BOARD_TYPE.NOTICE;
+    let type = BOARD_TYPE.EVENT;
     let userAccess = BOARD_USERS[user.role]?true:false;
 
     useEffect(() => {

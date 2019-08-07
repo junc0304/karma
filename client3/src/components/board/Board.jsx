@@ -30,12 +30,15 @@ const Board = memo(({
     const handleCloseForm = async () => [await resetComments(), setRow({ data: {}, show: false })];
 
     return (
-      <Jumbotron style={{ wordWrap: "break-word", padding: "15px 15px", backgroundColor: JUMBOTRON_BG_COMMON }}>
-        <h3>{type}</h3>
+      <Jumbotron  className="jumbotron-main" style={{ wordWrap: "break-word", padding: "15px 15px", backgroundColor: JUMBOTRON_BG_COMMON }}>
+        <div className="jumbotron-inner-frame" >
+        <h1 className="display-3" style={{fontSize:"3rem"}} >
+        {type}
         <CreateButton
           onClick={handleOpenEmptyForm}
           show={hasAccess || isAdmin}
         />
+        </h1>
         <hr className="my-3" />
         <TableComponent
           data={data}
@@ -54,6 +57,7 @@ const Board = memo(({
           data={pageState}
           dispatch={dispatch}
         />
+        </div>
       </Jumbotron>
     )
   }
@@ -61,7 +65,6 @@ const Board = memo(({
 });
 
 const mapStateToProps = (state) => {
-  console.log(state)
   return {
     data: state.post.data,
     isAdmin: state.auth.isAdmin

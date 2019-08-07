@@ -1,5 +1,6 @@
 import React from 'react';
 import { Navbar } from "react-bootstrap";
+import './Footer.css';
 
 const style = {
   position: "sticky",

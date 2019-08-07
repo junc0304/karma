@@ -15,11 +15,9 @@ const CheckAuth = (Component) => {
   }
 
   const mapStateToProps = (state) => {
-    console.log(state)
     return {
       isAuth: state.auth.isAuthenticated,
       errorMessage: state.auth.signInErrorMessage || state.auth.signUpErrorMessage
-
     }
   }
 

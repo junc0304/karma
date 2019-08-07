@@ -64,3 +64,9 @@ export const UPDATE_HISTORY = "UPDATE_HISTORY";
 export const DELETE_HISTORY = "DELETE_HISTORY";
 export const RESET_HISTORY = "RESET_HISTORY";
 export const HISTORY_ERROR = "HISTORY_ERROR";
+
+//user
+export const USER_ERROR = "USER_ERROR";
+export const GET_USER = "GET_USER";
+export const UPDATE_USER = "UPDATE_USER";
+export const RESET_USER = "RESET_USER";

@@ -7,6 +7,7 @@ import pageReducer from './page';
 import commentReducer from './comment';
 import headerReducer from './header';
 import historyReducer from './history';
+import userReducer from './user';
 
 export default combineReducers({
   form: formReducer,
@@ -16,5 +17,6 @@ export default combineReducers({
   page: pageReducer,
   comment: commentReducer,
   header: headerReducer,
-  history: historyReducer
+  history: historyReducer,
+  user: userReducer,
 });

@@ -1,21 +1,22 @@
-import React, { memo, Fragment } from 'react';
+import React, { memo, Fragment, useRef } from 'react';
 import { Modal, Form, Row, Col, Button, ButtonGroup } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import { isEmpty, dateTime } from '../../helpers';
 import { BOARD_USERS } from '../../config';
 import CustomInput from '../shared/CustomInput';
 import * as actions from '../../actions';
-import { DeleteIcon, EditIcon, CancelIcon } from '../icons';
+import { DeleteIcon, EditIcon, CancelIcon, PersonIcon, DateIcon } from '../icons';
 
-const PostComponent = ({
-  data, user, isAdmin, edit, type, onChangeEdit, onClose,
-  createPost, getPosts, updatePost, deletePost
+const PostComponent = memo(({
+  data, type, edit, isAdmin, onChangeEdit, onClose, //from parent
+  user, //from store
+  createPost, getPosts, updatePost, deletePost  //actions
 }) => {
-
-  let { postId, authorId, title, content, authorName, created } = data;
+  let { postId, authorId, title, content, authorName, created, updated } = data;
   let { userId, role } = user;
   let postForm = {};
-  let dataExist = !isEmpty(data);
+
+  const dataExist = !isEmpty(data);
   const updating = edit && !isEmpty(data);
   const creating = edit && isEmpty(data);
   const viewing = !edit;
@@ -37,43 +38,54 @@ const PostComponent = ({
           onUpdate={handleUpdatePost}
           onDelete={handlePostDelete}
           edit={edit}
-          show={(updating || viewing) && !creating && userAccess }
+          show={(updating || viewing) && !creating && userAccess}
           onClose={onClose}
         />
       </Modal.Header>
-
       <Form noValidate>
-        <Modal.Body style={{ backgroundColor: "white", borderRadius: "5px" }}>
-          <Row>
-            <Form.Label className="col-2" column style={{ display: "flex", alignItems: "center" }} >
-              Title:</Form.Label >
-            <Col className="col-10" style={{ paddingLeft: "0px" }}>
-              <CustomInput
-                size="lg"
-                name="title"
-                type="text"
-                placeholder="Title"
-                defaultValue={title}
-                edit={edit}
-                onChange={handleChangePost}
-                style={{ verticalAlign: "middle", backgroundColor: "white", border: `2px solid ${edit && dataExist ? "pink" : "white"}` }}
-              />
-            </Col>
-          </Row>
+        <Modal.Body style={{ backgroundColor: "white", borderRadius: "5px", padding: "0px" }}>
+          <CustomInput
+            size="lg"
+            name="title"
+            type="text"
+            placeholder="Title"
+            defaultValue={title}
+            edit={edit}
+            onChange={handleChangePost}
+            style={{ verticalAlign: "middle", backgroundColor: "white", border: `2px solid ${edit && dataExist ? "pink" : "white"}` }}
+          />
+          {!edit && <hr className="my-1" />}
           {!edit && (
-            <Row>
-              <Col className="col-7">
-                <Form.Text>{`Created: ${dateTime.boardDate(created)}`}</Form.Text>
-                {/* <Form.Text>{`Updated: ${dateTime.boardDate(data.updated || data.created.toString())}`}</Form.Text> */}
-              </Col>
-              <Col className="d-flex col-5">
-                <Form.Text className=" ml-auto col-5">
-                  by:</Form.Text>
-                <Col className="col-7 d-flex text-center">
-                  {authorName}
-                </Col>
-              </Col>
-            </Row>
+
+            <Modal.Body style={{ backgroundColor: "white", borderRadius: "5px", paddingTop: "0px", paddingBottom: "10px" }}>
+              <div style={{ display: "flex", flexDirection: "row", flexWrap: "nowrap" }}>
+               
+                <div style={{ flex: 2, display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "center" }}>
+                  <PersonIcon style={{ fontSize: "16px" }} />
+                  <Form.Text style={{ flex: 1, textAlign: "center", fontSize: "16px" }}>
+                    {authorName}
+                  </Form.Text>
+                </div>
+                <div style={{ flex: 2, display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "center" }}>
+                  <Form.Text style={{ flex: 1, textAlign: "center", display: "flex", flexDirection: "column" }}>
+                    <div style={{ flex: 1, display: "flex", flexDirection: "row", alignItems: "center" }}>
+                      <DateIcon style={{ fontSize: "15px" }} />
+                      <div style={{ flex: 1 }}>
+                        {dateTime.boardDate(created)}
+                      </div>
+                    </div>
+                    {updated && (
+                      <div style={{ flex: 1, display: "flex", flexDirection: "row", alignItems: "center" }}>
+                        <EditIcon style={{ fontSize: "15px" }} />
+                        <div style={{ flex: 1 }}>
+                          {dateTime.boardDate(updated)}
+                        </div>
+                      </div>
+                    )}
+                  </Form.Text>
+                </div>
+              </div>
+            </Modal.Body>
           )}
         </Modal.Body>
         <Modal.Body style={{ padding: "0px" }}>
@@ -104,8 +116,7 @@ const PostComponent = ({
       )}
     </Fragment>
   );
-}
-
+});
 
 const MenuButtons = memo(({ onClose, onDelete, onEditChange, edit, show }) => {
   return (
@@ -142,7 +153,6 @@ const MenuButtons = memo(({ onClose, onDelete, onEditChange, edit, show }) => {
           <CancelIcon style={{ textAlign: "center", verticalAlign: "middle" }} />
         </Button>
       </ButtonGroup>
-
     </div>
   );
 });
@@ -176,7 +186,6 @@ const FormButtons = memo(({ onUpdate, onCreate, onCancel, edit, noData }) => {
     </Form.Group>
   );
 });
-
 
 const mapStateToProps = (state) => {
   return {

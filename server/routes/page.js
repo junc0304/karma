@@ -35,7 +35,7 @@ router.route('/update')
       await pageController.updatePage(req.body);
       res.status(200).json({ success: true });
     } catch (err) {
-      console.log(err)
+      console.log("router",err)
       res.status(400).json({ error: "could not update the page" });
     }
   });

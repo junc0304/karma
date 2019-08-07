@@ -1,7 +1,5 @@
 import { HEADER_ERROR, GET_HEADER_DATA } from '../actions/types';
 import {BOARD_TYPE} from '../config'
-import { isEmpty } from '../helpers';
-import Notice from '../components/Notice';
 const { EVENT, NOTICE, MEETING, DISCUSSION } = BOARD_TYPE;
 
 const initialState = {

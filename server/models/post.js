@@ -29,7 +29,7 @@ postSchema.pre('save', async function (next) {
 
 postSchema.pre('updateOne', async function (next) {
   try {
-    this.updated = Date.now();
+    this.getUpdate().$set.updated = Date.now();
     next();
   }
   catch (error) {

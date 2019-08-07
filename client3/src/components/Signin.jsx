@@ -21,27 +21,15 @@ const SignIn = ({ isAuthenticated, history, ...props }) => {
     checkAuth();
   }, [isAuthenticated, history]);
 
-
   const ViewSignIn = ({ signIn, signReset, errorMessage }) => {
-    const handleChange = (name, value, validated) => {
-      formData[name] = value;
-      valid[name] = validated;
-    }
-
+    const handleChange = (name, value, validated) => [formData[name] = value, valid[name] = validated];
     const handleSubmit = async (event) => {
       event.preventDefault();
-      try {
-        if (hasErrors(valid)) return;
-        await signReset();
-        await signIn(formData);
-      }
-      catch (error) {
-        console.log(error)
-      }
+      if (hasErrors(valid)) return;
+      await signReset();
+      await signIn(formData);
     }
-
     const hasErrors = (item) => {
-      console.log(item)
       if (!item.length) return false;
       let correct = true;
       Object.values(item).forEach((value) => correct &= value);
@@ -49,17 +37,18 @@ const SignIn = ({ isAuthenticated, history, ...props }) => {
     }
 
     return (
-      <Jumbotron style={{ backgroundColor: JUMBOTRON_BG_COMMON }}>
+      <Jumbotron  className="jumbotron-main">
+        <div className="jumbotron-inner-frame" >
         <h1 className="display-3">Sign In</h1>
-        <p className="lead">Sign in using your Email!</p>
+        <p className="lead">Sign in with your Email!</p>
         <hr className="my-3" />
+        
         <Form noValidate onSubmit={handleSubmit} >
           <Form.Group>
-            <Form.Label>
-              Email
-            </Form.Label>
+            <Form.Label>Email</Form.Label>
             <CustomInput
               required
+              size="lg"
               name="email"
               type="email"
               onChange={handleChange}
@@ -67,11 +56,10 @@ const SignIn = ({ isAuthenticated, history, ...props }) => {
             />
           </Form.Group>
           <Form.Group>
-            <Form.Label>
-              Password
-            </Form.Label>
+            <Form.Label>Password</Form.Label>
             <CustomInput
               required
+              size="lg"
               name="password"
               type="password"
               onChange={handleChange}
@@ -87,6 +75,7 @@ const SignIn = ({ isAuthenticated, history, ...props }) => {
             Sign In
           </Button>
         </Form>
+        </div>
       </Jumbotron>
     );
   }
@@ -101,16 +90,3 @@ const mapStateToProps = (state) => {
 }
 
 export default connect(mapStateToProps, actions)(SignIn);
-
-
-
-/*
-const mapStateToProps = (state) => {
-  return {
-    isAuthenticated: state.auth.isAuthenticated,
-    errorMessage: state.auth.signInErrorMessage
-  }
-}
-
-export default connect(mapStateToProps, actions)(SignIn);
- */

@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import { Jumbotron, Form, Alert, Button, ButtonGroup } from 'react-bootstrap';
+import CustomInput from './shared/CustomInput';
 import * as actions from '../actions';
 import { CITIES_IN_BC, JUMBOTRON_BG_COMMON } from '../config'
-import CustomInput from './shared/CustomInput';
 import { validate } from '../helpers'
 
 const SignUp = props => {
@@ -12,7 +12,22 @@ const SignUp = props => {
   const validationError = {};
 
   const ViewComponent = ({ signUp, errorMessage, history }) => {
-    const [ confirmPassword, setConfirmPassword ] = useState(true);
+    const [confirmPassword, setConfirmPassword] = useState(true);
+
+    const onChange = (name, value, validated) => [formData[name] = value, validationError[name] = validated];
+    const onPasswordConfirmChange = (name, value, validated) => setConfirmPassword(value === formData.password)
+    const hasErrors = (item) => {
+      if (!item.length) return false;
+      let correct = confirmPassword;
+      Object.values(item).forEach((value) => correct &= value);
+      return !correct;
+    }
+    const trimSpaces = (data) => {
+      Object.entries(data).forEach(([key, value]) => {
+        data[key] = value.trim();
+      });
+      return data;
+    }
 
     const onSubmit = async (event) => {
       event.preventDefault();
@@ -25,76 +40,43 @@ const SignUp = props => {
       }
     }
 
-    const onChange = (name, value, validated) => {
-      formData[name] = value;
-      validationError[name] = validated;
-    }
-
-    const onPasswordConfirmChange = (name, value, validated) => {
-      setConfirmPassword(value === formData.password)
-    }
-
-    const hasErrors = (item) => {
-      if(!item.length) return false;
-      let correct = confirmPassword;
-      Object.values(item).forEach((value) => correct &= value );
-      return !correct;
-    }
-    
-    const trimSpaces = (data) => {
-      console.log(data, typeof(data));
-      Object.entries(data).forEach(([key, value]) => {
-        data[key]= value.trim();
-      });
-      return data;
-    }
-    
-
     return (
-      <Jumbotron style={{ backgroundColor: JUMBOTRON_BG_COMMON }}>
-        <h1 className="display-3">
-          Sign Up
-        </h1>
-        <p className="lead">
-          Sign up & get started today!
-        </p>
+      <Jumbotron  className="jumbotron-main">
+          <div className="jumbotron-inner-frame" >
+        <h1 className="display-3">Sign Up</h1>
+        <p className="lead">Sign up & get started today!</p>
         <hr className="my-3" />
-        <p className="lead">
-          Your account setup
-        </p>
+        <p className="lead">Your account setup</p>
         <Form noValidate onSubmit={onSubmit}>
           <Form.Row>
             <Form.Group className="col-md-6">
-              <Form.Label>
-                Email
-              </Form.Label>
+              <div><strong>Email</strong></div>
               <CustomInput
                 required
+                size="lg"
                 type="email"
                 name="email"
                 onChange={onChange}
                 validation={validate.email}
               />
-              <Form.Text>
-                **This Email address is your User ID
-              </Form.Text>
+              <Form.Text>**Email address is your User ID</Form.Text>
             </Form.Group>
             <Form.Group className="col-md-6">
-              <Form.Label>
-                Password</Form.Label>
+              <div><strong>
+                Password</strong></div>
               <CustomInput
                 required
+                size="lg"
                 name="password"
                 type="password"
                 placeholder="Password"
                 onChange={onChange}
                 validation={validate.password}
               />
-              <Form.Label>
-                Confirm Password
-              </Form.Label>
+              <div><strong>Confirm Password</strong></div>
               <CustomInput
                 required
+                size="lg"
                 type="password"
                 name="passwordConfirm"
                 onChange={onPasswordConfirmChange}
@@ -106,16 +88,13 @@ const SignUp = props => {
             </Form.Group>
           </Form.Row>
           <hr className="my-3" />
-          <p className="lead">
-            Tell us more!
-          </p>
+          <p className="lead">Tell us more!</p>
           <Form.Row>
             <Form.Group className="col-6" >
-              <Form.Label>
-                Name
-              </Form.Label>
+              <div><strong>Name</strong></div>
               <CustomInput
                 required
+                size="lg"
                 name="name"
                 type="text"
                 placeholder="John Doe"
@@ -124,11 +103,10 @@ const SignUp = props => {
               />
             </Form.Group >
             <Form.Group className="col-6">
-              <Form.Label>
-                Depot Name
-              </Form.Label>
+              <div><strong>Depot Name</strong></div>
               <CustomInput
                 required
+                size="lg"
                 name="depotName"
                 type="text"
                 placeholder="e.g. Burnaby Return-It bottle depot..."
@@ -139,10 +117,9 @@ const SignUp = props => {
           </Form.Row>
           <Form.Row>
             <Form.Group className="col-4">
-              <Form.Label>
-                Units
-              </Form.Label>
+              <div><strong>Units</strong></div>
               <CustomInput
+                size="lg"
                 name="unit"
                 type="text"
                 onChange={onChange}
@@ -150,11 +127,10 @@ const SignUp = props => {
               />
             </Form.Group>
             <Form.Group className="col-8">
-              <Form.Label>
-                Street
-              </Form.Label>
+              <div><strong>Street</strong></div>
               <CustomInput
                 required
+                size="lg"
                 name="address"
                 type="text"
                 placeholder="1234 Main St"
@@ -165,11 +141,10 @@ const SignUp = props => {
           </Form.Row>
           <Form.Row>
             <Form.Group className="col-4">
-              <Form.Label>
-                City
-              </Form.Label>
+              <div><strong>City</strong></div>
               <CustomInput
                 required
+                size="lg"
                 as="select"
                 name="city"
                 type="text"
@@ -181,11 +156,10 @@ const SignUp = props => {
               </CustomInput>
             </Form.Group >
             <Form.Group className="col-4">
-              <Form.Label>
-                Province
-              </Form.Label>
+              <div><strong>Province</strong></div>
               <CustomInput
                 required
+                size="lg"
                 as="select"
                 name="province"
                 type="text"
@@ -193,15 +167,14 @@ const SignUp = props => {
                 validation={validate.emptySelection}
               >
                 <option value={""} />
-                <option>British Columbia</option>
+                <option>BC</option>
               </CustomInput>
             </Form.Group >
             <Form.Group className="col-4">
-              <Form.Label>
-                Postal Code
-              </Form.Label>
+              <div><strong>Postal Code</strong></div>
               <CustomInput
                 required
+                size="lg"
                 name="postalCode"
                 type="text"
                 onChange={onChange}
@@ -210,15 +183,14 @@ const SignUp = props => {
             </Form.Group>
           </Form.Row>
           <hr className="my-3" />
-          <p className="lead">
-            Any comments?
-          </p>
+          <p className="lead">Any comments?</p>
           <Form.Group>
-            <Form.Label>
+            <div><strong>
               Comments
-            </Form.Label>
+            </strong></div>
             <CustomInput
               as="textarea"
+              size="lg"
               rows="3"
               name="comment"
               type="textarea"
@@ -229,21 +201,19 @@ const SignUp = props => {
           <Form.Group >
             <Form.Check>
               <Form.Check.Input
+                size="lg"
                 name="notify"
                 type="checkbox"
                 id="gridCheck"
               />
-              <Form.Label>
-                Check to receive email updates from KARMA
-              </Form.Label>
+              <div><strong>Check to receive email updates from KARMA</strong></div>
             </Form.Check>
           </Form.Group>
           {errorMessage ? (
             <Alert variant="danger">
               {errorMessage}
             </Alert>
-            ) 
-            : null
+          ) : null
           }
           <Form.Group>
             <ButtonGroup className="d-flex">
@@ -257,6 +227,7 @@ const SignUp = props => {
             </ButtonGroup>
           </Form.Group>
         </Form>
+        </div>
       </Jumbotron>
     );
   }

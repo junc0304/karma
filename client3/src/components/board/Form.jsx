@@ -6,25 +6,28 @@ import PostComponent from './Post';
 import './Board.css';
 
 const BoardForm = memo(({ data, type, show, onClose }) => {
-  const [edit, setEdit] = useState(false);
+  const [edit, setEdit] = useState(() => (isEmpty(data)));
   useEffect(() => setEdit(isEmpty(data)), [data]);
   const handleChangeEdit = () => setEdit(!edit);
 
   return (
     <Modal
       show={show}
-      onHide={onClose} >
-      <Jumbotron style={{ padding: "15px 15px", margin: "0" }}>
-        <PostComponent
-          data={data}
-          type={type}
-          edit={edit}
-          onChangeEdit={handleChangeEdit}
-          onClose={onClose}
-        />
-        {!edit && (
-          <CommentComponent />
-        )}
+      onHide={onClose}
+    >
+      <Jumbotron className="jumbotron-post-view" style={{ padding: "15px 15px" }}>
+        <div className="jumbotron-inner-frame" >
+          <PostComponent
+            data={data}
+            type={type}
+            edit={edit}
+            onChangeEdit={handleChangeEdit}
+            onClose={onClose}
+          />
+          {!edit && (
+            <CommentComponent />
+          )}
+        </div>
       </Jumbotron>
     </Modal>
   )

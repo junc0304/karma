@@ -5,10 +5,13 @@ import _ from 'lodash';
 import { convertText } from '../../helpers';
 
 const maxDepth = 4;
-
-const RichTextEditor = memo(({ edit, defaultValue, onChange /* editorState, onChangeEditorState  */ }) => {
+const RichTextEditor = memo(({ edit, defaultValue, onChange }) => {
   const [className, setClassName] = useState('RichEditor-editor');
   const [editorState, setEditorState] = useState(convertText.toEditorState(defaultValue));
+
+  useEffect(() => {
+    setEditorState(convertText.toEditorState(defaultValue));
+  }, [defaultValue, edit]);
 
   useEffect(() => {
     var contentState = editorState.getCurrentContent();
@@ -17,7 +20,7 @@ const RichTextEditor = memo(({ edit, defaultValue, onChange /* editorState, onCh
         setClassName(className + ' RichEditor-hidePlaceholder');
       }
     }
-  }, [editorState, className]);
+  }, [editorState]);
 
   const editor = useRef();
   const debouncedOnChange = _.debounce((editorState) => onChange(convertText.toRaw(editorState)), 100);
@@ -95,7 +98,9 @@ const getBlockStyle = (block) => {
 
 const StyleButton = memo(({ style, active, label, onToggle }) => {
   const [className, setClassName] = useState('RichEditor-styleButton');
-  useEffect(() => setClassName(className + ' RichEditor-activeButton'), [active, className]);
+
+  // eslint-disable-next-line
+  useEffect(() => setClassName(className + ' RichEditor-activeButton'), []);
 
   const onMouseDown = (event) => {
     event.preventDefault();
@@ -183,8 +188,5 @@ const InlineStyleControls = memo(({ editorState, onToggle }) => {
     </div>
   );
 });
-
-
-
 
 export default RichTextEditor;

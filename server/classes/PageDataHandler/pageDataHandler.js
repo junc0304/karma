@@ -39,7 +39,6 @@ class PageDataHandler {
 
   async updatePage(type, updates) {
     try {
-      console.log("class",type, updates)
       await Page.updateOne({ type }, { $set: { ...updates } },{upsert: true});
     }
     catch (err) {

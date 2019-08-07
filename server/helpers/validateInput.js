@@ -4,10 +4,11 @@ const Config = require('../configuration');
 module.exports = {
   validateBody: (schema) => {
     return (req, res, next) => {
-      const result = Joi.validate(req.body, schema, { 
-        abortEarly: false 
+      const result = Joi.validate(req.body, schema, {
+        abortEarly: false
       });
       result.catch(error => {
+        console.log(error)
         return res.status(400).json({ error: "input validation failed" });
       });
       if (!req.value) {
@@ -93,7 +94,9 @@ module.exports = {
 
     updateUser: Joi.object().keys({
       userId: Joi.string().required(),
-
+      name: Joi.string().optional(),
+      password: Joi.string().optional(),
+      phone: Joi.string().optional(),
       unit: Joi.string().optional(),
       address: Joi.string().optional(),
       city: Joi.string().optional(),

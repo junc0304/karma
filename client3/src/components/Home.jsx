@@ -1,13 +1,11 @@
 import React, { memo } from 'react';
 import Page from './page/Page.jsx';
-import { PAGE_TYPE, USER_TYPE } from '../config';
+import { PAGE_TYPE } from '../config';
 
-const Home = memo(({role = USER_TYPE.ADMIN }) => {
+const Home = memo(() => {
+  const type = PAGE_TYPE.HOME;
   return (
-    <Page
-      role={role}
-      type={PAGE_TYPE.HOME}
-    />
+    <Page type={type}/>
   );
 });
 

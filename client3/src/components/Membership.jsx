@@ -1,14 +1,11 @@
 import React, { memo } from 'react';
 import Page from './page/Page.jsx';
-import { PAGE_TYPE, USER_TYPE } from '../config';
+import { PAGE_TYPE } from '../config';
 
-const Membership = memo(({role = USER_TYPE.ADMIN }) => {
+const Membership = memo(() => {
+  const type = PAGE_TYPE.MEMBERSHIP;
   return (
-    <Page
-      role={role}
-      type={PAGE_TYPE.MEMBERSHIP} 
-    />
+    <Page type={type}/>
   );
 });
-
 export default Membership;
