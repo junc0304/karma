@@ -14,8 +14,8 @@ const TableHeader = memo(function(){
   return (
     <thead style={{ textAlign:"center"}}>
       <tr>
-        <th xs={8} sm={8} md={8} lg={8} >Depot</th>
-        <th xs={4} sm={4} md={4} lg={4} >Owner</th>
+        <th xs={8} sm={8} md={8} lg={8} >DEPOT NAME</th>
+        <th xs={4} sm={4} md={4} lg={4} >OWNER</th>
       </tr>
     </thead>
   )

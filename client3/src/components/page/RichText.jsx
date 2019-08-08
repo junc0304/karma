@@ -145,7 +145,7 @@ const BlockStyleControls = memo(({ editorState, onToggle }) => {
     .getBlockForKey(selection.getStartKey())
     .getType();
   return (
-    <div className="RichEditor-controls"
+    <div className="RichEditor-block-controls"
       style={{
         fontFamily: "Helvetica', sans-serif",
         fontSize: "14px",
@@ -172,7 +172,7 @@ var INLINE_STYLES = [
 const InlineStyleControls = memo(({ editorState, onToggle }) => {
   var currentStyle = editorState.getCurrentInlineStyle();
   return (
-    <div className="RichEditor-controls"
+    <div className="RichEditor-inline-controls"
       style={{
         fontFamily: "Helvetica', sans-serif",
         fontSize: "14px",
