@@ -36,9 +36,8 @@ const History = memo(({
       }}
     >
       <div className="jumbotron-inner-frame" >
-        <h1
-          style={{ fontSize: "3rem" }}
-        >History
+      <h1 style={{fontSize:"2rem"}} >
+        History
         {isAdmin &&
             <CreateButton
               onClick={handleOpenEmpty}

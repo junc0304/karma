@@ -13,7 +13,7 @@ const HistoryForm = memo(({
   isAdmin, //store
   getHistory, createHistory, updateHistory, deleteHistory //action
 }) => {
-  let { historyId, title, content, year, month} = data;
+  let { historyId, title, content, year, month } = data;
   let formData = {};
 
   const hasData = !isEmpty(data);
@@ -23,15 +23,16 @@ const HistoryForm = memo(({
 
   const handleChange = (name, value, validated) => { console.log(formData); formData[name] = value; }
   const handleCreate = async () => [await createHistory(formData), await getHistory(), onClose()];
-  const handleUpdate = async () => [await updateHistory({...formData, historyId}), await getHistory(), onClose()];
-  const handleDelete = async () => [await deleteHistory({historyId}), await getHistory(), onClose()];
+  const handleUpdate = async () => [await updateHistory({ ...formData, historyId }), await getHistory(), onClose()];
+  const handleDelete = async () => [await deleteHistory({ historyId }), await getHistory(), onClose()];
 
-  useEffect(()=> {
+  useEffect(() => {
     console.log(data)
-  },[data])
+  }, [data])
   return (
     <Modal size="xl" show={show} onHide={onClose} >
-      <Jumbotron style={{ margin: "0px", padding: "16px" }} >
+      <Jumbotron  className="jumbotron-main">
+        <div className="jumbotron-inner-frame">
         <Form noValidate >
           <Modal.Header style={{ margin: "", paddingLeft: "0px", paddingRight: "0px" }} >
             {onView && <h3>History View</h3>}
@@ -50,6 +51,7 @@ const HistoryForm = memo(({
             <Row style={{ paddingLeft: "0px", marginBottom: "0px" }} >
               <Col style={{ paddingLeft: "0px", paddingRight: "0px" }} >
                 <CustomInput
+                  size="lg"
                   defaultValue={title}
                   name="title"
                   type="text"
@@ -62,56 +64,42 @@ const HistoryForm = memo(({
             </Row>
           </Modal.Body>
           <Modal.Body style={{ padding: "5px 16px" }} >
-            <Row style={{ paddingLeft: "0px", marginBottom: "0px" }}
-            >
-              <Fragment>
-                <Form.Label
-                  as={Col}
-                  style={{ paddingLeft: "15px", fontSize: "14px" }}
-                >
+            <Row style={{ display: "flex", flexDirection: "row", justifyContent:"flex-end"  }}>
+              <div style={{ display:"flex"}}>
+                <Form.Label style={{ paddingRight: "15px", paddingLeft: "15px", fontSize: "14px" }}>
                   Year:
-                  </Form.Label>
-                <Col style={{ paddingRight: "0px" }}>
-                  <CustomInput
-                    as="select"
-                    name="year"
-                    type="text"
-                    edit={edit}
-                    onChange={handleChange}
-                    defaultValue={year || -1}
-                    style={{ borderRadius: "5px", padding: "4px 8px", color: "black", textAlign: "center", backgroundColor: "white" }}
-                  >
-                    <option value={-1} disabled >{formData.year}</option>
-                    <YearOptions />
-                  </CustomInput>
-                </Col>
-                <Form.Label
-                  as={Col}
-                  style={{ paddingLeft: "15px", fontSize: "14px" }}
-                >
+                </Form.Label>
+                <CustomInput
+                  size="lg"
+                  name="year"
+                  type="text"
+                  edit={edit}
+                  onChange={handleChange}
+                  defaultValue={year}
+                  style={{ maxWidth: "6rem", borderRadius: "5px", padding: "4px 8px", color: "black", textAlign: "center", backgroundColor: "white" }}
+                />
+              </div>
+              <div style={{ display:"flex"}}>
+                <Form.Label style={{  paddingRight: "15px", paddingLeft: "15px", fontSize: "14px" }}>
                   Month:
-                  </Form.Label>
-                <Col style={{ paddingRight: "0px" }}>
-                  <CustomInput
-                    as="select"
-                    name="month"
-                    type="text"
-                    edit={edit}
-                    onChange={handleChange}
-                    defaultValue={month || -1}
-                    style={{ borderRadius: "5px", padding: "4px 8px", color: "black", textAlign: "center", backgroundColor: "white" }}
-                  >
-                    <option value={-1} disabled >{formData.month}</option>
-                    < MonthOptions />
-                  </CustomInput>
-                </Col>
-              </Fragment>
+                </Form.Label>
+                <CustomInput
+                  size="lg"
+                  name="month"
+                  type="text"
+                  edit={edit}
+                  onChange={handleChange}
+                  defaultValue={month}
+                  style={{ maxWidth: "4rem", borderRadius: "5px", padding: "4px 8px", color: "black", textAlign: "center", backgroundColor: "white" }}
+                />
+              </div>
             </Row>
           </Modal.Body>
           <hr className="my-8" />
           <Modal.Body style={{ paddingTop: "0px" }} >
             <Row>
               <CustomInput
+               size="lg"
                 name="content"
                 as="textarea"
                 type="text"
@@ -133,6 +121,7 @@ const HistoryForm = memo(({
           onCreate={handleCreate}
           onCancel={onClose}
         />
+        </div>
       </Jumbotron>
     </Modal >
   );
@@ -190,6 +179,7 @@ const FormButtons = memo(({
         <ButtonGroup className="ml-auto" style={{ marginTop: "15px" }}>
           {hasData ? (
             <Button
+              className="btn btn-main"
               variant="light"
               onClick={onUpdate}
               style={{ hight: "1rem", width: "5rem", marginRight: "5px" }}
@@ -198,6 +188,7 @@ const FormButtons = memo(({
             </Button>
           ) : (
               <Button
+                className="btn btn-main"
                 variant="light"
                 onClick={onCreate}
                 style={{ hight: "1rem", width: "5rem", marginRight: "5px" }}
@@ -206,6 +197,7 @@ const FormButtons = memo(({
               </Button>
             )}
           <Button
+            className="btn btn-main"
             variant="light"
             style={{ width: "5rem" }}
             onClick={onCancel}

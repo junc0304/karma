@@ -1,4 +1,4 @@
-import React, { useState, useReducer, memo } from 'react';
+import React, { useState, useReducer, memo, useEffect } from 'react';
 import { Jumbotron } from 'react-bootstrap';
 
 import { connect } from 'react-redux';
@@ -29,10 +29,13 @@ const Board = memo(({
     const handleOpenEmptyForm = async () => [await resetComments(), setRow({ data: {}, show: true })];
     const handleCloseForm = async () => [await resetComments(), setRow({ data: {}, show: false })];
 
+    useEffect(() => {
+      console.log(pageState)
+    }, [pageState])
     return (
       <Jumbotron  className="jumbotron-main" style={{ wordWrap: "break-word", padding: "15px 15px", backgroundColor: JUMBOTRON_BG_COMMON }}>
         <div className="jumbotron-inner-frame" >
-        <h1 className="display-3" style={{fontSize:"3rem"}} >
+        <h1 style={{fontSize:"2rem"}} >
         {type}
         <CreateButton
           onClick={handleOpenEmptyForm}

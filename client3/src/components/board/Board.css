@@ -19,6 +19,7 @@
 
 .board-row-wrapper {
   transition: 0.5s;
+  height: 60px;
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
@@ -77,4 +78,25 @@
 
 .jumbotron-post-view {
   background: rgba(240, 240, 240, 0.85);
+}
+
+.pagination.pagination-sm {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: center;
+}
+
+.pagination.pagination-sm span {
+  color: black;
+}
+
+.pagination.pagination-sm a {
+  color: black;
+}
+
+.pagination.pagination-sm .page-item.active .page-link {
+  background: rgba(0,0,0,0.4);
+  border: 1px solid rgba(0,0,0,0.4);
+  border-radius: 2px;
 }

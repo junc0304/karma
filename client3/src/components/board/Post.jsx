@@ -30,9 +30,9 @@ const PostComponent = memo(({
   return (
     <Fragment>
       <Modal.Header style={{ borderRadius: "5px", padding: "5px 0px 16px 15px" }}>
-        {viewing && <h3>View post</h3>}
-        {updating && <h3>Update post</h3>}
-        {creating && <h3>Create post</h3>}
+        {viewing && <h3>View</h3>}
+        {updating && <h3>Update</h3>}
+        {creating && <h3>Create</h3>}
         <MenuButtons
           onEditChange={onChangeEdit}
           onUpdate={handleUpdatePost}
@@ -59,7 +59,7 @@ const PostComponent = memo(({
 
             <Modal.Body style={{ backgroundColor: "white", borderRadius: "5px", paddingTop: "0px", paddingBottom: "10px" }}>
               <div style={{ display: "flex", flexDirection: "row", flexWrap: "nowrap" }}>
-               
+
                 <div style={{ flex: 2, display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "center" }}>
                   <PersonIcon style={{ fontSize: "16px" }} />
                   <Form.Text style={{ flex: 1, textAlign: "center", fontSize: "16px" }}>
@@ -90,6 +90,7 @@ const PostComponent = memo(({
         </Modal.Body>
         <Modal.Body style={{ padding: "0px" }}>
           <CustomInput
+            size="lg"
             name="content"
             as="textarea"
             type="text"
@@ -164,6 +165,7 @@ const FormButtons = memo(({ onUpdate, onCreate, onCancel, edit, noData }) => {
         <ButtonGroup className="ml-auto" style={{ marginTop: "15px" }}>
           {!noData ? (
             <Button
+              className="btn btn-main"
               variant="light"
               onClick={onUpdate}
               style={{ hight: "1rem", width: "5rem", marginRight: "5px" }} >
@@ -171,6 +173,7 @@ const FormButtons = memo(({ onUpdate, onCreate, onCancel, edit, noData }) => {
           </Button>
           ) : (
               <Button
+                className="btn btn-main"
                 variant="light"
                 onClick={onCreate}
                 style={{ hight: "1rem", width: "5rem", marginRight: "5px" }} >
@@ -178,6 +181,7 @@ const FormButtons = memo(({ onUpdate, onCreate, onCancel, edit, noData }) => {
             </Button>
             )}
           <Button
+            className="btn btn-main"
             variant="light"
             style={{ width: "5rem" }}
             onClick={onCancel}>

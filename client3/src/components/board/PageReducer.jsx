@@ -75,7 +75,7 @@ export const pageReducer = (state = initialBoardState, action) => {
         page: {
           ...page,
           start: Math.min(start + pageSetSize, lastPage),
-          current: Math.min((pageSet.current * pageSetSize) + 1, lastPage),
+          current: Math.min((pageSet * pageSetSize) + 1, lastPage),
           end: Math.min(end + pageSetSize, lastPage)
         },
         pageSet: Math.min(pageSet + 1, lastPageSet)
@@ -90,7 +90,7 @@ export const pageReducer = (state = initialBoardState, action) => {
         page: {
           ...page,
           start: Math.max(start - pageSetSize, 1),
-          current: Math.max((pageSet.current - 1) * pageSetSize, 1),
+          current: Math.max((pageSet - 1) * pageSetSize, 1),
           end: Math.max(end - pageSetSize, pageSetSize)
         },
         pageSet: Math.max(pageSet - 1, 1)
@@ -123,17 +123,11 @@ export const pageReducer = (state = initialBoardState, action) => {
       }
     }
     case 'goToPage': {
-      let targetPage = action.value;
-      console.log(targetPage)
-      let pageSet = Math.ceil(targetPage / pageSetSize);
-      console.log(pageSet)
       return {
         ...state,
         page: {
           ...page,
-          start: Math.max((pageSet - 1) * pageSetSize - 1, 1),
-          current: targetPage,
-          end: Math.min(pageSet * pageSetSize, lastPage)
+          current: action.value,
         },
         pageSet
       }

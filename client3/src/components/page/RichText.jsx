@@ -48,18 +48,20 @@ const RichTextEditor = memo(({ edit, defaultValue, onChange }) => {
       onClick={onFocus}
       className="RichEditor-root"
       style={{ background: "#fff", border: edit ? "1px solid #ddd" : "0px solid #ddd", fontSize: "14px", padding: "15px", minHeight: "200px", borderRadius: "5px", backgroundColor: edit ? "rgba(255, 255, 255, 0.8)" : "inherit" }}>
-      {edit && (
-        <BlockStyleControls
-          editorState={editorState}
-          onToggle={toggleBlockType}
-        />
-      )}
-      {edit && (
-        <InlineStyleControls
-          editorState={editorState}
-          onToggle={toggleInlineStyle}
-        />
-      )}
+      <div className="RichEditor-controls-set">
+        {edit && (
+          <BlockStyleControls
+            editorState={editorState}
+            onToggle={toggleBlockType}
+          />
+        )}
+        {edit && (
+          <InlineStyleControls
+            editorState={editorState}
+            onToggle={toggleInlineStyle}
+          />
+        )}
+      </div>
       {edit && <hr className="my-6" />}
       <div className={className} >
         <Editor
@@ -127,14 +129,14 @@ const StyleButton = memo(({ style, active, label, onToggle }) => {
 });
 
 const BLOCK_TYPES = [
-  { label: <FontIcon style={{ fontSize: "2em" }} />, style: 'header-one' },
+  { label: <FontIcon style={{ fontSize: "2em" }}/> , style: 'header-one' },
   { label: <FontIcon style={{ fontSize: "1.7em" }} />, style: 'header-two' },
   { label: <FontIcon style={{ fontSize: "1.5em" }} />, style: 'header-three' },
   { label: <FontIcon style={{ fontSize: "1.2em" }} />, style: 'header-four' },
   { label: <FontIcon style={{ fontSize: "1.0em" }} />, style: 'header-five' },
   { label: <FontIcon style={{ fontSize: "0.9em" }} />, style: 'header-six' },
-  { label: <UnorderedListIcon style={{ fontSize: "1.7em" }} />, style: 'unordered-list-item' },
-  { label: <OrderedListIcon style={{ fontSize: "1.7em" }} />, style: 'ordered-list-item' }
+  { label: <UnorderedListIcon style={{ fontSize: "2em" }} />, style: 'unordered-list-item' },
+  { label: <OrderedListIcon style={{ fontSize: "2em" }} />, style: 'ordered-list-item' }
 ];
 const BlockStyleControls = memo(({ editorState, onToggle }) => {
   const selection = editorState.getSelection();
@@ -163,9 +165,9 @@ const BlockStyleControls = memo(({ editorState, onToggle }) => {
 });
 
 var INLINE_STYLES = [
-  { label: <BoldTextIcon style={{ fontSize: "1.7em" }} />, style: 'BOLD', buttonStyle: { fontWeight: "bold" } },
-  { label: <ItalicTextIcon style={{ fontSize: "1.7em" }} />, style: 'ITALIC', buttonStyle: { fontStyle: "italic" } },
-  { label: <UnderlineTextIcon style={{ fontSize: "1.7em" }} />, style: 'UNDERLINE', buttonStyle: { textDecoration: "underline" } },
+  { label: <BoldTextIcon style={{ fontSize: "2em" }} />, style: 'BOLD', buttonStyle: { fontWeight: "bold" } },
+  { label: <ItalicTextIcon style={{ fontSize: "2em" }} />, style: 'ITALIC', buttonStyle: { fontStyle: "italic" } },
+  { label: <UnderlineTextIcon style={{ fontSize: "2em" }} />, style: 'UNDERLINE', buttonStyle: { textDecoration: "underline" } },
 ];
 const InlineStyleControls = memo(({ editorState, onToggle }) => {
   var currentStyle = editorState.getCurrentInlineStyle();

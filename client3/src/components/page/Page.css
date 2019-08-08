@@ -1,0 +1,26 @@
+
+
+.RichEditor-controls {
+  display: flex !important;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: center!important;
+  text-align: center!important;
+  vertical-align: middle!important;
+  align-content: center;
+  flex-grow: 0;
+}
+
+.RichEditor-controls span {
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: flex-end !important;
+  align-items: flex-end !important;
+  padding:0px !important;
+  margin:0px 5px  !important;
+}
+
+.RichEditor-controls-set {
+  display: flex !important;
+  justify-content: space-around;
+}

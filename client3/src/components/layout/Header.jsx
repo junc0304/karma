@@ -18,7 +18,7 @@ const Header = memo(({ signOut, isAuth, history, headerData, getHeaderData }) =>
   }, [isAuth, getHeaderData]);
 
   return (
-    <Navbar collapseOnSelect expand="sm" bg="light" variant="light" fixed="top" >
+    <Navbar collapseOnSelect expand="lg" bg="light" variant="light" fixed="top" >
       <Navbar.Brand as={Link} to="home" >
         <Image className="d-inline-block align-center"
           src={karmaLogo}
@@ -49,17 +49,17 @@ const AuthMenu = memo(({ signOut, isAuth }) => {
     <Fragment>
       {isAuth ?
         <Nav className="ml-auto">
-          <Nav.Link className="nav-link" as={Link} to="/signin" onClick={onClickSignOut}>
+          <Nav.Link className="nav-link" href="#sign-out" as={Link} href="#" active={false} to="/signin" onClick={onClickSignOut}>
             Sign Out</Nav.Link>
-          <Nav.Link className="nav-link" as={Link}  to="/profile">
+          <Nav.Link className="nav-link" as={Link} href="#" active={false} to="/profile">
             Setting
           {/* <SettingsIcon style={{alignItem:"center", fontSize:"30px"}} /> */}
           </Nav.Link>
         </Nav> :
         <Nav className="ml-auto">
-          <Nav.Link className="nav-link" as={Link} to="/signin">
+          <Nav.Link className="nav-link" as={Link} href="#" active={false} to="/signin">
             Sign In</Nav.Link>
-          <Nav.Link className="nav-link" as={Link} to="/signup">
+          <Nav.Link className="nav-link" as={Link} href="#" active={false} to="/signup">
             Sign Up</Nav.Link>
         </Nav>}
     </Fragment>
@@ -69,9 +69,9 @@ const AuthMenu = memo(({ signOut, isAuth }) => {
 const AboutMenu = () => {
   return (
     <NavDropdown title={"About"} id="about-dropdown">
-      <NavDropdown.Item as={Link} to="/home">Greeting</NavDropdown.Item>
-      <NavDropdown.Item as={Link} to="/summary">Summary</NavDropdown.Item>
-      <NavDropdown.Item as={Link} to="/history">History</NavDropdown.Item>
+      <NavDropdown.Item as={Link} href="#" active={false} to="/home">Greeting</NavDropdown.Item>
+      <NavDropdown.Item as={Link} href="#" active={false} to="/summary">Summary</NavDropdown.Item>
+      <NavDropdown.Item as={Link} href="#" active={false} to="/history">History</NavDropdown.Item>
     </NavDropdown>
   )
 }
@@ -84,11 +84,13 @@ const MemebershipMenu = () => {
       <NavDropdown.Item
         as={Link}
         to="/howtojoin"
+        href="#" active={false}
       >Membership
       </NavDropdown.Item>
       <NavDropdown.Item
         as={Link}
         to="/member"
+        href="#" active={false}
       >Members
       </NavDropdown.Item>
     </NavDropdown>
@@ -106,28 +108,20 @@ const BoardsMenu = memo(({ isAuth, recentData }) => {
         showNewItems && <Badge key="new" variant="danger">N</Badge>
       ]}
     >
-      <NavDropdown.Item
-        as={Link}
-        to="/meeting"
-      >{"Meetings "}
+      <NavDropdown.Item as={Link} href="#" active={false} to="/meeting">
+        {"Meetings "}
         {showNewItems && newMeeting && <Badge variant="danger">N</Badge>}
       </NavDropdown.Item>
-      <NavDropdown.Item
-        as={Link}
-        to="/notice"
-      >{"Notices "}
+      <NavDropdown.Item as={Link} href="#" active={false} to="/notice">
+        {"Notices "}
         {showNewItems && newNotice && <Badge variant="danger">N</Badge>}
       </NavDropdown.Item>
-      <NavDropdown.Item
-        as={Link}
-        to="/event"
-      >{"Events "}
+      <NavDropdown.Item as={Link} href="#" active={false} to="/event">
+        {"Events "}
         {showNewItems && newEvent && <Badge variant="danger">N</Badge>}
       </NavDropdown.Item>
-      <NavDropdown.Item
-        as={Link}
-        to="/Discussion"
-      >{"Discussion "}
+      <NavDropdown.Item as={Link} href="#" active={false} to="/Discussion">
+        {"Discussion "}
         {showNewItems && newDiscussion && <Badge variant="danger">N</Badge>}
       </NavDropdown.Item>
     </NavDropdown>

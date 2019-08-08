@@ -13,15 +13,15 @@ export const PAGE_TYPE = {
 
 export const BOARD_TYPE = {
   MEETING: 'MEETING',
-  NOTICE:'NOTICE',
+  NOTICE: 'NOTICE',
   EVENT: 'EVENT',
-  DISCUSSION:'DISCUSSION',
+  DISCUSSION: 'DISCUSSION',
 };
 
 export const BOARD_USERS = {
   MEETING: [USER_TYPE.ADMIN, USER_TYPE.OWNER],
-  NOTICE:  [USER_TYPE.ADMIN, USER_TYPE.OWNER],
-  EVENT:  [USER_TYPE.ADMIN, USER_TYPE.OWNER],
+  NOTICE: [USER_TYPE.ADMIN, USER_TYPE.OWNER],
+  EVENT: [USER_TYPE.ADMIN, USER_TYPE.OWNER],
   DISCUSSION: [USER_TYPE.ADMIN, USER_TYPE.OWNER, USER_TYPE.USER],
 }
 
@@ -39,17 +39,14 @@ export const MEMBER_PROPERTY = {
 export const BADGE_MARK_DAYS = 5;
 
 export const CITIES_IN_BC = [
-  "Armstrong", "Abbotsford", "Burnaby", "Cache Creek",
-  "Castlegar", "Chemainus", "Chilliwack", "Clearwater",
-  "Colwood", "Coquitlam", "Cranbrook", "Dawson Creek",
-  "Delta", "Fernie", "Invermere", "Kamloops", "Kaslo",
-  "Langley", "Lumby", "Maple Ridge", "Merritt", "Mission",
-  "Nanaimo", "Nelson", "New Westminster", "North Cowichan",
-  "North Vancouver", "Osoyoos", "Parksville", "Peace River",
-  "Penticton", "Port Alberni", "Port Hardy", "Port Moody",
-  "Prince George", "Prince Rupert", "Richmond", "Saanich",
-  "Sooke", "Sparwood", "Surrey", "Terrace", "Tumbler",
-  "Vancouver", "Vernon", "Victoria", "Whistler"];
+  "Abbotsford", "Burnaby", "Chilliwack",
+  "Coquitlam",
+  "Delta", "Kamloops",
+  "Langley", "Maple Ridge", "Mission",
+  "Nanaimo", "New Westminster",
+  "North Vancouver", "Penticton", "Port Alberni", "Port Hardy", "Port Moody",
+  "Richmond", "Surrey",
+  "Vancouver", "Victoria", "Whistler"];
 
 
 export const PROVINCE_AND_CITIES_IN_CANADA = {

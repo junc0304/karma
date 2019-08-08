@@ -17,28 +17,28 @@ const Member = memo(({ data, getMembers }) => {
   const onCloseRow = () => setRow({ show: false, data: [] });
 
   return (
-    <Jumbotron 
-    className="jumbotron-main"
-      style={{ 
-        wordWrap: "break-word", 
-        padding: "15px 15px", 
-        backgroundColor: "rgba(255,255,255,0.8)" 
+    <Jumbotron
+      className="jumbotron-main"
+      style={{
+        wordWrap: "break-word",
+        padding: "15px 15px",
+        backgroundColor: "rgba(255,255,255,0.8)"
       }}
     >
-        <div className="jumbotron-inner-frame" >
-      <h1 
-        style={{fontSize:"3rem"}}
-      >Members</h1>
-      <hr className="my-2" />
-      <TableComponent 
-        data={data} 
-        onClick={onClickRow} 
-      />
-      <FormComponent 
-        data={row.data} 
-        show={row.show} 
-        onClose={onCloseRow} 
-      />
+      <div className="jumbotron-inner-frame" >
+        <h1 style={{ fontSize: "2rem" }} >
+          Members
+        </h1>
+        <hr className="my-2" />
+        <TableComponent
+          data={data}
+          onClick={onClickRow}
+        />
+        <FormComponent
+          data={row.data}
+          show={row.show}
+          onClose={onCloseRow}
+        />
       </div>
     </Jumbotron>
   );

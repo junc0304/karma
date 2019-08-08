@@ -7,7 +7,7 @@ import * as actions from '../../actions';
 import RichTextEditor from './RichText.jsx';
 import { JUMBOTRON_BG_COMMON } from '../../config';
 import { EditIcon } from '../icons';
-
+import './Page.css';
 const Page = memo(({
   type, data, isAdmin,
   getPage, updatePage, createPage //action
@@ -33,29 +33,29 @@ const Page = memo(({
   }
 
   return (
-    <Jumbotron  className="jumbotron-main" style={{ wordWrap: "break-word", padding: "15px 15px", backgroundColor: JUMBOTRON_BG_COMMON }}>
-       <div className="jumbotron-inner-frame" >
-      <Form onSubmit={handleSubmit}>
-        <h1>
-          <CustomInput
-            name="title"
-            type="text"
-            size="lg"
-            defaultValue={title}
+    <Jumbotron className="jumbotron-main" style={{ wordWrap: "break-word", padding: "15px 15px", backgroundColor: JUMBOTRON_BG_COMMON }}>
+      <div className="jumbotron-inner-frame" >
+        <Form onSubmit={handleSubmit}>
+          <h1>
+            <CustomInput
+              name="title"
+              type="text"
+              size="lg"
+              defaultValue={title}
+              edit={edit}
+              onChange={handleTitleChange}
+              style={{ height:"5rem", fontSize: "3rem", color: "black", verticalAlign: "middle", border: edit ? "1px solid #ddd" : "0px solid #ddd", backgroundColor: edit ? "rgba(255, 255, 255, 0.8)" : "inherit" }}
+            />
+            {isAdmin && <EditButton onClick={handleEditModeChange} />}
+          </h1>
+          <hr className="my-2" />
+          <RichTextEditor
             edit={edit}
-            onChange={handleTitleChange}
-            style={{ fontSize: "3rem", color:"black", verticalAlign: "middle", border: edit ? "1px solid #ddd" : "0px solid #ddd", backgroundColor: edit ? "rgba(255, 255, 255, 0.8)" : "inherit" }}
+            defaultValue={content}
+            onChange={handleContentChange}
           />
-          {isAdmin && <EditButton onClick={handleEditModeChange} />}
-        </h1>
-        <hr className="my-2" />
-        <RichTextEditor
-          edit={edit}
-          defaultValue={content}
-          onChange={handleContentChange}
-        />
-        {edit && <SaveCancelButton onClick={handleEditModeEnd} />}
-      </Form>
+          {edit && <SaveCancelButton onClick={handleEditModeEnd} />}
+        </Form>
       </div>
     </Jumbotron>
   );
@@ -85,11 +85,13 @@ const SaveCancelButton = memo(({ onClick }) => {
     <Form.Group className="d-flex">
       <ButtonGroup className="ml-auto" style={{ marginTop: "15px" }}>
         <Button
+          className="btn btn-main"
           type="submit"
           variant="light"
           style={{ width: "5rem", marginRight: "5px" }} >
           Save</Button>
         <Button
+          className="btn btn-main"
           variant="light"
           style={{ width: "5rem" }}
           onClick={onClick} >

@@ -68,7 +68,7 @@ const SignIn = ({ isAuthenticated, history, ...props }) => {
           </Form.Group>
           {errorMessage && <Alert variant="danger">{errorMessage}</Alert>}
           <Button
-            className="d-flex ml-auto"
+            className="d-flex ml-auto btn-main"
             type="submit"
             variant="light"
           >

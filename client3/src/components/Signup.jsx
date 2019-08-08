@@ -90,7 +90,7 @@ const SignUp = props => {
           <hr className="my-3" />
           <p className="lead">Tell us more!</p>
           <Form.Row>
-            <Form.Group className="col-6" >
+            <Form.Group className="col-md-6" >
               <div><strong>Name</strong></div>
               <CustomInput
                 required
@@ -102,7 +102,7 @@ const SignUp = props => {
                 validation={validate.empty}
               />
             </Form.Group >
-            <Form.Group className="col-6">
+            <Form.Group className="col-md-6">
               <div><strong>Depot Name</strong></div>
               <CustomInput
                 required
@@ -116,7 +116,7 @@ const SignUp = props => {
             </Form.Group>
           </Form.Row>
           <Form.Row>
-            <Form.Group className="col-4">
+            <Form.Group className="col-md-4">
               <div><strong>Units</strong></div>
               <CustomInput
                 size="lg"
@@ -126,7 +126,7 @@ const SignUp = props => {
                 placeholder="Apartment, studio, or floor"
               />
             </Form.Group>
-            <Form.Group className="col-8">
+            <Form.Group className="col-md-8">
               <div><strong>Street</strong></div>
               <CustomInput
                 required
@@ -140,7 +140,7 @@ const SignUp = props => {
             </Form.Group>
           </Form.Row>
           <Form.Row>
-            <Form.Group className="col-4">
+            <Form.Group className="col-md-4">
               <div><strong>City</strong></div>
               <CustomInput
                 required
@@ -150,12 +150,13 @@ const SignUp = props => {
                 type="text"
                 onChange={onChange}
                 validation={validate.emptySelection}
+                 style={{fontSize:"1.1rem"}}
               >
                 <option value={""} />
                 {CITIES_IN_BC.map((item, index) => <option key={index}> {item} </option>)}
               </CustomInput>
             </Form.Group >
-            <Form.Group className="col-4">
+            <Form.Group className="col-md-4">
               <div><strong>Province</strong></div>
               <CustomInput
                 required
@@ -165,12 +166,13 @@ const SignUp = props => {
                 type="text"
                 onChange={onChange}
                 validation={validate.emptySelection}
+                style={{fontSize:"1.1rem"}}
               >
                 <option value={""} />
                 <option>BC</option>
               </CustomInput>
             </Form.Group >
-            <Form.Group className="col-4">
+            <Form.Group className="col-md-4">
               <div><strong>Postal Code</strong></div>
               <CustomInput
                 required
@@ -216,11 +218,11 @@ const SignUp = props => {
           ) : null
           }
           <Form.Group>
-            <ButtonGroup className="d-flex">
+            <ButtonGroup className="d-flex ">
               <Button
                 type="submit"
                 variant="light"
-                className="ml-auto"
+                className="ml-auto btn-main"
               >
                 Submit
               </Button>
