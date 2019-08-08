@@ -8,7 +8,7 @@
     "draft-js": "^0.10.5",
     "draft-js-plugins-editor": "^2.1.1",
     "http-proxy-middleware": "^0.19.1",
-    "jquery": "1.9.1",
+    "jquery": "3.4.0",
     "moment": "^2.24.0",
     "node-sass": "^4.12.0",
     "react": "^16.8.6",
