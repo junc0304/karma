@@ -23,19 +23,19 @@ const container = createContainer({injectionMode: InjectionMode.CLASSIC});
 container.register({
   authController: asClass(authController),
   userController: asClass(userController),
-  userDataHandler: asClass(userDataHandler).singleton(),
+  userDataHandler: asClass(userDataHandler),
 
   commentController: asClass(commentController),
-  commentDataHandler: asClass(commentDataHandler).singleton(),
+  commentDataHandler: asClass(commentDataHandler),
   
   postController: asClass(postController),
-  postDataHandler: asClass(postDataHandler).singleton(),
+  postDataHandler: asClass(postDataHandler),
 
   pageController: asClass(pageController),
-  pageDataHandler: asClass(pageDataHandler).singleton(),
+  pageDataHandler: asClass(pageDataHandler),
 
   historyController: asClass(historyController),
-  historyDataHandler: asClass(historyDataHandler).singleton(),
+  historyDataHandler: asClass(historyDataHandler),
 })
 
 global.container = container;

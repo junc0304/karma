@@ -78,7 +78,6 @@ const CreateButton = memo(({ onClick }) => {
 });
 
 const mapStateToProps = (state) => {
-  console.log(state)
   return {
     data: state.history.data,
     isAdmin: state.auth.isAdmin,

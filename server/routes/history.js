@@ -8,46 +8,46 @@ router.route('/all')
     const historyController = req.container.resolve('historyController');
     try {
       console.log("get histories");
-      let post = await historyController.getHistory(req.body);
-      res.status(200).json(post);
+      let history = await historyController.getHistory(req.body);
+      res.status(200).json(history);
     } catch (err) {
-      res.status(400).json({ error: "could not get the post" });
+      res.status(400).json({ error: "could not get the history" });
     }
   });
 
 router.route('/create')
-  .post( passportJWT, async (req, res, next) => {
+  .post( validateBody(schemas.createHistory),passportJWT, async (req, res, next) => {
     const historyController = req.container.resolve('historyController');
     try {
       console.log("create history");
       await historyController.createHistory(req.body);
       res.status(200).send({ success: true });
     } catch (err) {
-      res.status(400).json({ error: "could not create the post" });
+      res.status(400).json({ error: "could not create the history" });
     }
   });
 
 router.route('/update')
-  .post( passportJWT, async (req, res, next) => {
+  .post( validateBody(schemas.updateHistory), passportJWT, async (req, res, next) => {
     const historyController = req.container.resolve('historyController');
     try {
       console.log("update a history");
       await historyController.updateHistory(req.body);
       res.status(200).json({ success: true });
     } catch (err) {
-      res.status(400).json({ error: "could not update the post" });
+      res.status(400).json({ error: "could not update the history" });
     }
   });
 
 router.route('/delete')
-  .post( passportJWT, async (req, res, next) => {
+  .post( validateBody(schemas.deleteHistory), passportJWT, async (req, res, next) => {
     const historyController = req.container.resolve('historyController');
     try {
       console.log("delete a history");
       await historyController.deleteHistory(req.body)
       res.status(200).json({success: true});
     } catch (err) {
-      res.status(400).json({ error: "could not delete the post" });
+      res.status(400).json({ error: "could not delete the history" });
     }
   });
 

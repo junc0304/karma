@@ -79,3 +79,5 @@ export const JUMBOTRON_BG_COMMON = "rgba(255,255,255,0.75)"
 export const EMAIL_REGEX = /^([\w.%+-]+)@([\w-]+\.)+([\w]{2,})$/i;
 export const PASSWORD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,16}$/;
 export const POSTAL_CODE_REGEX = /^[A-Za-z]\d[A-Za-z][ -]?\d[A-Za-z]\d$/;
+export const YEAR_REGEX = /^\d{4}$/;
+export const MONTH_REGEX = /^(0?[1-9]|1[012])$/;

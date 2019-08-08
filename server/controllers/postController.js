@@ -12,7 +12,6 @@ class PostController {
       result = { 
         post:  await this.postDataHandler.getPostsByType(body.type)
       }
-      //console.log(result)
     } catch (err) {
       throw new HttpExceptionHandler(400, err);
     }
@@ -53,7 +52,6 @@ class PostController {
       await this.postDataHandler.createPost({
         ...body, index: nextIndex, authorId: id, authorName: name });
     } catch (err) {
-      console.log(err)
       throw new HttpExceptionHandler(400, err);
     }
   }
@@ -74,7 +72,6 @@ class PostController {
       await this.commentDataHandler.deleteComments(postId);
       await this.postDataHandler.deletePost(postId);
     } catch (err) {
-      console.log(err)
       throw new HttpExceptionHandler(400, err);
     }
   }

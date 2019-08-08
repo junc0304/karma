@@ -32,7 +32,6 @@ class PostDataHandler {
       await Post.findOneAndUpdate({ postId }, { $push: { comments: commentId } });
     }
     catch (err) {
-      console.log(err)
       throw new Error(err);
     }
   }
@@ -47,7 +46,6 @@ class PostDataHandler {
           .distinct('type', function (err, types) { [types] });
     }
     catch (err) {
-      console.log(err)
       throw new Error(err);
     }
     return result;
@@ -89,7 +87,6 @@ class PostDataHandler {
   async createPost(postItem) {
     var newPost;
     try {
-      console.log(postItem)
       newPost = await new Post({ ...postItem });
       await newPost.save();
     }
@@ -103,7 +100,6 @@ class PostDataHandler {
       await Post.updateOne({ postId }, { $set: { ...updates } });
     }
     catch (err) {
-      console.log(err)
       throw new Error(err);
     }
   }
@@ -113,7 +109,6 @@ class PostDataHandler {
       await Post.updateMany({ authorId:userId }, { $set: { authorName: name } });
     }
     catch (err) {
-      console.log(err)
       throw new Error(err);
     }
   }

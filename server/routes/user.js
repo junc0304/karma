@@ -23,13 +23,12 @@ router.route('/get')
       console.log("get users");
       res.status(200).json(await userController.getUserById(req.body));
     } catch (err) {
-      console.log(err)
       res.status(400).json({ error: "could not get the user" });
     }
   });
 
 router.route('/create')
-  .post(validateBody(schemas.createUser), passportJWT, async (req, res, next) => {
+  .post( validateBody(schemas.createUser), passportJWT, async (req, res, next) => {
     var userController = req.container.resolve('userController');
     try {
       console.log("create a user");
@@ -40,7 +39,7 @@ router.route('/create')
   });
 
 router.route('/update')
-  .post(validateBody(schemas.updateUser), passportJWT, async (req, res, next) => {
+  .post( validateBody(schemas.updateUser), passportJWT, async (req, res, next) => {
     var userController = req.container.resolve('userController');
     try {
       console.log("update a user");
@@ -51,7 +50,7 @@ router.route('/update')
   });
 
 router.route('/delete')
-  .post(validateBody(schemas.deleteUser), passportJWT, async (req, res, next) => {
+  .post( validateBody(schemas.deleteUser), passportJWT, async (req, res, next) => {
     var userController = req.container.resolve('userController');
     try {
       console.log("delete a user");

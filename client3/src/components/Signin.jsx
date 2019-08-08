@@ -37,44 +37,44 @@ const SignIn = ({ isAuthenticated, history, ...props }) => {
     }
 
     return (
-      <Jumbotron  className="jumbotron-main">
+      <Jumbotron className="jumbotron-main">
         <div className="jumbotron-inner-frame" >
-        <h1 className="display-3">Sign In</h1>
-        <p className="lead">Sign in with your Email!</p>
-        <hr className="my-3" />
-        
-        <Form noValidate onSubmit={handleSubmit} >
-          <Form.Group>
-            <Form.Label>Email</Form.Label>
-            <CustomInput
-              required
-              size="lg"
-              name="email"
-              type="email"
-              onChange={handleChange}
-              validation={validate.simpleEmail}
-            />
-          </Form.Group>
-          <Form.Group>
-            <Form.Label>Password</Form.Label>
-            <CustomInput
-              required
-              size="lg"
-              name="password"
-              type="password"
-              onChange={handleChange}
-              validation={validate.simplePassword}
-            />
-          </Form.Group>
-          {errorMessage && <Alert variant="danger">{errorMessage}</Alert>}
-          <Button
-            className="d-flex ml-auto btn-main"
-            type="submit"
-            variant="light"
-          >
-            Sign In
+          <h1 className="display-3">Sign In</h1>
+          <p className="lead">Sign in with your Email!</p>
+          <hr className="my-3" />
+
+          <Form noValidate onSubmit={handleSubmit} >
+            <Form.Group style={{ minHeight: "102px" }}>
+              <Form.Label>Email</Form.Label>
+              <CustomInput
+                required
+                size="lg"
+                name="email"
+                type="email"
+                onChange={handleChange}
+                validation={validate.simpleEmail}
+              />
+            </Form.Group>
+            <Form.Group style={{ minHeight: "102px" }}>
+              <Form.Label>Password</Form.Label>
+              <CustomInput
+                required
+                size="lg"
+                name="password"
+                type="password"
+                onChange={handleChange}
+                validation={validate.simplePassword}
+              />
+            </Form.Group>
+            {errorMessage && <Alert variant="danger">{errorMessage}</Alert>}
+            <Button
+              className="d-flex ml-auto btn-main"
+              type="submit"
+              variant="light"
+            >
+              Sign In
           </Button>
-        </Form>
+          </Form>
         </div>
       </Jumbotron>
     );

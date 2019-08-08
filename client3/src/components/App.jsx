@@ -18,7 +18,7 @@ const App = (props) => {
   return (
     <div className="App" 
       style={{ 
-        paddingTop:"70px", 
+        paddingTop:"50px", 
         minHeight: window.innerHeight, 
         minWidth: "370px", 
         WebkitBackgroundSize: "cover",

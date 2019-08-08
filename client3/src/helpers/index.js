@@ -1,4 +1,4 @@
-import { USER_TYPE, EMAIL_REGEX, PASSWORD_REGEX, POSTAL_CODE_REGEX, BOARD_PROPERTY } from '../config';
+import { USER_TYPE, EMAIL_REGEX, PASSWORD_REGEX, YEAR_REGEX, MONTH_REGEX, POSTAL_CODE_REGEX, BOARD_PROPERTY } from '../config';
 import { convertToRaw, convertFromRaw, EditorState } from 'draft-js';
 import { isArray } from 'util';
 
@@ -38,7 +38,9 @@ export const validate = {
   confirmPassword: (password, value) => password && value !== password ? `Password and "Confirm Password" does not match.` : null,
   empty: (name, value) => !value || !value.length ? `Please enter your "${capitalizeFirst(name)}".` : null,
   emptySelection: (name, value) => !value || !value.length ? `Please choose a "${capitalizeFirst(name)}".` : null,
-  postalCode: (name, value) => !value ? `Please enter a "Postal Code".` : !value.match(POSTAL_CODE_REGEX) ? `Please enter a valid "Postal Code".` : null
+  postalCode: (name, value) => !value ? `Please enter a "Postal Code".` : !value.match(POSTAL_CODE_REGEX) ? `Please enter a valid "Postal Code".` : null,
+  year: (name, value) => !value.match(YEAR_REGEX) ? `Invalid "${capitalizeFirst(name)}"` : null,
+  month: (name, value) => !value.match(MONTH_REGEX) ? `Invalid "${capitalizeFirst(name)}"` : null,
 }
 
 const dayInMilliseconds = 24 * 60 * 60 * 1000;

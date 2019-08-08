@@ -29,9 +29,6 @@ const Board = memo(({
     const handleOpenEmptyForm = async () => [await resetComments(), setRow({ data: {}, show: true })];
     const handleCloseForm = async () => [await resetComments(), setRow({ data: {}, show: false })];
 
-    useEffect(() => {
-      console.log(pageState)
-    }, [pageState])
     return (
       <Jumbotron  className="jumbotron-main" style={{ wordWrap: "break-word", padding: "15px 15px", backgroundColor: JUMBOTRON_BG_COMMON }}>
         <div className="jumbotron-inner-frame" >

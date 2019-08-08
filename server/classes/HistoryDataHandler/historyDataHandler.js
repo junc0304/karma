@@ -31,7 +31,6 @@ class HistoryDataHandler {
       await History.updateOne({ historyId }, { $set: { ...updates } });
     }
     catch (err) {
-      console.log(err)
       throw new Error(err);
     }
   }

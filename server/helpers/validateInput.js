@@ -8,7 +8,6 @@ module.exports = {
         abortEarly: false
       });
       result.catch(error => {
-        console.log(error)
         return res.status(400).json({ error: "input validation failed" });
       });
       if (!req.value) {
@@ -124,6 +123,25 @@ module.exports = {
     deleteComment: Joi.object().keys({
       postId: Joi.string().required(),
       commentId: Joi.string().required(),
+    }),
+
+    createHistory: Joi.object().keys({
+      title: Joi.string().required(),
+      year: Joi.string().regex(/^\d{4}$/).required(),
+      month: Joi.string().regex(/^(0?[1-9]|1[012])$/).required(),
+      content: Joi.string()
+    }),
+
+    updateHistory: Joi.object().keys({
+      historyId: Joi.string().required(),
+      title: Joi.string(),
+      year: Joi.string().regex(/^\d{4}$/),
+      month: Joi.string().regex(/^(0?[1-9]|1[012])$/),
+      content: Joi.string()
+    }),
+
+    deleteHistory: Joi.object().keys({
+      historyId: Joi.string().required(),
     }),
 
   }

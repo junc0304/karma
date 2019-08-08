@@ -20,10 +20,8 @@ class HistoryController {
 
   async createHistory(body) {
     try {
-      console.log("create history - controller")
       await this.historyDataHandler.createHistory(body);
     } catch (err) {
-      console.log(err)
       throw new HttpExceptionHandler(400, err);
     }
   }
@@ -43,7 +41,6 @@ class HistoryController {
       let { historyId } = body;
       await this.historyDataHandler.deleteHistory(historyId);
     } catch (err) {
-      console.log(err)
       throw new HttpExceptionHandler(400, err);
     }
   }

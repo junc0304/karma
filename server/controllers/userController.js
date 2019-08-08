@@ -22,7 +22,6 @@ class UserController {
   async getUserById(body) {
     let result;
     try {
-      console.log("get user by id")
       result = { 
         user: await this.userDataHandler.getUserById(body.userId) 
       }
@@ -50,7 +49,6 @@ class UserController {
       }
     }
     catch (err) {
-      console.log(err)
       throw new HttpExceptionHandler(400, err);
     }
   }

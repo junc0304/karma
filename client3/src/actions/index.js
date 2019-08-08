@@ -94,7 +94,6 @@ export const signReset = () => {
 export const getUser = (data) => {
   return async dispatch => {
     try {
-      console.log("getUser", data)
       let res = await axios.post('http://localhost:4000/user/get', data);
       dispatch({
         type: GET_USER,
@@ -564,9 +563,7 @@ export const resetComments = () => {
 export const getHistory = () => {
   return async dispatch => {
     try {
-      console.log("get history")
       let res = await axios.get(`http://localhost:4000/history/all`);
-      console.log(res)
       dispatch({
         type: GET_HISTORY,
         payload: res.data
@@ -600,7 +597,6 @@ export const createHistory = (data) => {
 export const updateHistory = (data) => {
   return async dispatch => {
     try {
-      console.log("update history: ", data)
       await axios.post(`http://localhost:4000/history/update`, data);
       dispatch({
         type: UPDATE_HISTORY,

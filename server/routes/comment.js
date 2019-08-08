@@ -19,7 +19,7 @@ router.route('/create')
   .post(validateBody(schemas.createComment), passportJWT, async (req, res, next) => {
     const commentController = req.container.resolve('commentController');
     try {
-      console.log("create a comments");
+      console.log("create a comment");
       await commentController.createComment(req.user, req.body);
       res.status(200).json({success: true});
     } catch (err) {

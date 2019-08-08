@@ -14,7 +14,6 @@ class CommentController {
         postId: body.postId
       };
     } catch (err) {
-      console.log(err)
       throw new HttpExceptionHandler(400, err);
     }
     return result;
@@ -28,7 +27,6 @@ class CommentController {
       let { commentId } = await this.commentDataHandler.searchComment({authorId: userId, authorName: name, postId, content });
       await this.postDataHandler.addCommentToPost(postId, commentId);
     } catch (err) {
-      console.log(err)
       throw new HttpExceptionHandler(400, err);
     }
   }
@@ -39,7 +37,6 @@ class CommentController {
       delete body[commentId];
       await this.commentDataHandler.updateComment(commentId, body);
     } catch (err) {
-      console.log(err)
       throw new HttpExceptionHandler(400, err);
     }
   }
@@ -50,7 +47,6 @@ class CommentController {
       await this.commentDataHandler.deleteComment(commentId);
       await this.postDataHandler.deleteCommentInPost(postId, commentId);
     } catch (err) {
-      console.log(err)
       throw new HttpExceptionHandler(400, err);
     }
   }

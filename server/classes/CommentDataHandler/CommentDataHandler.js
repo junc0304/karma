@@ -51,7 +51,6 @@ class CommentDataHandler {
       await Comment.updateMany({ authorId: userId }, { $set: { authorName: name} });
     }
     catch (err) {
-      console.log(err)
       throw new Error(err);
     }
   }

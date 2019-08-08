@@ -16,7 +16,7 @@ router.route('/')
   });
 
 router.route('/get')
-  .post(validateBody(schemas.getPost.id), passportJWT, async (req, res, next) => {
+  .post( validateBody(schemas.getPost.id), passportJWT, async (req, res, next) => {
     const postController = req.container.resolve('postController');
     try {
       console.log("get a post");
@@ -42,7 +42,7 @@ router.route('/recent')
   });
 
 router.route('/create')
-  .post(validateBody(schemas.createPost), passportJWT, async (req, res, next) => {
+  .post( validateBody(schemas.createPost), passportJWT, async (req, res, next) => {
     const postController = req.container.resolve('postController');
     try {
       console.log("create posts");
@@ -54,7 +54,7 @@ router.route('/create')
   });
 
 router.route('/update')
-  .post(validateBody(schemas.updatePost), passportJWT, async (req, res, next) => {
+  .post( validateBody(schemas.updatePost), passportJWT, async (req, res, next) => {
     const postController = req.container.resolve('postController');
     try {
       console.log("update a post");
@@ -66,7 +66,7 @@ router.route('/update')
   });
 
 router.route('/delete')
-  .post(validateBody(schemas.deletePost), passportJWT, async (req, res, next) => {
+  .post( validateBody(schemas.deletePost), passportJWT, async (req, res, next) => {
     const postController = req.container.resolve('postController');
     try {
       console.log("delete a post");

@@ -19,7 +19,7 @@ router.route('/signup')
       res.status(200).json(user);
     }
     catch (err) {
-      res.status(400).json({error: "could not sign up"});
+      res.status(400).json({ error: "could not sign up" });
     }
   });
 
@@ -40,13 +40,13 @@ router.route('/signin')
   });
 
 router.route('/signout')
-  .post(async (req, res, next) => {
+  .post(passportLocal, async (req, res, next) => {
     try {
       console.log("sign out");
       res.clearCookie(COOKIE_TOKEN);
       res.status(200).json({ success: true });
     } catch (err) {
-      res.status(400).json({error: "could not sign out"});
+      res.status(400).json({ error: "could not sign out" });
     }
   });
 
