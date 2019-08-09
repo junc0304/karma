@@ -1,0 +1,108 @@
+
+.navbar {
+  white-space: nowrap;
+  padding-bottom: 0px;
+}
+
+.navbar-collapse.collapse.show {
+  background-color: rgba(255,255,255,0.95);
+  border-radius: 5px;
+  margin-bottom: 10px;
+  margin-top:10px;
+  font-size: 1.1rem;
+}
+
+.navbar-collapse.collapse.show .dropdown-item {
+  color: rgba(0,0,0,0.9);
+}
+.navbar-collapse.collapse.show .dropdown-menu.show {
+  margin-top: 0px;
+}
+
+.navbar-collapse.collapse.show .dropdown-menu.show .dropdown-item {
+  transition: 0.2s;
+}
+
+.navbar-collapse.collapse.show .dropdown-menu.show .dropdown-item:hover {
+  
+  font-weight: bold;
+}
+
+.navbar-brand {
+  font-size: 33px;
+  text-shadow: 2px 1px rgba(255,255,255,0.35);
+  line-height: 101%;
+  border-radius: 5px;
+  padding: 2px 15px 2px 0px;
+}
+
+.navbar-brand a {
+  background-color: rgba(255,255,255,0.85);
+  padding-bottom: 0px;
+}
+
+.navbar-brand img {
+  background-color: white;
+  border-radius: 5px;
+  padding: 5px;
+  height: 31px;
+  width: 34px;
+  vertical-align: top;
+}
+
+.dropdown-toggle.nav-link {
+  color: rgba(0,0,0,0.9);
+  padding-left: 10px;
+}
+
+.dropdown.nav-item > a {
+  padding-bottom: 10px;
+}
+
+.dropdown-menu.show {
+  margin-top:12px;
+  border: 0px;
+  background-color: rgba(255,255,255,0.75);
+}
+
+div.dropdown-menu.show a:hover {
+  border:rgba(0, 0, 0, 0.2) ;
+  border-radius: 5px;
+  background-color: rgba(0, 0, 0, 0.2) ;
+  font-weight: bolder;
+}
+
+.nav-link.nav-link {
+  transition: 0.2s;
+  font-weight: bold;
+  padding-left: 10px;
+  padding-bottom: 10px;
+  font-size: 1.1rem;
+}
+
+.nav-link.nav-link:hover {
+  border-radius: 5px;
+  font-size: 1.13rem;
+  font-weight: bolder;
+  background-color: rgba(0, 0, 0, 0.1) ;
+}
+
+.bg-light {
+  transition: 0.5s;
+  background-color: rgba(255,255,255,0.01) !important;
+  padding: 2px 25px 2px 25px;
+  border-radius: 0px 0px 5px 5px;
+}
+
+.bg-light:hover {
+  background-color: rgba(255,255,255,0.6) !important;
+  border-bottom: '2px solid white' !important;
+}
+
+.navbar-toggler {
+  background-color: transparent !important;
+  border: none;
+}
+.navbar-toggler-icon {
+  padding:0px;
+}

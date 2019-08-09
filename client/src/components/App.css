@@ -1,0 +1,36 @@
+
+
+.jumbotron-main {
+  background-color: rgba(255,255,255, 0.7) !important;
+  border-radius: 5px;
+  padding:15px;
+  margin:0;
+}
+
+.jumbotron-inner-frame {
+  background: rgba(255,255,255,0.7);
+  padding: 15px;
+  border-radius: 5px;
+} 
+
+.body {
+  padding-right: 30px;
+}
+
+button.btn.btn-main {
+  height: 48px !important;
+  border: 1px solid #ced4da !important;
+  padding: 8px 16px !important;
+  font-size: 1.1rem;
+  display: flex;
+  justify-content: center;
+}
+
+button.btn.btn-main:hover {
+  background: rgba(0,0,0,0.1);
+}
+
+.form-control.form-control-lg {
+  height: 48px;
+  padding: 8px 14px;
+}

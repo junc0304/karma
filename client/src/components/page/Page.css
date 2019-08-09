@@ -1,0 +1,35 @@
+
+
+.RichEditor-inline-controls {
+  flex:1;
+  display: flex !important;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  align-items: center!important;
+  min-width: 120px;
+  max-width: 300px;
+}
+.RichEditor-block-controls {
+  flex:1;
+  display: flex !important;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  align-items: center!important;
+  min-width: 230px;
+  max-width: 600px;
+}
+.RichEditor-controls-set span {
+  flex:1;
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: flex-start !important;
+  align-items: flex-start !important;
+  margin:0px 2px  !important;
+}
+
+.RichEditor-controls-set {
+  display: flex !important;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-evenly;
+}

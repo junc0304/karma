@@ -1,0 +1,13 @@
+.hover:hover {
+  margin: 0px -5px 3px -5px;
+  background: rgba(235,235,235, 0.8) !important;
+  /* box-shadow: inset -2px -2px 4px 0px rgba(0,0,0, 0.3); */
+}
+
+
+.hover {
+  height: 48px;
+  padding:15px;
+  font-size: 20px !important;
+  margin-bottom: 2px !important;
+}
