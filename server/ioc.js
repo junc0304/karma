@@ -1,4 +1,4 @@
-const {createContainer, asClass, asFunction, InjectionMode} = require('awilix');
+const {createContainer, asClass, InjectionMode} = require('awilix');
 
 const authController = require('./controllers/authController.js');
 
