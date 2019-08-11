@@ -9,7 +9,7 @@ const commentController = require('./controllers/commentController.js');
 const commentDataHandler = require('./classes/CommentDataHandler/CommentDataHandler.js');
 
 const userController = require('./controllers/userController.js');
-const userDataHandler = require('./classes/UserDataHandler/UserDataHandler.js');
+const userDataHandler = require('./classes/UserDataHandler/userDataHandler.js');
 
 const pageController = require('./controllers/pageController.js');
 const pageDataHandler = require('./classes/PageDataHandler/pageDataHandler.js');
