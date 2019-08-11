@@ -57,8 +57,8 @@ const Profile = ({ data, userId, getUser, updateUser, resetUser }) => {
             style={{ backgroundColor: 'white' }}
           />
         </Container>
-        <Container style={{ display: 'flex', flexDirection: 'row', flexWrap: 'wrap', padding: '15px' }}>
-          <div style={{ flex: 1, maxWidth: '530px', minWidth: '235px' }}>
+        <Container style={{ display: 'flex', flexDirection: 'row', flexWrap: 'wrap', padding: '0px' }}>
+          <div style={{ flex: 1, maxWidth: '530px', minWidth: '235px', padding:'15px' }}>
             <div><strong>Name:</strong></div>
             <CustomInput
               size='lg'
@@ -72,8 +72,7 @@ const Profile = ({ data, userId, getUser, updateUser, resetUser }) => {
               style={{ backgroundColor: 'white', borderColor: borderColor }}
             />
           </div>
-          <PasswordFields onChange={handleChange}
-            validate={validate} edit={edit} />
+          <PasswordFields onChange={handleChange} validate={validate} edit={edit} />
         </Container>
         <Container style={{ padding: '15px' }}>
           <div><strong>Phone:</strong> </div>
@@ -104,9 +103,9 @@ const Profile = ({ data, userId, getUser, updateUser, resetUser }) => {
             />
           </div>
         </Container >
-        <Container style={{ padding: '15px' }}>
-          <div style={{ display: 'flex', flexDirection: 'row', flexWrap: 'wrap', paddingBottom: '15px' }}>
-            <div style={{ flex: '2' }}>
+        <Container style={{ padding: '0px' }}>
+          <div style={{ display: 'flex', flexDirection: 'row', flexWrap: 'wrap' , padding:'0px' }}>
+            <div style={{ flex: '2', padding:'15px' }}>
               <div><strong>Unit:</strong></div>
               <CustomInput
                 size='lg'
@@ -116,10 +115,10 @@ const Profile = ({ data, userId, getUser, updateUser, resetUser }) => {
                 onChange={handleChange}
                 defaultValue={unit}
                 edit={edit}
-                style={{ backgroundColor: 'white', borderColor: borderColor }}
+                style={{ backgroundColor: 'white', borderColor: borderColor, padding:'0px', textAlign:'center'  }}
               />
             </div>
-            <div style={{ flex: '5' }} >
+            <div style={{ flex: '5', padding:'15px' }} >
               <div><strong>Street:</strong></div>
               <CustomInput
                 size='lg'
@@ -134,8 +133,8 @@ const Profile = ({ data, userId, getUser, updateUser, resetUser }) => {
               />
             </div>
           </div>
-          <div style={{ display: 'flex', flexDirection: 'row', flexWrap: 'wrap' }}>
-            <div style={{ flex: '3', minWidth: '140px' }}>
+          <div style={{ display: 'flex', flexDirection: 'row', flexWrap: 'wrap', padding:'0px' }}>
+            <div style={{ flex: '3', minWidth: '140px', padding:'15px' }}>
               <div><strong>City:</strong></div>
               <CustomInput
                 required
@@ -147,13 +146,13 @@ const Profile = ({ data, userId, getUser, updateUser, resetUser }) => {
                 edit={edit}
                 defaultValue={city}
                 validation={validate.emptySelection}
-                style={{ backgroundColor: 'white', borderColor: borderColor }}
+                style={{ display:'flex',backgroundColor: 'white', borderColor: borderColor}}
               >
                 <option value={''} />
                 {CITIES_IN_BC.map((item, index) => <option key={index}> {item} </option>)}
               </CustomInput>
             </div>
-            <div style={{ flex: '2', minWidth: '87px' }}>
+            <div style={{ flex: '2', minWidth: '87px', padding:'15px' }}>
               <div><strong>Province:</strong></div>
               <CustomInput
                 required
@@ -170,7 +169,7 @@ const Profile = ({ data, userId, getUser, updateUser, resetUser }) => {
                 <option>BC</option>
               </CustomInput>
             </div>
-            <div style={{ flex: '3', minWidth: '105px' }}>
+            <div style={{ flex: '3', minWidth: '105px', padding:'15px' }}>
               <div><strong>Postal Code:</strong></div>
               <CustomInput
                 size='lg'
@@ -237,7 +236,7 @@ const PasswordFields = ({ onChange, confirmed, validate, edit }) => {
   const handleConfirmChange = (name, value, validate) => [onChange('password', password, password === value)]
   const handlePasswordChange = (name, value, validate) => [setPassword(value)];
   return (
-    <div style={{ flex: 1, maxWidth: '530px', minWidth: '235px' }}>
+    <div style={{ flex: 1, maxWidth: '530px', minWidth: '235px', padding:"15px" }}>
       <div><strong>Password:</strong></div>
       <CustomInput
         required

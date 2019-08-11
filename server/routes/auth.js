@@ -29,7 +29,6 @@ router.route('/signin')
     try {
       console.log("sign in");
       let { user, token } = await authController.signIn(req.body, req.user);
-      console.log(COOKIE_TOKEN, token, user)
       res.cookie(COOKIE_TOKEN, token, { httpOnly: true });
       res.status(200).json(user);
     }
@@ -40,7 +39,7 @@ router.route('/signin')
   });
 
 router.route('/signout')
-  .post(passportLocal, async (req, res, next) => {
+  .post( async (req, res, next) => {
     try {
       console.log("sign out");
       res.clearCookie(COOKIE_TOKEN);

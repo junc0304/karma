@@ -7,7 +7,6 @@ import { createStore, applyMiddleware } from 'redux';
 import { Provider } from 'react-redux';
 import reduxThunk from 'redux-thunk';
 import axios from 'axios';
-import './index.css';
 
 import CheckAuth from './components/HOC/CheckAuth.jsx'
 
@@ -35,7 +34,7 @@ ReactDOM.render(
     <BrowserRouter>
       <App>
         <Route exact path='/home' component={CheckAuth(Home)} />
-        <Route exact path='/history' component={History} />
+        <Route exact path='/history' component={CheckAuth(History)} />
         <Route exact path='/summary' component={CheckAuth(Summary)} />
         <Route exact path='/howtojoin' component={CheckAuth(Membership)} />
         <Route exact path='/member' component={CheckAuth(Member)} />

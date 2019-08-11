@@ -90,7 +90,7 @@ div.dropdown-menu.show a:hover {
 .bg-light {
   transition: 0.5s;
   background-color: rgba(255,255,255,0.01) !important;
-  padding: 2px 25px 2px 25px;
+  padding: 10px 25px 10px 25px;
   border-radius: 0px 0px 5px 5px;
 }
 

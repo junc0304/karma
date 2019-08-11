@@ -47,11 +47,10 @@ const AuthMenu = memo(({ signOut, isAuth }) => {
     <Fragment>
       {isAuth ?
         <Nav className='ml-auto'>
-          <Nav.Link className='nav-link' as={Link} href='#' active={false} to='/signin' onClick={onClickSignOut}>
+          <Nav.Link className='nav-link' href='#' active={false} onClick={onClickSignOut}>
             Sign Out</Nav.Link>
           <Nav.Link className='nav-link' as={Link} href='#' active={false} to='/profile'>
-            Setting
-          {/* <SettingsIcon style={{alignItem:'center', fontSize:'30px'}} /> */}
+            Profile      
           </Nav.Link>
         </Nav> :
         <Nav className='ml-auto'>

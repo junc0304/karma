@@ -99,7 +99,7 @@ const HistoryForm = memo(({
               </Row>
             </Modal.Body>
             <Modal.Body style={{ padding: '5px 16px' }} >
-              <Row style={{ display: 'flex', flexDirection: 'row', justifyContent: 'flex-end', height: '55px' }}>
+              <Row style={{ display: 'flex', flexDirection: 'row', flexWrap:'nowrap', justifyContent: 'flex-end', height: '55px' }}>
                 <div style={{ display: 'flex' }}>
                   <Form.Label style={{ paddingRight: '15px', paddingLeft: '15px', fontSize: '14px' }}>
                     Year:

@@ -5,7 +5,7 @@ import { Container} from 'react-bootstrap';
 import Header from './layout/Header.jsx';
 import Footer from './layout/Footer.jsx';
 import * as actions from '../actions';
-import BG from './images/karma-bg1.jpg';
+import BG from './images/karma-bg.jpg';
 import './App.css'
 
 const App = (props) => {

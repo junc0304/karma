@@ -45,6 +45,7 @@ router.route('/update')
       console.log("update a user");
       res.status(200).json(await userController.updateUser(req.body));
     } catch (err) {
+      console.log(err)
       res.status(400).json({ error: "could not update the user" });
     }
   });

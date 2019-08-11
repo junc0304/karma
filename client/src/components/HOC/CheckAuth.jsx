@@ -9,6 +9,9 @@ const CheckAuth = (Component) => {
         history.push('/signin');
       }
       setShowComponent(true);
+      return () => {
+        setShowComponent(false);
+      }
     }, [isAuth, history]);
 
     return (showComponent && <Component />);
