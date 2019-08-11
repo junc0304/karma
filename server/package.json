@@ -9,7 +9,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "npm run server-dev"
   },
-  "author": "",
+  "author": "JunC",
   "license": "ISC",
   "dependencies": {
     "awilix": "^4.2.2",
