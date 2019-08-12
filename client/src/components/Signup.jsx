@@ -31,13 +31,11 @@ const SignUp = props => {
 
     const onSubmit = async (event) => {
       event.preventDefault();
-      if (hasErrors(validationError)) {
+      if (!hasErrors(validationError)) {
         return;
       }
       await signUp(trimSpaces(formData));
-      if (!errorMessage) {
-        history.push('/home');
-      }
+      !errorMessage && history.push('/home');
     }
 
     return (

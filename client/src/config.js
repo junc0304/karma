@@ -81,3 +81,40 @@ export const PASSWORD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,16}$/
 export const POSTAL_CODE_REGEX = /^[A-Za-z]\d[A-Za-z][ -]?\d[A-Za-z]\d$/;
 export const YEAR_REGEX = /^\d{4}$/;
 export const MONTH_REGEX = /^(0?[1-9]|1[012])$/;
+
+
+export const API = {
+  BASE: 'http://localhost:4000',
+  SIGN_UP: 'http://localhost:4000/auth/signup',
+  SIGN_IN: 'http://localhost:4000/auth/signin',
+  SIGN_OUT: 'http://localhost:4000/auth/signout',
+
+  GET_USER: 'http://localhost:4000/user/get',
+ 
+  GET_POST: `http://localhost:4000/post/`,
+  GET_HEADER: `http://localhost:4000/post/recent`,
+  GET_POST2: `http://localhost:4000/post/`,
+  CREATE_POST: `http://localhost:4000/post/create`,
+  UPDATE_POST: `http://localhost:4000/post/update`,
+  DELETE_POST: `http://localhost:4000/post/delete`,
+
+  GET_USERS: `http://localhost:4000/user/`,
+  UPDATE_USER: `http://localhost:4000/user/update`,
+  DELETE_USER: `http://localhost:4000/user/delete`,
+  
+  GET_PAGE: `http://localhost:4000/page/get`,
+  CREATE_PAGE: `http://localhost:4000/page/create`,
+  UPDATE_PAGE: `http://localhost:4000/page/update`,
+  DELETE_PAGE: `http://localhost:4000/page/delete`,
+
+  GET_COMMENT: `http://localhost:4000/comment/`,
+  CREATE_COMMENT: `http://localhost:4000/comment/create`,
+  UPDATE_COMMENT: `http://localhost:4000/comment/update`,
+  DELETE_COMMENT: `http://localhost:4000/comment/delete`,
+
+  GET_HISTORY: `http://localhost:4000/history/all`,
+  CREATE_HISTORY: `http://localhost:4000/history/create`,
+  UPDATE_HISTORY: `http://localhost:4000/history/update`,
+  DELETE_HISTORY: `http://localhost:4000/history/delete`,
+
+}

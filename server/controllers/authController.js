@@ -6,8 +6,8 @@ const signToken = (user) => {
   return JWT.sign({
     iss: TOKEN_ISSUER,
     sub: user._id,
-    iat: new Date().getTime(),
-    exp: new Date().setDate(new Date().getDate() + JWT_EXPIRY)
+    iat: Math.floor(Date.now() / 1000), 
+    exp: Math.floor(Date.now() / 1000) + JWT_EXPIRY
   }, JWT_SECRET);
 };
 

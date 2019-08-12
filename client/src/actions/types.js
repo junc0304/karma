@@ -70,3 +70,8 @@ export const USER_ERROR = 'USER_ERROR';
 export const GET_USER = 'GET_USER';
 export const UPDATE_USER = 'UPDATE_USER';
 export const RESET_USER = 'RESET_USER';
+
+
+//ERRORS
+export const AUTH_EXPIRE = "AUTH_EXPIRE";
+export const NO_ERROR = "NO_ERROR"

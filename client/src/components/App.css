@@ -1,5 +1,12 @@
 
-
+.App {
+  min-height: 100%;
+  min-width: 370px; 
+  background-size: cover;
+  background-color:rgba(255,255,255,0.5);
+  background: url('./images/karma-bg1.jpg') no-repeat center bottom fixed;
+  background-attachment: fixed;
+}
 .jumbotron-main {
   background-color: rgba(255,255,255, 0.7) !important;
   border-radius: 5px;

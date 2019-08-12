@@ -13,7 +13,6 @@ const initialState = {
 const authReducer = (state = initialState, action) =>{
   switch (action.type) {
     case GET_HEADER_DATA:
-      console.log(action.payload, )
       return { 
         newEvent: action.payload.type.includes(EVENT), 
         newNotice: action.payload.type.includes(NOTICE), 

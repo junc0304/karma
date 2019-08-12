@@ -4,7 +4,7 @@ const passportJWT = passport.authenticate('jwt', { session: false });
 const { validateBody, schemas } = require('../helpers/validateInput');
 
 router.route('/get')
-  .post( validateBody(schemas.getPage), passportJWT, async (req, res, next) => {
+  .post(validateBody(schemas.getPage), passportJWT, async (req, res, next) => {
     const pageController = req.container.resolve('pageController');
     try {
       console.log("get a page");
@@ -16,7 +16,7 @@ router.route('/get')
   });
 
 router.route('/create')
-  .post( validateBody(schemas.createPage), passportJWT, async (req, res, next) => {
+  .post(validateBody(schemas.createPage), passportJWT, async (req, res, next) => {
     const pageController = req.container.resolve('pageController');
     try {
       console.log("create a page");
@@ -28,7 +28,7 @@ router.route('/create')
   });
 
 router.route('/update')
-  .post( validateBody(schemas.updatePage), passportJWT, async (req, res, next) => {
+  .post(validateBody(schemas.updatePage), passportJWT, async (req, res, next) => {
     const pageController = req.container.resolve('pageController');
     try {
       console.log("update a page");
@@ -41,7 +41,7 @@ router.route('/update')
   });
 
 router.route('/delete')
-  .post( validateBody(schemas.deletePage), passportJWT, async (req, res, next) => {
+  .post(validateBody(schemas.deletePage), passportJWT, async (req, res, next) => {
     const pageController = req.container.resolve('pageController');
     try {
       console.log("delete a page");

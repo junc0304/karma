@@ -1,4 +1,4 @@
-import React, { memo, useEffect } from 'react';
+import React, { memo } from 'react';
 import { Jumbotron, Modal, Form, ButtonGroup, Button, Row, Col } from 'react-bootstrap';
 import CustomInput from '../shared/CustomInput'
 import { connect } from 'react-redux';
@@ -25,28 +25,24 @@ const HistoryForm = memo(({
   const handleChange = (name, value, validated) => {
     formData[name] = value;
     formError[name] = validated;
-    console.log(formData, formError)
   };
 
 
   const hasErrors = (item) => {
     if (isEmpty(item)) return true;
     let correct = true;
-    Object.values(item)
-      .forEach(value => correct &= value);
+    Object.values(item).forEach(value => correct &= value);
     return !correct;
   }
 
   const handleCreate = async () => {
-    console.log(formError);
     if (hasErrors(formError)) return;
     await createHistory(formData);
     await getHistory();
     onClose();
   }
 
-  const handleUpdate = async () => {
-    console.log(formError);
+  const handleUpdate = async () => {    
     if (hasErrors(formError)) return;
     await updateHistory({ ...formData, historyId });
     await getHistory();
@@ -59,11 +55,6 @@ const HistoryForm = memo(({
     onClose();
   }
 
-
-
-  useEffect(() => {
-    console.log(data)
-  }, [data])
   return (
     <Modal size='xl' show={show} onHide={onClose} >
       <Jumbotron className='jumbotron-main'>

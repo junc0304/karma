@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
 import { Jumbotron, Form, Button, Alert } from 'react-bootstrap';
 import CustomInput from './shared/CustomInput';
@@ -6,19 +6,10 @@ import CustomInput from './shared/CustomInput';
 import * as actions from '../actions';
 import { validate } from '../helpers';
 
-const SignIn = ({ isAuthenticated, history, ...props }) => {
+const SignIn = ({ isAuthenticated, history, errorMessage, ...props }) => {
 
   let formData = { email: '', password: '' };
   let valid = { email: false, password: false };
-
-  useEffect(() => {
-    let checkAuth = () => {
-      if (isAuthenticated) {
-        history.push('/home');
-      }
-    }
-    checkAuth();
-  }, [isAuthenticated, history]);
 
   const ViewSignIn = ({ signIn, signReset, errorMessage }) => {
     const handleChange = (name, value, validated) => [formData[name] = value, valid[name] = validated];
@@ -27,6 +18,7 @@ const SignIn = ({ isAuthenticated, history, ...props }) => {
       if (hasErrors(valid)) return;
       await signReset();
       await signIn(formData);
+      !errorMessage && history.push('/home');
     }
     const hasErrors = (item) => {
       if (!item.length) return false;

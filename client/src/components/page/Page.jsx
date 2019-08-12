@@ -10,16 +10,19 @@ import { EditIcon } from '../icons';
 import './Page.css';
 const Page = memo(({
   type, data, isAdmin,
+  history,
   getPage, updatePage, createPage //action
 }) => {
   let { title, content } = data;
   let formData = { title, content };
   const [edit, setEdit] = useState(false);
+
   useEffect(() => {
     const fetchData = async () => await getPage(type);
     fetchData();
     // eslint-disable-next-line 
   }, []);
+  
   const handleTitleChange = (name, value) => formData[name] = value;
   const handleContentChange = (value) => formData.content = value;
   const handleEditModeChange = () => setEdit(!edit);
@@ -45,7 +48,7 @@ const Page = memo(({
               defaultValue={title}
               edit={edit}
               onChange={handleTitleChange}
-              style={{ height:'5rem', fontSize: '3rem', color: 'black', verticalAlign: 'middle', border: edit ? '1px solid #ddd' : '0px solid #ddd', backgroundColor: edit ? 'rgba(255, 255, 255, 0.8)' : 'inherit' }}
+              style={{ height: '5rem', fontSize: '3rem', color: 'black', verticalAlign: 'middle', border: edit ? '1px solid #ddd' : '0px solid #ddd', backgroundColor: edit ? 'rgba(255, 255, 255, 0.8)' : 'inherit' }}
             />
             {isAdmin && <EditButton onClick={handleEditModeChange} />}
           </h1>

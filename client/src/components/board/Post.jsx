@@ -110,6 +110,7 @@ const PostComponent = memo(({
         <FormButtons
           edit={edit}
           noData={isEmpty(data)}
+          onClose = {onClose}
           onUpdate={handleUpdatePost}
           onCreate={handleCreatePost}
           onCancel={onChangeEdit}
@@ -158,12 +159,13 @@ const MenuButtons = memo(({ onClose, onDelete, onEditChange, edit, show }) => {
   );
 });
 
-const FormButtons = memo(({ onUpdate, onCreate, onCancel, edit, noData }) => {
+const FormButtons = memo(({ onUpdate, onCreate,onClose, onCancel, edit, noData }) => {
+  let isNewForm = noData && edit;
   return (
     <Form.Group className='d-flex'>
       {edit && (
         <ButtonGroup className='ml-auto' style={{ marginTop: '15px' }}>
-          {!noData ? (
+          {!isNewForm ? (
             <Button
               className='btn btn-main'
               variant='light'
@@ -184,7 +186,7 @@ const FormButtons = memo(({ onUpdate, onCreate, onCancel, edit, noData }) => {
             className='btn btn-main'
             variant='light'
             style={{ width: '5rem' }}
-            onClick={onCancel}>
+            onClick={!isNewForm?onCancel:onClose}>
             Cancel</Button>
         </ButtonGroup>)}
     </Form.Group>

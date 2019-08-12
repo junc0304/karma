@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 import * as actions from '../../actions';
 import './Header.css';
 
-const Header = memo(({ signOut, isAuth, history, headerData, getHeaderData }) => {
+const Header = memo(({ signOut, isAuth, headerData, getHeaderData, ...rest }) => {
 
   useEffect(() => {
     const getHeader = async () => {
@@ -16,13 +16,14 @@ const Header = memo(({ signOut, isAuth, history, headerData, getHeaderData }) =>
   }, [isAuth, getHeaderData]);
 
   return (
-    <Navbar collapseOnSelect expand='lg' bg='light' variant='light' fixed='top' >
+    <Navbar collapseOnSelect expand='lg' bg='light' variant='light' sticky="top" >
       <Navbar.Brand as={Link} to='home' >
         <Image className='d-inline-block align-center'
           src={karmaLogo}
           height='25px'
           width='30px'
-          bg='' />
+          bg='' 
+        />
         {'  KARMA'}
       </Navbar.Brand>
       <Navbar.Toggle aria-controls='navbar-nav' />
@@ -30,24 +31,28 @@ const Header = memo(({ signOut, isAuth, history, headerData, getHeaderData }) =>
         <Nav className='mr-auto'>
           <AboutMenu />
           <MemebershipMenu />
-          <BoardsMenu isAuth={isAuth} recentData={headerData} />
+          <BoardsMenu 
+            isAuth={isAuth} 
+            recentData={headerData} 
+          />
           <LinksMenu />
         </Nav>
-        <AuthMenu signOut={signOut} isAuth={isAuth} history={history} />
+        <AuthMenu 
+          signOut={signOut} 
+          isAuth={isAuth} 
+        />
       </Navbar.Collapse>
     </Navbar>
   );
 });
 
-const AuthMenu = memo(({ signOut, isAuth }) => {
-  const onClickSignOut = async () => {
-    await signOut();
-  }
+const AuthMenu = memo(({ signOut, isAuth, history }) => {
+  const onClickSignOut = async () => await signOut();
   return (
     <Fragment>
       {isAuth ?
         <Nav className='ml-auto'>
-          <Nav.Link className='nav-link' href='#' active={false} onClick={onClickSignOut}>
+          <Nav.Link className='nav-link' as={Link} href='#' active={false} to='/signout' onClick={onClickSignOut}>
             Sign Out</Nav.Link>
           <Nav.Link className='nav-link' as={Link} href='#' active={false} to='/profile'>
             Profile      
@@ -142,4 +147,5 @@ const mapStateToProps = (state) => {
   };
 }
 
+connect(mapStateToProps, actions)(AuthMenu);
 export default connect(mapStateToProps, actions)(Header);

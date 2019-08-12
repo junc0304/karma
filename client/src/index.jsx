@@ -27,6 +27,7 @@ import Profile from './components/Profile.jsx';
 import reducers from './reducers';
 
 axios.defaults.withCredentials = true;
+
 const store = createStore(reducers, applyMiddleware(reduxThunk));
 
 ReactDOM.render(
@@ -44,7 +45,7 @@ ReactDOM.render(
         <Route exact path='/Discussion' component={CheckAuth(Discussion)} />
         <Route exact path='/signin' component={SignIn} />
         <Route exact path='/signup' component={SignUp} />
-        <Route exact path='/' component={SignIn} />
+        <Route exact path='/' component={CheckAuth(Home)} />
         <Route exact path='/profile' component={CheckAuth(Profile)} />
       </App>
     </BrowserRouter>

@@ -1,7 +1,8 @@
 .hover:hover {
-  margin: 0px -5px 3px -5px;
-  background-color: rgba(0,0,0,0.5);
-  font-weight: bold;
+  margin-left: -5px;
+  margin-right: -5px;
+  /* background-color: rgba(0,0,0,0.5); */
+  font-weight: 500;
 }
 
 .modal-content {
@@ -18,7 +19,7 @@
 }
 
 .board-row-wrapper {
-  transition: 0.5s;
+  transition: 0.2s;
   height: 60px;
   display: flex;
   flex-direction: row;
@@ -30,7 +31,6 @@
 }
 
 .board-row-inner-wrapper {
-  
   flex: 2;
   min-width: 280px;
   display: flex;

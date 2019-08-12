@@ -1,31 +1,27 @@
-import React, { useEffect, useState, memo } from 'react';
+import React, { useEffect, memo } from 'react';
 import { connect } from 'react-redux';
 
-const CheckAuth = (Component) => {
-  function AuthController({ isAuth, history }) {
-    const [showComponent, setShowComponent] = useState(false);
-    useEffect(() => {
-      if (!isAuth) {
-        history.push('/signin');
-      }
-      setShowComponent(true);
-      return () => {
-        setShowComponent(false);
-      }
-    }, [isAuth, history]);
+export default (Component) => {
 
-    return (showComponent && <Component />);
+  function AuthController(props) {
+
+    useEffect(() => {
+      if (!props.isAuth && sessionStorage.getItem("isAuth")) {
+        props.history.push('/signin');
+      }
+    }, [props.isAuth, props.history]);
+
+    return (
+      <Component {...props} />
+    );
   }
 
   const mapStateToProps = (state) => {
     return {
-      isAuth: state.auth.isAuthenticated,
-      errorMessage: state.auth.signInErrorMessage || state.auth.signUpErrorMessage
+      isAuth: state.auth.isAuthenticated
     }
   }
-
   return connect(mapStateToProps)(memo(AuthController));
 };
 
-export default CheckAuth;
 

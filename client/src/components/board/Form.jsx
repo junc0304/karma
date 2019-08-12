@@ -5,7 +5,7 @@ import CommentComponent from './Comment';
 import PostComponent from './Post';
 import './Board.css';
 
-const BoardForm = memo(({ data, type, show, onClose }) => {
+const BoardForm = memo(({ type, data, show, onClose }) => {
   const [edit, setEdit] = useState(() => (isEmpty(data)));
   useEffect(() => setEdit(isEmpty(data)), [data]);
   const handleChangeEdit = () => setEdit(!edit);
@@ -24,7 +24,7 @@ const BoardForm = memo(({ data, type, show, onClose }) => {
             onChangeEdit={handleChangeEdit}
             onClose={onClose}
           />
-          {!edit && (
+          {!edit && data && (
             <CommentComponent />
           )}
         </div>

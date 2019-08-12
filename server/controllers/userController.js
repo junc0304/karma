@@ -49,7 +49,6 @@ class UserController {
       }
     }
     catch (err) {
-      console.log(err);
       throw new HttpExceptionHandler(400, err);
     }
   }

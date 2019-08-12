@@ -27,36 +27,36 @@ const Board = memo(({
 
     const handleOpenForm = async (data) => [await getComments({ postId: data.postId }), setRow({ data, show: true })];
     const handleOpenEmptyForm = async () => [await resetComments(), setRow({ data: {}, show: true })];
-    const handleCloseForm = async () => [await resetComments(), setRow({ data: {}, show: false })];
+    const handleCloseForm = async () => [await resetComments(), setRow({ data: {}, show: false})];
 
     return (
-      <Jumbotron  className='jumbotron-main' style={{ wordWrap: 'break-word', padding: '15px 15px', backgroundColor: JUMBOTRON_BG_COMMON }}>
+      <Jumbotron className='jumbotron-main' style={{ wordWrap: 'break-word', padding: '15px 15px', backgroundColor: JUMBOTRON_BG_COMMON }}>
         <div className='jumbotron-inner-frame' >
-        <h1 style={{fontSize:'2rem'}} >
-        {type}
-        <CreateButton
-          onClick={handleOpenEmptyForm}
-          show={hasAccess || isAdmin}
-        />
-        </h1>
-        <hr className='my-3' />
-        <TableComponent
-          data={data}
-          pageState={pageState}
-          onClick={handleOpenForm}
-        />
-        <hr className='my-3' />
-        <FormComponent
-          type={type}
-          data={row.data}
-          show={row.show}
-          access={hasAccess || isAdmin}
-          onClose={handleCloseForm}
-        />
-        <PaginationComponent
-          data={pageState}
-          dispatch={dispatch}
-        />
+          <h1 style={{ fontSize: '2rem' }} >
+            {type}
+            <CreateButton
+              onClick={handleOpenEmptyForm}
+              show={hasAccess || isAdmin}
+            />
+          </h1>
+          <hr className='my-3' />
+          <TableComponent
+            data={data}
+            pageState={pageState}
+            onClick={handleOpenForm}
+          />
+          <hr className='my-3' />
+          <FormComponent
+            type={type}
+            data={row.data}
+            show={row.show}
+            access={hasAccess || isAdmin}
+            onClose={handleCloseForm}
+          />
+          <PaginationComponent
+            data={pageState}
+            dispatch={dispatch}
+          />
         </div>
       </Jumbotron>
     )

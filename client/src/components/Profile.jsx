@@ -265,7 +265,6 @@ const PasswordFields = ({ onChange, confirmed, validate, edit }) => {
 }
 
 const mapStateToProps = (state) => {
-  console.log(state)
   return {
     data: state.user.data,
     userId: state.auth.user.userId,

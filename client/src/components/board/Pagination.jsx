@@ -10,7 +10,7 @@ const PaginationSetComponent = ({ start, end, onClick, page:{current} }) => {
         <Pagination.Item 
           key={item} 
           active={current===item}
-          onClick={() => { console.log(item, current); onClick(item)}}
+          onClick={() => { onClick(item)}}
         >
           {item}
         </Pagination.Item>

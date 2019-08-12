@@ -4,7 +4,7 @@ const passportJWT = passport.authenticate('jwt', { session: false });
 const passportLocal = passport.authenticate('local', { session: false });
 
 const passport_config = require('../passport');
-const { COOKIE_TOKEN } = require('../configuration');
+const { COOKIE_TOKEN, COOKIE_MAX_AGE } = require('../configuration');
 
 const HttpResponseException = require('../classes/HttpResponseException/httpResponseException');
 const { validateBody, schemas } = require('../helpers/validateInput');
@@ -15,7 +15,7 @@ router.route('/signup')
     try {
       console.log("sign up");
       let { user, token } = await authController.signUp(req.body);
-      res.cookie(COOKIE_TOKEN, token, { httpOnly: true })
+      res.cookie(COOKIE_TOKEN, token, { httpOnly: true, maxAge: COOKIE_MAX_AGE })
       res.status(200).json(user);
     }
     catch (err) {
@@ -29,7 +29,7 @@ router.route('/signin')
     try {
       console.log("sign in");
       let { user, token } = await authController.signIn(req.body, req.user);
-      res.cookie(COOKIE_TOKEN, token, { httpOnly: true });
+      res.cookie(COOKIE_TOKEN, token, { httpOnly: true, maxAge: COOKIE_MAX_AGE });
       res.status(200).json(user);
     }
     catch (err) {
@@ -39,7 +39,7 @@ router.route('/signin')
   });
 
 router.route('/signout')
-  .post( async (req, res, next) => {
+  .post(async (req, res, next) => {
     try {
       console.log("sign out");
       res.clearCookie(COOKIE_TOKEN);
