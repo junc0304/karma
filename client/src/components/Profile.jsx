@@ -5,7 +5,7 @@ import * as actions from '../actions';
 import CustomInput from './shared/CustomInput';
 import { validate } from '../helpers';
 import { SettingsIcon } from './icons';
-import { CITIES_IN_BC } from '../config';
+//import { CITIES_IN_BC } from '../config';
 
 
 const Profile = ({ data, userId, getUser, updateUser, resetUser }) => {
@@ -51,7 +51,6 @@ const Profile = ({ data, userId, getUser, updateUser, resetUser }) => {
             size='lg'
             name='email'
             type='text'
-            placeholder='Role'
             defaultValue={email}
             edit={false}
             style={{ backgroundColor: 'white' }}
@@ -139,7 +138,7 @@ const Profile = ({ data, userId, getUser, updateUser, resetUser }) => {
               <CustomInput
                 required
                 size='lg'
-                as='select'
+                //as='select'
                 name='city'
                 type='text'
                 onChange={handleChange}
@@ -148,8 +147,8 @@ const Profile = ({ data, userId, getUser, updateUser, resetUser }) => {
                 validation={validate.emptySelection}
                 style={{ display:'flex',backgroundColor: 'white', borderColor: borderColor}}
               >
-                <option value={''} />
-                {CITIES_IN_BC.map((item, index) => <option key={index}> {item} </option>)}
+              {/*   <option value={''} />
+                {CITIES_IN_BC.map((item, index) => <option key={index}> {item} </option>)} */}
               </CustomInput>
             </div>
             <div style={{ flex: '2', minWidth: '87px', padding:'15px' }}>

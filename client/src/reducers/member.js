@@ -1,7 +1,7 @@
 import { GET_MEMBER, UPDATE_MEMBER, MEMBER_ERROR, RESET_MEMBER } from '../actions/types';
 
 const initialState = {
-  data: [],
+  data: {},
   errorMessage: ''
 }
 

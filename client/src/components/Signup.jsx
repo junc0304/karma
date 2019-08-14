@@ -1,42 +1,53 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
-import { Jumbotron, Form, Alert, Button, ButtonGroup } from 'react-bootstrap';
+import { Jumbotron, Form, Button, ButtonGroup } from 'react-bootstrap';
 import CustomInput from './shared/CustomInput';
 import * as actions from '../actions';
-import { CITIES_IN_BC } from '../config'
-import { validate } from '../helpers'
+import { validate, isEmpty } from '../helpers'
 
-const SignUp = props => {
+const SignUp = (props) => {
 
-  const formData = {};
-  const validationError = {};
+  let { isAuth, signUp, history } = props;
+  let form = {};
+  let formValid = {
+    name: false,
+    depotName: false,
+    email: false,
+    password: false,
+    address: false,
+    city: false,
+    province: false,
+    postalCode: false
+  };
 
-  const ViewComponent = ({ signUp, errorMessage, history }) => {
-    const [confirmPassword, setConfirmPassword] = useState(true);
+ 
+  const ViewComponent = () => {
 
-    const onChange = (name, value, validated) => [formData[name] = value, validationError[name] = validated];
-    const onPasswordConfirmChange = (name, value, validated) => setConfirmPassword(value === formData.password)
-    const hasErrors = (item) => {
-      if (!item.length) return false;
-      let correct = confirmPassword;
-      Object.values(item).forEach((value) => correct &= value);
-      return !correct;
+    useEffect(() => {
+      if (isAuth) history.push('/home');
+      // eslint-disable-next-line
+    }, [isAuth]);  
+
+    const handleChange = (name, value, validated) => {
+      form[name] = value;
+      formValid[name] = validated;
     }
-    const trimSpaces = (data) => {
-      Object.entries(data).forEach(([key, value]) => {
-        data[key] = value.trim();
-      });
-      return data;
-    }
-
-    const onSubmit = async (event) => {
-      event.preventDefault();
-      if (!hasErrors(validationError)) {
-        return;
-      }
-      await signUp(trimSpaces(formData));
-      !errorMessage && history.push('/home');
-    }
+    const handleSubmit = async () => {
+      trimSpaces();
+      if(isEmpty(form)) return;
+      validateForm(formValid) && await signUp(form)
+    };
+    const trimSpaces = () => 
+      Object.entries(form)
+        .forEach(([key, value]) => form[key] = value.trim());
+    
+    const validateForm = () => {
+      if(isEmpty(form) || isEmpty(formValid)) return false;
+      let noError = true;
+       Object.values(formValid)
+         .forEach((valid) => noError &= valid );
+       return noError;
+     }
 
     return (
       <Jumbotron className='jumbotron-main'>
@@ -45,7 +56,7 @@ const SignUp = props => {
           <p className='lead'>Sign up & get started today!</p>
           <hr className='my-3' />
           <p className='lead'>Your account setup</p>
-          <Form noValidate onSubmit={onSubmit}>
+          <Form noValidate >
             <Form.Row>
               <Form.Group className='col-md-6'>
                 <div><strong>Email</strong></div>
@@ -54,36 +65,12 @@ const SignUp = props => {
                   size='lg'
                   type='email'
                   name='email'
-                  onChange={onChange}
+                  onChange={handleChange}
                   validation={validate.email}
                 />
                 <Form.Text>**Email address is your User ID</Form.Text>
               </Form.Group>
-              <Form.Group className='col-md-6'>
-                <div><strong>
-                  Password</strong></div>
-                <CustomInput
-                  required
-                  size='lg'
-                  name='password'
-                  type='password'
-                  placeholder='Password'
-                  onChange={onChange}
-                  validation={validate.password}
-                />
-                <div><strong>Confirm Password</strong></div>
-                <CustomInput
-                  required
-                  size='lg'
-                  type='password'
-                  name='passwordConfirm'
-                  onChange={onPasswordConfirmChange}
-                  password={formData.password}
-                  isInvalid={!confirmPassword}
-                  validation={validate.confirmPassword}
-                  placeholder='Confirm Password'
-                />
-              </Form.Group>
+              <PasswordFields onChange={handleChange} validate={validate} />
             </Form.Row>
             <hr className='my-3' />
             <p className='lead'>Tell us more!</p>
@@ -96,7 +83,7 @@ const SignUp = props => {
                   name='name'
                   type='text'
                   placeholder='John Doe'
-                  onChange={onChange}
+                  onChange={handleChange}
                   validation={validate.empty}
                 />
               </Form.Group >
@@ -108,7 +95,7 @@ const SignUp = props => {
                   name='depotName'
                   type='text'
                   placeholder='e.g. Burnaby Return-It bottle depot...'
-                  onChange={onChange}
+                  onChange={handleChange}
                   validation={validate.empty}
                 />
               </Form.Group>
@@ -120,7 +107,7 @@ const SignUp = props => {
                   size='lg'
                   name='unit'
                   type='text'
-                  onChange={onChange}
+                  onChange={handleChange}
                   placeholder='Apartment, studio, or floor'
                 />
               </Form.Group>
@@ -132,7 +119,7 @@ const SignUp = props => {
                   name='address'
                   type='text'
                   placeholder='1234 Main St'
-                  onChange={onChange}
+                  onChange={handleChange}
                   validation={validate.empty}
                 />
               </Form.Group>
@@ -143,16 +130,12 @@ const SignUp = props => {
                 <CustomInput
                   required
                   size='lg'
-                  as='select'
                   name='city'
                   type='text'
-                  onChange={onChange}
+                  onChange={handleChange}
                   validation={validate.emptySelection}
                   style={{ fontSize: '1.1rem' }}
-                >
-                  <option value={''} />
-                  {CITIES_IN_BC.map((item, index) => <option key={index}> {item} </option>)}
-                </CustomInput>
+                />
               </Form.Group >
               <Form.Group className='col-md-4'>
                 <div><strong>Province</strong></div>
@@ -162,7 +145,7 @@ const SignUp = props => {
                   as='select'
                   name='province'
                   type='text'
-                  onChange={onChange}
+                  onChange={handleChange}
                   validation={validate.emptySelection}
                   style={{ fontSize: '1.1rem' }}
                 >
@@ -177,7 +160,7 @@ const SignUp = props => {
                   size='lg'
                   name='postalCode'
                   type='text'
-                  onChange={onChange}
+                  onChange={handleChange}
                   validation={validate.postalCode}
                 />
               </Form.Group>
@@ -185,16 +168,14 @@ const SignUp = props => {
             <hr className='my-3' />
             <p className='lead'>Any comments?</p>
             <Form.Group>
-              <div><strong>
-                Comments
-            </strong></div>
+              <div><strong>Comments</strong></div>
               <CustomInput
                 as='textarea'
                 size='lg'
                 rows='3'
                 name='comment'
                 type='textarea'
-                onChange={onChange}
+                onChange={handleChange}
                 style={{ borderRadius: '5px', resize: 'none' }}
               />
             </Form.Group>
@@ -209,17 +190,11 @@ const SignUp = props => {
                 <div><strong>Check to receive email updates from KARMA</strong></div>
               </Form.Check>
             </Form.Group>
-            {errorMessage ? (
-              <Alert variant='danger'>
-                {errorMessage}
-              </Alert>
-            ) : null
-            }
             <Form.Group>
               <ButtonGroup className='d-flex '>
                 <Button
-                  type='submit'
                   variant='light'
+                  onClick={handleSubmit}
                   className='ml-auto btn-main'
                 >
                   Submit
@@ -231,11 +206,45 @@ const SignUp = props => {
       </Jumbotron>
     );
   }
-  return <ViewComponent {...props} />
+  return <ViewComponent />
+}
+
+const PasswordFields = ({ onChange, confirmed, validate, edit }) => {
+  const [password, setPassword] = useState('');
+  const handleConfirmChange = (name, value, validate) => [onChange("password", password, password === value)]
+  const handlePasswordChange = (name, value, validate) => [setPassword(value)];
+  return (
+    <Form.Group className="col-md-6" >
+      <div><strong>Password:</strong></div>
+      <CustomInput
+        required
+        size='lg'
+        name='password'
+        type='password'
+        placeholder='Password'
+        onChange={handlePasswordChange}
+        edit={edit}
+        validation={validate.password}
+      />
+      <div><strong>Confirm Password:</strong></div>
+      <CustomInput
+        required
+        size='lg'
+        type='password'
+        name='passwordConfirm'
+        onChange={handleConfirmChange}
+        edit={edit}
+        password={password}
+        validation={validate.confirmPassword}
+        placeholder='Confirm Password'
+      />
+    </Form.Group>
+  );
 }
 
 const mapStateToProps = (state) => {
   return {
+    isAuth: state.auth.isAuthenticated,
     errorMessage: state.auth.signUpErrorMessage
   }
 }

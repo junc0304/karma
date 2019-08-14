@@ -1,30 +1,39 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import { Jumbotron, Form, Button, Alert } from 'react-bootstrap';
 import CustomInput from './shared/CustomInput';
 
 import * as actions from '../actions';
-import { validate } from '../helpers';
+import { validate, isEmpty } from '../helpers';
 
-const SignIn = ({ isAuthenticated, history, errorMessage, ...props }) => {
+const SignIn = (props) => {
+  let { isAuth, history, signIn, errorMessage } = props;
+  let form = { };
+  let formValid = { email: false, password: false };
 
-  let formData = { email: '', password: '' };
-  let valid = { email: false, password: false };
+  const ViewSignIn = () => {
 
-  const ViewSignIn = ({ signIn, signReset, errorMessage }) => {
-    const handleChange = (name, value, validated) => [formData[name] = value, valid[name] = validated];
-    const handleSubmit = async (event) => {
-      event.preventDefault();
-      if (hasErrors(valid)) return;
-      await signReset();
-      await signIn(formData);
-      !errorMessage && history.push('/home');
-    }
-    const hasErrors = (item) => {
-      if (!item.length) return false;
-      let correct = true;
-      Object.values(item).forEach((value) => correct &= value);
-      return !correct;
+    useEffect(() => {
+      if (isAuth) history.push('/home');
+      // eslint-disable-next-line
+    }, [isAuth]);
+
+    const handleChange = (name, value, validated) => {
+      form[name] = value;
+      formValid[name] = validated
+    };
+
+    const handleSubmit = async () => {
+      if(isEmpty(form)) return;
+      validateForm() && await signIn(form);
+    };
+
+    const validateForm = () => {
+      if(isEmpty(form) || isEmpty(formValid)) return false;     
+      let noError = true;
+      Object.values(formValid)
+        .forEach((valid) => noError &= valid );
+      return noError;
     }
 
     return (
@@ -34,7 +43,7 @@ const SignIn = ({ isAuthenticated, history, errorMessage, ...props }) => {
           <p className='lead'>Sign in with your Email!</p>
           <hr className='my-3' />
 
-          <Form noValidate onSubmit={handleSubmit} >
+          <Form noValidate >
             <Form.Group style={{ minHeight: '102px' }}>
               <Form.Label>Email</Form.Label>
               <CustomInput
@@ -42,6 +51,7 @@ const SignIn = ({ isAuthenticated, history, errorMessage, ...props }) => {
                 size='lg'
                 name='email'
                 type='email'
+                autoComplete='username'
                 onChange={handleChange}
                 validation={validate.simpleEmail}
               />
@@ -53,14 +63,19 @@ const SignIn = ({ isAuthenticated, history, errorMessage, ...props }) => {
                 size='lg'
                 name='password'
                 type='password'
+                autoComplete='current-passowrd'
                 onChange={handleChange}
                 validation={validate.simplePassword}
               />
             </Form.Group>
-            {errorMessage && <Alert variant='danger'>{errorMessage}</Alert>}
+            {errorMessage && (
+              <Alert variant='danger'>
+                {errorMessage}
+              </Alert>
+            )}
             <Button
               className='d-flex ml-auto btn-main'
-              type='submit'
+              onClick={handleSubmit}
               variant='light'
             >
               Sign In
@@ -70,12 +85,12 @@ const SignIn = ({ isAuthenticated, history, errorMessage, ...props }) => {
       </Jumbotron>
     );
   }
-  return <ViewSignIn {...props} />
+  return <ViewSignIn />
 }
 
 const mapStateToProps = (state) => {
   return {
-    isAuthenticated: state.auth.isAuthenticated,
+    isAuth: state.auth.isAuthenticated,
     errorMessage: state.auth.signInErrorMessage
   }
 }

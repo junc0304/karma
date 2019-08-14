@@ -1,7 +1,7 @@
 import axios from 'axios';
 import {
   //auth
-  AUTH_SIGN_UP, AUTH_SIGN_OUT, AUTH_SIGN_IN, AUTH_SIGN_UP_ERROR, AUTH_SIGN_IN_ERROR,
+  AUTH_SIGN_UP, AUTH_SIGN_OUT, AUTH_SIGN_IN, AUTH_SIGN_UP_ERROR, AUTH_SIGN_IN_ERROR, AUTH_REFRESH,
   //board
   GET_POST, CREATE_POST, UPDATE_POST, DELETE_POST, RESET_POST, POST_ERROR,
   //member
@@ -24,7 +24,6 @@ const check401 = (err, dispatch) => {
     dispatch({
       type: AUTH_SIGN_OUT
     });
-    sessionStorage.clear();
   }
 }
 
@@ -37,10 +36,7 @@ export const signUp = (data) => {
         type: AUTH_SIGN_UP,
         payload: res.data
       });
-      sessionStorage.setItem("isAuth", true);
     } catch (err) {
-      check401(err, dispatch);
-
       dispatch({
         type: AUTH_SIGN_UP_ERROR,
         payload: 'Required information is missing or incomplete. Please correct your entries and try again.'
@@ -57,10 +53,9 @@ export const signIn = (data) => {
         type: AUTH_SIGN_IN,
         payload: res.data
       });
-      sessionStorage.setItem("isAuth", true);
     }
     catch (err) {
-      check401(err, dispatch);
+      //check401(err, dispatch);
       dispatch({
         type: AUTH_SIGN_IN_ERROR,
         payload: 'Incorrect User ID and/or password.'
@@ -88,12 +83,31 @@ export const signOut = () => {
       sessionStorage.clear();
     }
     catch (err) {
+      check401(err, dispatch);
       dispatch({
         type: AUTH_SIGN_IN_ERROR,
         payload: 'Failed to Sign Out'
       });
     }
   }
+}
+
+export const signRefresh = (isAuth, isAdmin, userId) => {
+  return async dispatch => {
+    try {
+      dispatch({
+        type: AUTH_REFRESH,
+        payload: { isAuth, isAdmin, userId }
+      });
+    }
+    catch (err) {
+      //check401(err, dispatch);
+      dispatch({
+        type: AUTH_SIGN_IN_ERROR,
+        payload: 'Incorrect User ID and/or password.'
+      });
+    }
+  };
 }
 
 export const signReset = () => {

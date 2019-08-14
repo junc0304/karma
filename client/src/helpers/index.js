@@ -6,10 +6,17 @@ const capitalizeFirst = (string) => {
   return (string.charAt(0).toUpperCase() + string.slice(1));
 }
 
+export const session = {
+  isAuth: () => sessionStorage.getItem("app_status") ? JSON.parse(sessionStorage.getItem("app_status")).authentication : false,
+  isAdmin: () => sessionStorage.getItem("app_status") ? JSON.parse(sessionStorage.getItem("app_status")).admin : false,
+  userId: () => sessionStorage.getItem("app_status") ? JSON.parse(sessionStorage.getItem("app_status")).userid : false,
+  signOut: () => sessionStorage.clear()
+}
+
 // User validation
 export const auth = {
   isAdmin: (role) => {
-    if(!role) return false;
+    if (!role) return false;
     return (role === USER_TYPE.ADMIN || role === USER_TYPE.OWNER);
   }
 }
@@ -34,7 +41,7 @@ export const validate = {
   email: (name, value) => !value.match(EMAIL_REGEX) ? `Please enter a valid '${capitalizeFirst(name)}' to use as your User ID.` : null,
   simplePassword: (name, value) => !value || value.length < 8 || value.length > 16 ? `'${name}' length has to be 8 to 16` : null,
   password: (name, value) => !value || value.length < 8 || value.length > 16 ? `'${name}' must have 8 to 16 characters.` :
-    !value.match(PASSWORD_REGEX) ? `'${capitalizeFirst(name)}' must contain at least one lowercase letter, one uppercase letter, and one numeric digit.` : null,
+    !value.match(PASSWORD_REGEX) ? `'${capitalizeFirst(name)}' must contain at least one lowercase letter and one numeric digit.` : null,
   confirmPassword: (password, value) => password && value !== password ? `Password and 'Confirm Password' does not match.` : null,
   empty: (name, value) => !value || !value.length ? `Please enter your '${capitalizeFirst(name)}'.` : null,
   emptySelection: (name, value) => !value || !value.length ? `Please choose a '${capitalizeFirst(name)}'.` : null,
@@ -45,7 +52,7 @@ export const validate = {
 
 const dayInMilliseconds = 24 * 60 * 60 * 1000;
 export const isWithinDays = (targetDate, days) => {
-  if(new Date().getTime() - new Date(targetDate).getTime() < days * dayInMilliseconds) 
+  if (new Date().getTime() - new Date(targetDate).getTime() < days * dayInMilliseconds)
     return true;
   return false;
 }

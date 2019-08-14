@@ -4,26 +4,26 @@ import BoardComponent from './board/Board';
 import * as actions from '../actions';
 import { BOARD_TYPE, BOARD_USERS } from '../config';
 
-const Discussion = ({getPosts, user}) => {
-    let type = BOARD_TYPE.DISCUSSION;
-    let userAccess = BOARD_USERS[user.role]?true:false;
+const Discussion = ({getPosts, role}) => {
+    const type = BOARD_TYPE.DISCUSSION;
+    const hasAccess = BOARD_USERS.DISCUSSION.includes(role);
 
     useEffect(() => {
       const fetchPost = async () => await getPosts(type);
       fetchPost();
-    }, [getPosts, type]);
+    }, [type, getPosts]);
 
     return (
       <BoardComponent
         type={type} 
-        userAccess={userAccess}
+        hasAccess={hasAccess}
       />
     )
 }
 
 const mapStateToProps = (state) => {
   return {
-    user: state.auth.user
+    role: state.auth.user.role
   };
 }
 

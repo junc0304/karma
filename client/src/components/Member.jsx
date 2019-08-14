@@ -26,7 +26,7 @@ const Member = memo(({ data, getMembers }) => {
       }}
     >
       <div className='jumbotron-inner-frame' >
-        <h1 style={{ fontSize: '2rem' }} >
+        <h1 style={{ height: '5rem', fontSize: '3rem', padding:'8px 14px' }} >
           Members
         </h1>
         <hr className='my-2' />
@@ -43,7 +43,6 @@ const Member = memo(({ data, getMembers }) => {
     </Jumbotron>
   );
 });
-
 const mapStateToProps = (state) => {
   return {
     data: state.member.data,

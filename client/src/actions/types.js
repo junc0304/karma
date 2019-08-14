@@ -6,6 +6,7 @@ export const AUTH_ERROR = 'AUTH_ERROR';
 export const AUTH_SIGN_UP_ERROR = 'AUTH_SIGN_UP_ERROR';
 export const AUTH_SIGN_IN_ERROR = 'AUTH_SIGN_IN_ERROR';
 export const AUTH_SIGN_RESET = 'AUTH_SIGN_RESET';
+export const AUTH_REFRESH = 'AUTH_REFRESH';
 //get board
 /* export const BOARD_GET_MEETING    = 'BOARD_GET_MEETING';
 export const BOARD_GET_EVENT      = 'BOARD_GET_EVENT';

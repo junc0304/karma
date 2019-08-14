@@ -1,4 +1,4 @@
-import React, { Fragment, memo, useEffect } from 'react';
+import React, { Fragment, memo, useEffect, useState } from 'react';
 import { Nav, Navbar, NavDropdown, Image, Badge } from 'react-bootstrap';
 import karmaLogo from '../images/karma_logo.jpg';
 import { Link } from 'react-router-dom';
@@ -6,13 +6,19 @@ import { connect } from 'react-redux';
 import * as actions from '../../actions';
 import './Header.css';
 
-const Header = memo(({ signOut, isAuth, headerData, getHeaderData, ...rest }) => {
+const Header = memo((props) => {
+  let { signOut, isAuth, headerData, getHeaderData } = props;
+  const [session, setSession] = useState({ authentication: false, admin: false });
 
   useEffect(() => {
-    const getHeader = async () => {
-      await getHeaderData(5);
-    }
+    const getHeader = async () => await getHeaderData(5);
     isAuth && getHeader();
+    if (sessionStorage.getItem("app_status")) {
+      setSession(JSON.parse(sessionStorage.getItem("app_status")));
+    }
+    else {
+      setSession({ authentication: false, admin: false });
+    }
   }, [isAuth, getHeaderData]);
 
   return (
@@ -22,7 +28,7 @@ const Header = memo(({ signOut, isAuth, headerData, getHeaderData, ...rest }) =>
           src={karmaLogo}
           height='25px'
           width='30px'
-          bg='' 
+          bg=''
         />
         {'  KARMA'}
       </Navbar.Brand>
@@ -31,15 +37,15 @@ const Header = memo(({ signOut, isAuth, headerData, getHeaderData, ...rest }) =>
         <Nav className='mr-auto'>
           <AboutMenu />
           <MemebershipMenu />
-          <BoardsMenu 
-            isAuth={isAuth} 
-            recentData={headerData} 
+          <BoardsMenu
+            isAuth={isAuth || session.authentication}
+            recentData={headerData}
           />
           <LinksMenu />
         </Nav>
-        <AuthMenu 
-          signOut={signOut} 
-          isAuth={isAuth} 
+        <AuthMenu
+          signOut={signOut}
+          isAuth={isAuth || session.authentication}
         />
       </Navbar.Collapse>
     </Navbar>
@@ -47,15 +53,17 @@ const Header = memo(({ signOut, isAuth, headerData, getHeaderData, ...rest }) =>
 });
 
 const AuthMenu = memo(({ signOut, isAuth, history }) => {
-  const onClickSignOut = async () => await signOut();
+  const onClickSignOut = async () => {
+    await signOut();
+  };
   return (
     <Fragment>
       {isAuth ?
         <Nav className='ml-auto'>
-          <Nav.Link className='nav-link' as={Link} href='#' active={false} to='/signout' onClick={onClickSignOut}>
+          <Nav.Link className='nav-link' as={Link} href='#' active={false} to='/signin' onClick={onClickSignOut}>
             Sign Out</Nav.Link>
           <Nav.Link className='nav-link' as={Link} href='#' active={false} to='/profile'>
-            Profile      
+            Profile
           </Nav.Link>
         </Nav> :
         <Nav className='ml-auto'>

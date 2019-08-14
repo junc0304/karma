@@ -77,44 +77,44 @@ export const JUMBOTRON_BG_COMMON = "rgba(255,255,255,0.75)"
 
 
 export const EMAIL_REGEX = /^([\w.%+-]+)@([\w-]+\.)+([\w]{2,})$/i;
-export const PASSWORD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,16}$/;
+export const PASSWORD_REGEX =  /^(?=.*[0-9])(?=.*[a-z])[0-9a-zA-Z]{8,}$/;
+///^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,16}$/;
 export const POSTAL_CODE_REGEX = /^[A-Za-z]\d[A-Za-z][ -]?\d[A-Za-z]\d$/;
 export const YEAR_REGEX = /^\d{4}$/;
 export const MONTH_REGEX = /^(0?[1-9]|1[012])$/;
 
-
+const BASE_URL = 'http://localhost:4000';
 export const API = {
-  BASE: 'http://localhost:4000',
-  SIGN_UP: 'http://localhost:4000/auth/signup',
-  SIGN_IN: 'http://localhost:4000/auth/signin',
-  SIGN_OUT: 'http://localhost:4000/auth/signout',
+  SIGN_UP: BASE_URL + '/auth/signup',
+  SIGN_IN: BASE_URL + '/auth/signin',
+  SIGN_OUT: BASE_URL + '/auth/signout',
 
-  GET_USER: 'http://localhost:4000/user/get',
- 
-  GET_POST: `http://localhost:4000/post/`,
-  GET_HEADER: `http://localhost:4000/post/recent`,
-  GET_POST2: `http://localhost:4000/post/`,
-  CREATE_POST: `http://localhost:4000/post/create`,
-  UPDATE_POST: `http://localhost:4000/post/update`,
-  DELETE_POST: `http://localhost:4000/post/delete`,
+  GET_USER: BASE_URL + '/user/get',
 
-  GET_USERS: `http://localhost:4000/user/`,
-  UPDATE_USER: `http://localhost:4000/user/update`,
-  DELETE_USER: `http://localhost:4000/user/delete`,
-  
-  GET_PAGE: `http://localhost:4000/page/get`,
-  CREATE_PAGE: `http://localhost:4000/page/create`,
-  UPDATE_PAGE: `http://localhost:4000/page/update`,
-  DELETE_PAGE: `http://localhost:4000/page/delete`,
+  GET_POST: BASE_URL + `/post/`,
+  GET_HEADER: BASE_URL + `/post/recent`,
+  GET_POST2: BASE_URL + `/post/`,
+  CREATE_POST: BASE_URL + `/post/create`,
+  UPDATE_POST: BASE_URL + `/post/update`,
+  DELETE_POST: BASE_URL + `/post/delete`,
 
-  GET_COMMENT: `http://localhost:4000/comment/`,
-  CREATE_COMMENT: `http://localhost:4000/comment/create`,
-  UPDATE_COMMENT: `http://localhost:4000/comment/update`,
-  DELETE_COMMENT: `http://localhost:4000/comment/delete`,
+  GET_USERS: BASE_URL + `/user/`,
+  UPDATE_USER: BASE_URL + `/user/update`,
+  DELETE_USER: BASE_URL + `/user/delete`,
 
-  GET_HISTORY: `http://localhost:4000/history/all`,
-  CREATE_HISTORY: `http://localhost:4000/history/create`,
-  UPDATE_HISTORY: `http://localhost:4000/history/update`,
-  DELETE_HISTORY: `http://localhost:4000/history/delete`,
+  GET_PAGE: BASE_URL + `/page/get`,
+  CREATE_PAGE: BASE_URL + `/page/create`,
+  UPDATE_PAGE: BASE_URL + `/page/update`,
+  DELETE_PAGE: BASE_URL + `/page/delete`,
+
+  GET_COMMENT: BASE_URL + `/comment/`,
+  CREATE_COMMENT: BASE_URL + `/comment/create`,
+  UPDATE_COMMENT: BASE_URL + `/comment/update`,
+  DELETE_COMMENT: BASE_URL + `/comment/delete`,
+
+  GET_HISTORY: BASE_URL + `/history/all`,
+  CREATE_HISTORY: BASE_URL + `/history/create`,
+  UPDATE_HISTORY: BASE_URL + `/history/update`,
+  DELETE_HISTORY: BASE_URL + `/history/delete`,
 
 }

@@ -36,12 +36,10 @@ const History = memo(({
       }}
     >
       <div className='jumbotron-inner-frame' >
-      <h1 style={{fontSize:'2rem'}} >
-        History
-        {isAdmin &&
-            <CreateButton
-              onClick={handleOpenEmpty}
-            />}</h1>
+        <h1 style={{ height: '5rem', fontSize: '3rem', padding: '8px 14px' }} >
+          History
+          {isAdmin && <CreateButton onClick={handleOpenEmpty} />}
+        </h1>
         <hr className='my-2' />
         <TableComponent
           data={data}
