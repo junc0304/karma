@@ -42,5 +42,6 @@ app.use('/auth', authRouter);
 
 const port = process.env.PORT || SERVER_PORT;
 app.listen(port, () => {
+  console.log(CLIENT_ORIGIN);
     console.log(`KARMA Server started..`,`PORT: ${port}` );
 });
