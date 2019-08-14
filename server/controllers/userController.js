@@ -11,7 +11,7 @@ class UserController {
     let result;
     try {
       result = {
-        user: await this.userDataHandler.getUsers()
+        user: {...await this.userDataHandler.getUsers()}
       };
     } catch (err) {
       throw new HttpExceptionHandler(400, err);

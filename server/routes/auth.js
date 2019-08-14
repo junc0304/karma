@@ -33,7 +33,6 @@ router.route('/signin')
       res.status(200).json(user);
     }
     catch (err) {
-      console.log(err)
       res.status(400).json({ Error: "could not sign in" });
     }
   });

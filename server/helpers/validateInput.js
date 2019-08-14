@@ -22,7 +22,7 @@ module.exports = {
     signUp: Joi.object().keys({
       name: Joi.string().required(),
       email: Joi.string().email().required(),
-      password: Joi.string().min(8).max(16).regex(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/).required(),
+      password: Joi.string().min(8).max(16).regex(/^(?=.*[a-z])(?=.*[0-9])(?=.{8,})/).required(),
       unit: Joi.string().optional(),
       address: Joi.string().required(),
       city: Joi.string().required(),
@@ -35,7 +35,7 @@ module.exports = {
 
     signIn: Joi.object().keys({
       email: Joi.string().email().required(),
-      password: Joi.string().min(8).max(16).regex(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/).required(),
+      password: Joi.string().min(8).max(16).regex(/^(?=.*[a-z])(?=.*[0-9])(?=.{8,})/).required(),
     }),
 
     getPost: {

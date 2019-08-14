@@ -11,7 +11,7 @@ const commentRouter = require('./routes/comment');
 const authRouter = require('./routes/auth');
 const pageRouter = require('./routes/page');
 const historyRouter = require('./routes/history');
-const {DATABASE_URL, SERVER_PORT} = require('./configuration');
+const {DATABASE_URL, SERVER_PORT, CLIENT_ORIGIN} = require('./configuration');
 
 const mongoose = require('mongoose');
 mongoose.Promise = global.Promise;
@@ -23,7 +23,7 @@ mongoose.connect(DATABASE_URL, {
 
 app.use(cookieParser());
 app.use(cors({
-  origin: 'http://localhost:3000',
+  origin: CLIENT_ORIGIN,
   credentials: true
 }));
 app.use(bodyParser.urlencoded({extended: true}));

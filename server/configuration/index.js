@@ -2,6 +2,7 @@ module.exports = {
   NODE_ENV: process.env.NODE_ENV || 'dev',
 
   SERVER_PORT: process.env.SERVER_PORT || 4000,
+  CLIENT_ORIGIN: process.env.CLIENT_ORIGIN || 'http://localhost:3000',
   DATABASE_URL: process.env.MONGO_URL || 'mongodb://localhost/karmaDB',
 
   JWT_SECRET: process.env.JWT_SECRET || 'testJWT',
